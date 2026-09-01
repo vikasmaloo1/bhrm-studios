@@ -1,0 +1,18 @@
+﻿# Build outputs
+.next/
+out/
+build/
+dist/
+
+# Dependencies
+node_modules/
+
+# Lock files (managed by pnpm)
+pnpm-lock.yaml
+
+# Generated files
+next-env.d.ts
+*.tsbuildinfo
+
+# Public assets
+public/
