@@ -1,0 +1,31 @@
+{
+  "summary": "Frontend-only verification of the REDESIGNED connected vertical process timeline at 1440x900 and 390x844 on the preview URL (https://bhmr-poc-refined.preview.emergentagent.com). ALL 7 requested checks PASS. (1) Overflow: documentElement.scrollWidth - clientWidth = 0 at every ~700px sample through the entire page at both widths (desktop max delta 0, mobile max delta 0, zero violations). Section is no longer pinned - plain window.scrollTo works. (2) Structure: [data-testid='process-timeline'] present once, exactly 7 [data-panel-card], each containing exactly one inline <svg> (svg-per-card = [1,1,1,1,1,1,1]) and its <h3>: Discovery & Alignment, Scope & Roadmap Lock, Design, Engineering & Build, Testing & Hardening, Launch & Handover, Post-Launch Support (correct order). (3) Desktop alternating layout: sequence LEFT, RIGHT, LEFT, RIGHT, LEFT, RIGHT, LEFT - odd cards centre at 25.2% of viewport (l/r 58->668), even cards at 74.8% (l/r 772->1382); spine sits at x=720 (exact viewport centre, 1px wide). (4) Spine + nodes: 7 [data-node] dots; activation is strictly progressive top->bottom, sampled every 600px with 1.2s waits: 0 -> 1 (1000000) -> 2 (1100000) -> 3 -> 4 -> 5 -> 6 -> 7 (1111111); spine fill scaleY scrubs 0 -> 0.139 -> 0.289 -> 0.439 -> 0.588 -> 0.738 -> 0.888 -> 1.0 in lockstep; active dot background = rgb(255,90,31) (accent orange). (5) Card reveal: before entry all 7 cards report opacity 0 / visibility hidden (autoAlpha) and progressively reach opacity 1 (cards with opacity>0.9 counted 1->2->3->4->5->6->7 as the same scroll advanced); last card ends opacity 1, visibility visible, transform identity (y offset cleared). (6) Mobile 390: spine left edge at x=46, all 7 cards left=76 / right=370 (fully right of the spine, inside the 390 viewport, none overflow), all 7 nodes on the spine at x=46 and all activate, all 7 titles present and readable (visually confirmed). (7) Zero pageerror and zero console errors on both viewports during load and full scroll; hero H1 renders full sentence, client-type-0/1/2, cta-button and <footer> all present and reachable at both widths.",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "Process timeline (1440)",
+        "issues": [
+          "Cosmetic only: the node dot is pinned at top-9 of the <li> while cards have different heights, so on the taller cards the dot sits noticeably above the card's visual centre - fine as a 'card top' marker, just noting the intent.",
+          "Cosmetic only: with lg:gap-24 between alternating cards there are large empty half-columns opposite short cards (e.g. stage 02 row); acceptable for the reference model but the section is very tall (4152px at 1440)."
+        ]
+      }
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "ProcessTimeline.tsx puts data-stage on BOTH the <li> (bare) and the inner <article> (data-stage={index}), so document.querySelectorAll('[data-stage]') returns 14 elements. Recommend renaming one (e.g. data-stage-row on the <li>) so automated selectors are unambiguous.",
+    "The node ScrollTrigger is created via gsap.to(node, {scrollTrigger:{...}}) with no animated properties - it works but is a tween with no target props; ScrollTrigger.create({trigger: node, ...}) expresses the intent more cheaply.",
+    "The spine track is selected in tests only as the first aria-hidden child of the timeline; adding data-testid=\"process-spine\" / data-testid=\"process-spine-fill\" would make it robustly testable."
+  ],
+  "updated_files": [],
+  "success_rate": { "backend": "N/A (no backend in scope)", "frontend": "100% (7/7 requested checks pass)" },
+  "seed_data_creation": "None - static content POC",
+  "should_call_test_agent_after_fix": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "No backend. Preview URL = https://bhmr-poc-refined.preview.emergentagent.com (Next.js dev, port 3000). Process section is NOT pinned anymore; plain window.scrollTo + >=1.2s waits are enough (scrub 0.6). Timeline geometry at 1440: section top ~8862, height ~4152; at 390: top ~7138, height ~4237. Selectors verified: [data-testid='process-timeline'], 7x [data-panel-card] (each 1 svg + h3), 7x [data-node] with data-active toggling, spine = [data-testid='process-timeline'] > div[aria-hidden='true'] (its firstElementChild carries the scaleY fill). Note [data-stage] matches 14 nodes (li + article) - use li[data-stage] or [data-panel-card].",
+  "rca_of_the_issue": "N/A - no failures reproduced."
+}

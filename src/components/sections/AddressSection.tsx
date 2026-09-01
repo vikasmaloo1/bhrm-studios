@@ -1,6 +1,7 @@
 import { Container } from '@/components/layout/Container';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { WordFillReveal } from '@/lib/motion/WordFillReveal';
+import { SectionWipe } from '@/lib/motion/SectionWipe';
 import { MaskReveal } from '@/lib/motion/primitives';
 import { address } from '@/content/home';
 
@@ -17,6 +18,7 @@ export function AddressSection() {
   return (
     <section id="address" className="relative py-section" data-testid="address-section">
       <Container>
+        <SectionWipe className="mb-12 lg:mb-16" />
         <div className="grid gap-12 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-20">
           {/* Heading holds the left rail as the paragraphs scroll past. */}
           <div className="lg:sticky lg:top-32 lg:self-start">

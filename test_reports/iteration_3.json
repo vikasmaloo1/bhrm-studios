@@ -1,0 +1,30 @@
+{
+  "summary": "Frontend-only regression check of the two additive changes (7 stage icons + scroll-linked SectionWipe hairlines) at 1440x900, 768x1024 and 390x844 on the preview URL. ALL requested checks PASS. (1) No horizontal overflow: documentElement.scrollWidth == clientWidth exactly at all three widths (1440/1440, 768/768, 390/390); re-sampled every 500px through the whole pinned process scene and every 700px through a full top-to-bottom scroll at each width - max scrollWidth never exceeded the viewport width (390 stayed 390 throughout). (2) Seven-stage process still works: exactly 7 [data-panel-card] at all widths; counter advanced cleanly 01->02->03->04->05->06->07 at 1440 (process-progress-counter), 768 and 390 (process-progress-counter-mobile now exists and is visible; desktop testid present but hidden at 390 as expected), and stage <h3> titles advanced in order Discovery & Alignment -> Scope & Roadmap Lock -> Design -> Engineering & Build -> Testing & Hardening -> Launch & Handover -> Post-Launch Support. (3) Icons: each of the 7 cards contains exactly one inline <svg> (svg-per-card = [1,1,1,1,1,1,1] at all three widths); rendered 20x20, opacity 1, currentColor resolves to accent rgb(214,63,10) inside the circular chip in the card header row - visually confirmed in screenshot. (4) SectionWipe: exactly one h-px origin-left gradient span in each of #address, #beliefs, #process and #clients; verified scrubbed animation - computed transform goes matrix(0,0,0,1,0,0) at start ('top 92%') to matrix(1,0,0,1,0,0) by 'top 45%' for all four. (5) Hero H1 renders full sentence, client-type-0/1/2, cta-button and <footer> all present and visible after scrolling to bottom at all three widths. (6) Zero pageerror and zero console errors across all viewport runs (load + full scroll).",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "Process pinned scene (1440)",
+        "issues": [
+          "Minor cosmetic desync: in one sampled frame the visible card read stage '02 Scope & Roadmap Lock' while the right-hand rail counter still read '01' (rail counter lags the card during the scrubbed transition). Not a functional failure - full 01->07 sequence is emitted - but the rail number and card number can briefly disagree mid-scrub.",
+          "Pre-existing from iteration_2: the pinned card is shorter than the reserved scene height, leaving a large empty band below the card."
+        ]
+      }
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "stageIcons.tsx SVGs have no explicit width/height and rely on the caller's sizing class; they currently resolve to 20x20 which is correct, but adding a default size class would make them safe if reused elsewhere.",
+    "SectionWipe uses el.closest('section') as the ScrollTrigger trigger - correct today, but it silently falls back to the bar itself (a 1px element) if a wipe is ever placed outside a <section>, which would make the start/end window meaningless."
+  ],
+  "updated_files": [],
+  "success_rate": { "backend": "N/A (no backend in scope)", "frontend": "100% (5/5 requested regression checks pass)" },
+  "seed_data_creation": "None - static content POC",
+  "should_call_test_agent_after_fix": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "No backend; preview URL only (Next.js dev, port 3000). Verified testids: hero h1, process-timeline, process-progress-counter (desktop), process-progress-counter-mobile (new, visible at 390), 7x [data-panel-card] each with one inline <svg>, client-type-0..2, cta-button, footer. SectionWipe bars are selectable via section span[aria-hidden=\"true\"].h-px.origin-left (one each in #address, #beliefs, #process, #clients); note the page has ~23 total h-px spans so filter by .origin-left. Sample GSAP state with >=1.15s waits after window.scrollTo (scrub 0.6-1s).",
+  "rca_of_the_issue": "N/A - no failures reproduced."
+}

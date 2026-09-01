@@ -855,7 +855,7 @@ keep white/near-black/orange + DM Serif hero. Still POC only.
   paragraphs fill word-by-word on scroll. Industries + region + stat strip
   retained as content.
 - **Seven-stage process** (`ProcessTimeline.tsx`) rewritten from the pinned
-  *horizontal* track to a pinned **vertical single-card progression**: the
+  _horizontal_ track to a pinned **vertical single-card progression**: the
   section pins, and as you scroll down each stage lifts away (y + clip) as the
   next rises and clip-reveals in. Desktop shows a vertical rail whose dot +
   fill travel down; mobile shows a slim bottom progress bar and a shorter
@@ -883,7 +883,7 @@ keep white/near-black/orange + DM Serif hero. Still POC only.
 
 ### What still requires manual Chrome verification
 
-Per the standing environment limitation, animation *playback smoothness* was
+Per the standing environment limitation, animation _playback smoothness_ was
 not observed frame-by-frame — it is verified structurally (GSAP/ScrollTrigger
 config) and via sampled opacity/counter values, not by eye. Owner should
 scroll the first two text sections and the seven-stage process slowly in a

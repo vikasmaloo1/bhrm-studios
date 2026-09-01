@@ -2,6 +2,7 @@ import { Container } from '@/components/layout/Container';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { DriftText } from '@/lib/motion/DriftText';
 import { WordFillReveal } from '@/lib/motion/WordFillReveal';
+import { SectionWipe } from '@/lib/motion/SectionWipe';
 import { MaskReveal } from '@/lib/motion/primitives';
 import { Scrub } from '@/lib/motion/Scrub';
 import { editorial } from '@/content/home';
@@ -42,6 +43,7 @@ export function EditorialSection() {
       </div>
 
       <Container className="relative">
+        <SectionWipe className="mb-14 lg:mb-16" />
         <div className="grid gap-16 lg:grid-cols-[minmax(0,26rem)_minmax(0,1fr)] lg:gap-20">
           <div className="lg:sticky lg:top-32 lg:self-start">
             <DriftText speed={0.25}>

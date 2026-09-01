@@ -1,5 +1,6 @@
 import { Container } from '@/components/layout/Container';
 import { SectionHeading } from '@/components/ui/SectionHeading';
+import { SectionWipe } from '@/lib/motion/SectionWipe';
 import { MaskReveal, Parallax } from '@/lib/motion/primitives';
 import { clientTypes } from '@/content/home';
 
@@ -23,6 +24,7 @@ export function ClientTypesSection() {
       data-testid="client-types-section"
     >
       <Container>
+        <SectionWipe className="mb-12 lg:mb-16" />
         <SectionHeading
           index={clientTypes.index}
           eyebrow={clientTypes.eyebrow}
