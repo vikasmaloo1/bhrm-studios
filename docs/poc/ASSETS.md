@@ -5,91 +5,54 @@
 
 ---
 
-## Provenance
-
-Every visual asset in this POC is **generated from scratch** by
-`scripts/generate-media.py`. There is no stock photography, no third-party
-imagery, and nothing sourced from any reference site.
-
-That means:
-
-- **No licensing exposure.** Nothing needs attribution, a subscription, or a
-  release. The client can ship, print or modify any of it.
-- **Nothing was copied.** None of `madewithgsap.com`, `uplink.itsoffbrand.com`,
-  `trionn.com`, `iventions.com`, `minhpham.design`, `oaksun.studio`,
-  `bhmrstudios.com` or `bhrm-studios.vercel.app` was scraped, hotlinked or
-  reproduced. They informed technique only.
-- **It is regenerable.** Change the palette constants at the top of the script
-  and every asset re-renders in the new brand colours in one command.
-
-An earlier pass used duotoned Unsplash architectural photography. It was
-removed on the owner's direction — grey concrete read austere rather than
-appealing, and the generated artifacts were the stronger direction anyway.
-
----
-
 ## The set
 
-All eight share one visual language: warm paper, warm ink, BHMR orange;
-concentric apertures, halftone ramps, layered strata, prismatic overlaps.
-That shared vocabulary is what makes them read as one commissioned set rather
-than eight unrelated pictures.
+| Asset                  | Source                                          | Used by                                                                                         | Notes                                                                                                                                                                                                      |
+| ---------------------- | ----------------------------------------------- | ----------------------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `cta-flow.webp`        | Generated — `scripts/generate-media.py`         | `CTASection.tsx` background                                                                     | Flowing orange light on near-black. Owner asked to keep this exact look after seeing an earlier, third-party-hosted version live; this is a self-hosted original recreating the same visual family. 13 KB. |
+| Studio workspace photo | Unsplash (`address.image` in `content/home.ts`) | `AddressSection.tsx` sticky column                                                              | Real photography, Unsplash License — free for commercial use, no attribution required. The only photograph on the page.                                                                                    |
+| Everything else        | Typography / CSS / SVG                          | Hero service-stack card, section headings, giant outline wordmarks, process progress rail, etc. | No image file — drawn with Tailwind/CSS or plain HTML.                                                                                                                                                     |
 
-| File                 | Size        | Weight | Used by                 | Idea                                                   |
-| -------------------- | ----------- | -----: | ----------------------- | ------------------------------------------------------ |
-| `art-aperture.webp`  | 1200 × 1500 | 207 KB | Hero                    | A blazing aperture — rings closing on a core           |
-| `art-strata.webp`    | 1100 × 1375 | 110 KB | Media band 01           | Layered bands: brand, product, front end, back end     |
-| `art-prism.webp`     | 1100 × 1375 | 121 KB | Media band 02           | Overlapping translucent planes that line up            |
-| `art-node.webp`      | 1100 × 1375 |  94 KB | Media band 03           | A grid of apertures — the component-system idea, drawn |
-| `art-orbit.webp`     | 1100 × 1375 |  82 KB | Editorial, process rail | Ink field with a rising ember and orbital rings        |
-| `art-statement.webp` | 1800 × 1150 |  67 KB | Pinned statement bed    | Wide ink bed with one warm sweep                       |
-| `art-process.webp`   | 1600 × 1080 |  97 KB | Process section bed     | Dark machine-room field                                |
-| `art-cta.webp`       | 1600 × 1000 |  20 KB | Closing CTA             | Deep ink with an orange horizon breaking the edge      |
+Four images that were on the page earlier in this POC's history are gone:
 
-**Total: ~800 KB** of source, served through `next/image`, which generates
-responsive WebP variants at request time. No single asset is on the critical
-path except the hero.
-
----
-
-## Replacing them
-
-The code does not depend on any particular asset. Each is referenced by path
-in exactly one place:
-
-| Asset                 | Referenced in                                                         |
-| --------------------- | --------------------------------------------------------------------- |
-| aperture              | `src/components/sections/Hero.tsx`                                    |
-| strata / prism / node | `src/content/home.ts` → `mediaBand.items`                             |
-| orbit                 | `src/components/sections/EditorialSection.tsx`, `ProcessTimeline.tsx` |
-| statement             | `src/components/sections/StatementSection.tsx`                        |
-| process               | `src/components/sections/ProcessSection.tsx`                          |
-| cta                   | `src/components/sections/CTASection.tsx`                              |
-
-To swap in real BHMR photography or brand artwork later:
-
-1. Drop the new file into `public/media/`.
-2. Change the one `src` above.
-3. Check the `aspect` — every image sits inside a `MediaFrame` (or an
-   equivalent fixed-ratio box), so a different source ratio will crop rather
-   than break the layout.
-4. Give it a real `alt` if it carries meaning. The current set is decorative
-   and correctly marked `alt=""`.
-
-Nothing else has to change. No layout is built around a specific image.
+- Three Emergent-platform-hosted "glossy 3D render" images (hero, beliefs,
+  and the original CTA background) — removed because they lived on a
+  third-party domain (`static.prod-images.emergentagent.com`) outside this
+  project's control, and because two of them contributed to the "gaming,
+  not professional" feedback that drove this pass's rework. The CTA one was
+  the exception — the owner liked its look specifically, so `cta-flow.webp`
+  recreates it as an owned asset (see above).
+- One generated plate (`art-orbit.webp`), left over from an earlier
+  direction of this POC that was itself superseded. Removed as dead weight
+  once nothing in the code referenced it any more.
 
 ---
 
-## Recommendation
+## Provenance and licensing
 
-These are good enough to present, and they are honestly BHMR's colours. But
-they are abstract by necessity — the studio has no shipped work to show yet.
+- **`cta-flow.webp`** is generated from scratch by `scripts/generate-media.py`
+  — no stock, no scraping, nothing copied from any reference site. Re-run
+  the script after changing the palette constants at its top to match a
+  brand refresh.
+- **The Unsplash photo** is used under the Unsplash License (free for
+  commercial and non-commercial use, no permission needed). Its ID and
+  crop parameters live in `content/home.ts` under `address.image`.
 
-Once there is real work, the media band is the natural home for it: three
-project frames with client names in the mono captions would do more for
-credibility than any abstract artifact. The band is already built to take
-three items of any aspect.
+Nothing on the page is hotlinked from a domain this project does not
+control.
 
 ---
 
-_Generated by `scripts/generate-media.py` · re-run with `python scripts/generate-media.py`_
+## Replacing an asset
+
+- **`cta-flow.webp`**: edit the `cta_flow()` function in
+  `scripts/generate-media.py` (ribbon count, colour, curve) and re-run the
+  script, or drop in a different file at the same path — `CTASection.tsx`
+  references it by a single `src`.
+- **The Unsplash photo**: swap the `src`/`alt` in `content/home.ts`. It sits
+  inside a fixed `aspect-[3/4]` frame, so a different source image will crop
+  to fit rather than break the layout.
+
+---
+
+_Generated asset produced by `scripts/generate-media.py` · re-run with `python scripts/generate-media.py`_

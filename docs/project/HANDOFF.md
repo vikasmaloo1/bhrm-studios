@@ -7,14 +7,21 @@
 
 ## Current State
 
-| Field             | Value                                                          |
-| ----------------- | -------------------------------------------------------------- |
-| **Phase 0**       | ✅ COMPLETE (2026-09-01)                                       |
-| **Phase 1**       | PARTIAL — inputs read; PRD/architecture consolidation deferred |
-| **Phase 2 (POC)** | BUILT — ready for client review                                |
-| **Current owner** | Human owner (Vikas Maloo)                                      |
-| **Next action**   | **CLIENT REVIEW / POC FEEDBACK**                               |
-| **Authorization** | D-009                                                          |
+| Field             | Value                                                            |
+| ----------------- | ---------------------------------------------------------------- |
+| **Phase 0**       | ✅ COMPLETE (2026-09-01)                                         |
+| **Phase 1**       | PARTIAL — inputs read; PRD/architecture consolidation deferred   |
+| **Phase 2 (POC)** | LIVE at bhmr-studios.vercel.app — reworked after client feedback |
+| **Current owner** | Human owner (Vikas Maloo)                                        |
+| **Next action**   | **View the rework locally, then re-send to client for review**   |
+| **Authorization** | D-009                                                            |
+
+**2026-09-01, later:** Nikky reviewed the deployed POC live and called it
+"more gaming type, not professional," with a detailed brief on what to fix.
+Reworked in the local working tree — see PROMPT_LOG P-009 for the full
+list. **This rework is not committed or deployed yet** — the live
+`bhmr-studios.vercel.app` still shows the pre-feedback version until the
+owner reviews the rework locally and pushes it.
 
 ### ⛔ Hard stop currently in force
 
@@ -26,15 +33,16 @@ integrations, production deployment, and DNS.
 
 ### Open items the human owner must resolve
 
-| #   | Item                                                     | Reference     |
-| --- | -------------------------------------------------------- | ------------- |
-| 1   | Supply the nine approved page-copy documents             | R-009, D-014  |
-| 2   | Confirm the `bhrm` vs `bhmr` spelling (repo + domain)    | D-010         |
-| 3   | Set the commercial position for the POC effort           | D-013, R-010  |
-| 4   | Confirm primary conversion goal and audience priority    | PRD §6, §4    |
-| 5   | Confirm analytics provider and cookie-consent obligation | PRD §16, §17  |
-| 6   | Watch the POC motion in a real browser before sending    | POC_REVIEW §9 |
-| 7   | Optional independent review of the POC                   | R-008         |
+| #   | Item                                                            | Reference        |
+| --- | --------------------------------------------------------------- | ---------------- |
+| 1   | Supply the nine approved page-copy documents                    | R-009, D-014     |
+| 2   | Confirm the `bhrm` vs `bhmr` spelling (repo + domain)           | D-010            |
+| 3   | Set the commercial position for the POC effort                  | D-013, R-010     |
+| 4   | Confirm primary conversion goal and audience priority           | PRD §6, §4       |
+| 5   | Confirm analytics provider and cookie-consent obligation        | PRD §16, §17     |
+| 6   | Watch the POC motion in a real browser before sending           | POC_REVIEW §9    |
+| 7   | Optional independent review of the POC                          | R-008            |
+| 8   | Review the client-feedback rework locally, then commit + deploy | PROMPT_LOG P-009 |
 
 ---
 

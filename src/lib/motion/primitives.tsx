@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, type ElementType, type ReactNode } from 'react';
+import { useRef, type ComponentPropsWithoutRef, type ElementType, type ReactNode } from 'react';
 import { REVEAL_START, duration, ease, shift } from './tokens';
 import { ensureGsap, useIsomorphicLayoutEffect, useShouldAnimate } from './gsap';
 
@@ -37,7 +37,7 @@ type MaskRevealProps = {
   immediate?: boolean;
   /** Drift the content slightly as the mask opens — adds weight. */
   drift?: boolean;
-};
+} & ComponentPropsWithoutRef<'div'>;
 
 /**
  * Clip-path mask reveal.
@@ -55,6 +55,7 @@ export function MaskReveal({
   delay = 0,
   immediate = false,
   drift = true,
+  ...rest
 }: MaskRevealProps) {
   const ref = useRef<HTMLElement>(null);
   const shouldAnimate = useShouldAnimate();
@@ -87,7 +88,7 @@ export function MaskReveal({
   }, [shouldAnimate, from, delay, immediate, drift]);
 
   return (
-    <Tag ref={ref} className={className}>
+    <Tag ref={ref} className={className} {...rest}>
       {children}
     </Tag>
   );

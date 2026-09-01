@@ -700,3 +700,129 @@ Inspected local repository baseline, executed full quality validation (`pnpm che
 ### Next Action
 
 Human owner to approve Vercel GitHub App connection in GitHub/Vercel dashboard for continuous auto-deployments on Git push, followed by client review of the live POC.
+
+---
+
+## P-009 — Client Feedback Pass: "Gaming, Not Professional"
+
+**Date:** 2026-09-01
+**Agent:** CLAUDE CODE
+**Phase:** PHASE 2 — PROOF OF CONCEPT
+
+### Summary
+
+The client (Nikky) reviewed the live POC at bhmr-studios.vercel.app and gave
+direct feedback: it read as a gaming site, not a professional studio. A
+detailed follow-up brief specified the fix in both directions — what to
+remove and what motion should come from instead.
+
+### What was removed
+
+- Rotating conic "sun" behind the hero
+- Breathing/pulsing solid orange disc
+- Levitating floating ribbon card
+- Rotating circular badge with a counter-orbiting dot
+- Custom pointer-tracking cursor (orange dot + ring + "View" label)
+- Two floating geometric shapes per section (rings, squares, crosses, dots)
+  drifting independently of content in Address, Beliefs and CTA
+- Three images hosted on `static.prod-images.emergentagent.com` (a
+  third-party domain outside project control) — a glossy 3D hero render, a
+  Bauhaus-style Beliefs poster, and the original CTA light-streak background
+
+### What was added or changed
+
+- **Typography**: hero headline set in DM Serif Display (`.bhmr-serif`,
+  newly added to `globals.css`) — client-specified, "the first thing a
+  visitor notices." Grotesk caps (`.bhmr-display`) retained for labels, nav,
+  and section eyebrows only.
+- **Missing content restored**: `clientTypes` — the three BHMR client
+  categories (Pre-launch founders, Growing SMBs, Funded startups). Only two
+  existed before, embedded in a sub-block of the Address section;
+  "Pre-launch founders" was missing entirely. Sourced from the original
+  supplied Homepage_Copy "Who We Work With" section. Now its own major
+  section, `ClientTypesSection.tsx`.
+- **Process section recoloured white**: `bg-ink` → white/transparent, all
+  `text-paper`/`muted-invert`/`border-paper` tokens flipped to their light
+  equivalents in `ProcessSection.tsx` and `ProcessTimeline.tsx`. The pinned
+  horizontal-scroll mechanism itself (GSAP + ScrollTrigger, matchMedia-gated
+  to `>=1024px`) was kept — that motion was not the complaint, its colour
+  scheme was. The dark image-panel opener was replaced with a typographic
+  "01 → 07" panel, consistent with removing decorative photography.
+- **New `DriftText` primitive** (`src/lib/motion/DriftText.tsx`): scroll-
+  scrubbed differential drift — each block gets its own `speed`, so sibling
+  elements visibly separate and reconverge on scroll rather than moving as
+  one flat unit. Applied to the Address and Beliefs sections (the client's
+  "section 1 / section 2" reference).
+- **Hero's photographic plate replaced** with an original typographic
+  service-stack card (Brand / Product / Front end / Back end over dark),
+  drawn from the copy's own argument rather than a stock-feeling render.
+- **CTA background kept, rebuilt as an original asset**: the owner reviewed
+  the live site mid-task and said to keep the flowing-orange-light CTA
+  background specifically — it had already been swapped for a flat CSS
+  gradient at that point. Regenerated as `cta-flow.webp`
+  (`scripts/generate-media.py`), matching the original's visual family
+  without the third-party hosting dependency. See `docs/poc/ASSETS.md`.
+- `StatementSection`'s white→black flip removed — it existed to hand off
+  into what was a dark Process section; now that Process is white, the flip
+  had nothing to hand off to and would have been a jarring flash.
+
+### Defects found and fixed during this pass
+
+1. `MaskReveal` did not forward arbitrary props (`data-testid`, etc.) to its
+   underlying DOM node — no `...rest` spread. Silent failure: TypeScript
+   allows `data-*` on any JSX element by special case, so it type-checked
+   but the attribute never reached the DOM. Fixed by adding
+   `ComponentPropsWithoutRef<'div'>` to the prop type and spreading
+   `...rest`. This affects every `data-testid` on a `MaskReveal`-wrapped
+   element sitewide, including ones Emergent's own Playwright suite relies
+   on — worth a follow-up check that no existing test assertions were
+   silently passing against a missing attribute.
+2. `ProcessTimeline`'s vertical (mobile) layout had zero horizontal padding
+   — found via the owner's own screenshot of the live site, where "Stage 03
+   / DESIGN" sat flush against the screen edge. The component deliberately
+   renders outside a `Container` (so the desktop horizontal track can bleed
+   to the viewport edge), but its gutter classes were all
+   `group-data-[horizontal]/track:*`-gated, so none applied below 1024px.
+   Fixed with a plain `px-gutter` on the `<ol>`, cancelled via
+   `group-data-[horizontal]/track:px-0` once GSAP switches the layout to
+   horizontal. Verified both states directly (390px → 20px gutter matching
+   the rest of the page; forced-horizontal desktop → unaffected).
+3. `art-orbit.webp` was left referenced by `ProcessTimeline`'s old dark
+   image-panel opener; once that panel was replaced with typography, the
+   asset became orphaned. Removed, along with the seven other unused
+   generated plates from an earlier, since-discarded direction of this POC.
+   `scripts/generate-media.py` rewritten to contain only the one generator
+   actually in use (`cta_flow`), with palette constants matching the live
+   design tokens rather than a stale earlier system.
+
+### Validation Performed
+
+- `pnpm format:check`, `lint`, `typecheck`, `build` — all PASS
+- Breakpoints 360 / 390 / 768 / 1024 / 1440 — zero horizontal overflow, zero
+  stranded-invisible elements at every width
+- All three `ClientTypesSection` cards confirmed present with correct
+  content (Pre-launch founders / Growing SMBs / Funded startups) after the
+  `MaskReveal` testid fix
+- `cta-flow.webp` confirmed loaded with real pixel variation (canvas-sampled
+  contrast 69) at both ends of its scroll-scrubbed scale
+- Contrast re-audited: 36 of 37 distinct text/background pairs pass WCAG AA;
+  the one flagged "failure" is the `aria-hidden` outline wordmark
+  (intentionally `color: transparent`, a false positive of the heuristic)
+- Section background colours spot-checked: `#process` transparent/white,
+  `#start` (CTA) `rgb(10,10,10)` — confirms the white flip and the
+  intentional dark bookend
+
+### What was NOT verified
+
+Same standing limitation as every prior pass: this environment fires zero
+`requestAnimationFrame` and zero `IntersectionObserver` callbacks, so no
+animation was watched play, and lazy-loaded images cannot be confirmed
+without forcing them eager. All motion here is verified structurally
+(GSAP timeline construction, ScrollTrigger configuration, DOM state at rest)
+and via the objective checks above, not by observation.
+
+### Next Action
+
+Owner to view the reworked POC in a real browser and confirm the direction
+before it goes back to the client. Not committed — per standing instruction
+this pass remains in the working tree only.

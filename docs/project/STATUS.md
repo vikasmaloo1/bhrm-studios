@@ -85,20 +85,49 @@ Authorized by **D-009**. See R-007 for how the earlier undocumented transition w
 Authorized by **D-009**. Boundary held: no additional pages, no forms, no
 integrations, no backend, no Figma.
 
-| Task                     | Status      | Notes                                                                    |
-| ------------------------ | ----------- | ------------------------------------------------------------------------ |
-| POC scope agreed         | ✅ DONE     | Nav, hero, editorial, process, CTA, footer                               |
-| Design tokens            | ✅ DONE     | `src/app/globals.css` `@theme` — no hard-coded values in components      |
-| Component library        | ✅ DONE     | 13 components + 4 motion modules                                         |
-| Content wiring           | ✅ DONE     | Verbatim from `docs/references/Homepage_Copy.docx`                       |
-| Motion (6 patterns)      | ✅ DONE     | GSAP + CSS; full reduced-motion fallback                                 |
-| Responsive               | ✅ DONE     | Verified 320 / 375 / 768 / 1440 — zero horizontal overflow               |
-| Accessibility            | ✅ DONE     | All 23 text pairs pass WCAG AA (min 4.89:1); skip link; focus management |
-| Quality gates            | ✅ DONE     | `pnpm check` — format, lint, typecheck, build all pass                   |
-| POC review pack          | ✅ DONE     | `docs/poc/POC_REVIEW.md`, `docs/poc/CLIENT_POC_SUMMARY.md`               |
-| Visual motion playback   | ⚠️ NOT DONE | Verification browser delivered zero frames — check in a real browser     |
-| Independent review       | ⏳ PENDING  | R-008 — recommended before the client sees it                            |
-| **Client review of POC** | ⏳ PENDING  | **Next action. Client decision — not ours to mark.**                     |
+| Task                     | Status      | Notes                                                                                                        |
+| ------------------------ | ----------- | ------------------------------------------------------------------------------------------------------------ |
+| POC scope agreed         | ✅ DONE     | Nav, hero, editorial, process, CTA, footer                                                                   |
+| Design tokens            | ✅ DONE     | `src/app/globals.css` `@theme` — no hard-coded values in components                                          |
+| Component library        | ✅ DONE     | 13 components + 4 motion modules                                                                             |
+| Content wiring           | ✅ DONE     | Verbatim from `docs/references/Homepage_Copy.docx`                                                           |
+| Motion (6 patterns)      | ✅ DONE     | GSAP + CSS; full reduced-motion fallback                                                                     |
+| Responsive               | ✅ DONE     | Verified 320 / 375 / 768 / 1440 — zero horizontal overflow                                                   |
+| Accessibility            | ✅ DONE     | All 23 text pairs pass WCAG AA (min 4.89:1); skip link; focus management                                     |
+| Quality gates            | ✅ DONE     | `pnpm check` — format, lint, typecheck, build all pass                                                       |
+| POC review pack          | ✅ DONE     | `docs/poc/POC_REVIEW.md`, `docs/poc/CLIENT_POC_SUMMARY.md`                                                   |
+| Visual motion playback   | ⚠️ NOT DONE | Verification browser delivered zero frames — check in a real browser                                         |
+| Independent review       | ⏳ PENDING  | R-008 — recommended before the client sees it                                                                |
+| Client feedback pass     | ✅ DONE     | Removed "gaming" motion, DM Serif Display hero, white process section, added missing client type — see below |
+| **Client review of POC** | ⏳ PENDING  | **Next action. Client decision — not ours to mark.**                                                         |
+
+**Client feedback pass (2026-09-01)** — Nikky reviewed the live POC and called it
+"more gaming type, not professional." Reworked in place, not committed:
+
+- Removed all continuous decorative motion: rotating conic sun, breathing
+  orange disc, orbiting badge, levitating card, custom pointer-tracking
+  cursor. Motion now comes only from typography, components and scroll.
+- Hero headline set in DM Serif Display (client's explicit request), large
+  and immediately visible; grotesk caps kept for labels/UI only.
+- Hero's glossy 3D-render image replaced with an original typographic
+  service-stack card (Brand / Product / Front end / Back end).
+- Added the missing third client type — **Pre-launch founders** — as its
+  own major section (`ClientTypesSection.tsx`) alongside Growing SMBs and
+  Funded Startups. Previously only two of three were present, and buried in
+  a sub-block.
+- Process section (seven stages) flipped from dark to **white** background,
+  per explicit client direction; pinned horizontal scroll-driven motion
+  retained.
+- New `DriftText` motion primitive gives Sections 1–2 (Address, Beliefs)
+  differential scroll-scrubbed line movement per the client's reference.
+- Removed three Emergent-hosted third-party images; kept the one the owner
+  asked to keep (CTA flowing-light background) by regenerating it as a
+  self-hosted original — see `docs/poc/ASSETS.md`.
+- Fixed a real bug found via owner screenshot: `ProcessTimeline`'s vertical
+  (mobile) layout had no horizontal gutter, running stage text flush against
+  the screen edge below 1024px.
+- `pnpm check` passes. Verified 360/390/768/1024/1440 — zero horizontal
+  overflow, zero stranded-invisible elements, all client-type cards present.
 
 ### PHASE 3 — DESIGN
 

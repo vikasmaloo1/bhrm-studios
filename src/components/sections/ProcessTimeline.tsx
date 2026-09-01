@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import { useRef, useState } from 'react';
 import type { Stage } from '@/content/home';
 import { cn } from '@/lib/utils/cn';
@@ -8,12 +7,14 @@ import { ensureGsap, useIsomorphicLayoutEffect, useShouldAnimate } from '@/lib/m
 import { duration, ease } from '@/lib/motion/tokens';
 
 /**
- * The seven stages, as a pinned horizontal scroll.
+ * The seven stages, as a pinned horizontal scroll — the page's major motion
+ * section, white per the client's explicit direction (black type, restrained
+ * orange for the active stage and progress rail).
  *
- * This is the showpiece. The section pins and the track travels sideways as
- * you scroll down, so the seven stages read as one continuous run rather than
- * seven stacked cards — which is the point the copy makes about a single
- * process with named owners and explicit gates.
+ * The section pins and the track travels sideways as you scroll down, so the
+ * seven stages read as one continuous run rather than seven stacked cards —
+ * the point the copy makes about a single process with named owners and
+ * explicit gates.
  *
  * Robustness matters more here than the effect:
  *   - The default markup is a plain vertical list. Horizontal layout is only
@@ -105,18 +106,18 @@ export function ProcessTimeline({ stages }: { stages: readonly Stage[] }) {
         className="absolute inset-x-gutter bottom-12 z-20 hidden items-center gap-5 group-data-[horizontal]/track:flex"
       >
         <span
-          className="font-mono text-meta tracking-[0.16em] text-accent tabular-nums"
+          className="font-mono text-meta tracking-[0.16em] text-accent-ink tabular-nums"
           data-testid="process-progress-counter"
         >
           {String(active + 1).padStart(2, '0')}
         </span>
-        <span className="relative h-px flex-1 bg-paper/15">
+        <span className="relative h-px flex-1 bg-ink/12">
           <span
             className="absolute inset-y-0 left-0 bg-accent transition-[width] duration-500 ease-[var(--ease-out-expo)]"
             style={{ width: `${progress * 100}%` }}
           />
         </span>
-        <span className="font-mono text-meta tracking-[0.16em] text-muted-invert tabular-nums">
+        <span className="font-mono text-meta tracking-[0.16em] text-muted tabular-nums">
           {String(stages.length).padStart(2, '0')}
         </span>
       </div>
@@ -137,27 +138,25 @@ export function ProcessTimeline({ stages }: { stages: readonly Stage[] }) {
           'group-data-[horizontal]/track:pr-[38vw] group-data-[horizontal]/track:pl-gutter'
         )}
       >
-        {/* Opening image panel. Seven consecutive text panels is a wall; an
-            image at the head gives the horizontal run somewhere to start and
-            establishes the scale of the track. Hidden in the vertical
-            fallback, where it would just be another thing to scroll past. */}
+        {/* Opening panel — the stage count set as large type, not a photo.
+            Seven consecutive text panels is a wall; this gives the run
+            somewhere to start. Hidden in the vertical fallback, where it
+            would just be another thing to scroll past. */}
         <li
           aria-hidden="true"
-          className="hidden group-data-[horizontal]/track:block group-data-[horizontal]/track:w-[min(24rem,28vw)] group-data-[horizontal]/track:shrink-0 group-data-[horizontal]/track:pr-12"
+          className="hidden group-data-[horizontal]/track:flex group-data-[horizontal]/track:w-[min(20rem,24vw)] group-data-[horizontal]/track:shrink-0 group-data-[horizontal]/track:flex-col group-data-[horizontal]/track:justify-between group-data-[horizontal]/track:border-r group-data-[horizontal]/track:border-ink/10 group-data-[horizontal]/track:pr-10"
         >
-          <div className="relative aspect-[3/4] overflow-hidden rounded-plate">
-            <Image
-              src="/media/art-orbit.webp"
-              alt=""
-              fill
-              sizes="24rem"
-              className="scale-105 object-cover"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-ink/75 via-transparent to-transparent" />
-            <p className="absolute right-5 bottom-5 left-5 font-mono text-[0.625rem] tracking-[0.16em] text-paper/80 uppercase">
-              Seven stages · scroll to move through
-            </p>
-          </div>
+          <p className="font-mono text-meta tracking-[0.16em] text-muted uppercase">
+            Start to finish
+          </p>
+          <p className="bhmr-display text-[clamp(4rem,7vw,6.5rem)] leading-[0.85] text-ink">
+            01
+            <span className="text-accent">→</span>
+            07
+          </p>
+          <p className="max-w-[16rem] text-[0.9375rem] leading-relaxed text-ink/70">
+            Scroll to move through each stage in order.
+          </p>
         </li>
 
         {stages.map((stage, index) => (
@@ -165,10 +164,10 @@ export function ProcessTimeline({ stages }: { stages: readonly Stage[] }) {
             key={stage.number}
             data-stage
             className={cn(
-              'bhmr-rule-invert relative py-10 first:border-t-0 first:pt-0',
+              'bhmr-rule relative py-10 first:border-t-0 first:pt-0',
               'group-data-[horizontal]/track:w-[min(30rem,34vw)] group-data-[horizontal]/track:shrink-0',
               'group-data-[horizontal]/track:border-t-0 group-data-[horizontal]/track:border-l',
-              'group-data-[horizontal]/track:border-l-paper/12',
+              'group-data-[horizontal]/track:border-l-ink/10',
               'group-data-[horizontal]/track:py-0 group-data-[horizontal]/track:pr-12',
               'group-data-[horizontal]/track:pl-10'
             )}
@@ -183,44 +182,44 @@ export function ProcessTimeline({ stages }: { stages: readonly Stage[] }) {
                 <span
                   className={cn(
                     'font-mono text-meta tracking-[0.16em] tabular-nums transition-colors duration-500',
-                    index <= active ? 'text-accent' : 'text-muted-invert'
+                    index <= active ? 'text-accent-ink' : 'text-muted'
                   )}
                 >
                   Stage {stage.number}
                 </span>
 
-                <h3 className="bhmr-display mt-4 text-h3 text-paper">{stage.title}</h3>
-                <p className="mt-3 font-mono text-[0.75rem] tracking-[0.06em] text-muted-invert">
+                <h3 className="bhmr-display mt-4 text-h3 text-ink">{stage.title}</h3>
+                <p className="mt-3 font-mono text-[0.75rem] tracking-[0.06em] text-muted">
                   Owned by {stage.owner}
                 </p>
               </div>
 
               <div className="group-data-[horizontal]/track:mt-7">
-                <p className="max-w-[38rem] leading-relaxed text-paper/80">{stage.body}</p>
+                <p className="max-w-[38rem] leading-relaxed text-ink/75">{stage.body}</p>
 
                 {stage.gates.length > 0 && (
                   <ul className="mt-6 flex flex-col gap-3">
                     {stage.gates.map((gate) => (
                       <li
                         key={gate.kind}
-                        className="rounded-xl border border-paper/12 bg-paper/[0.035] p-4"
+                        className="rounded-xl border border-ink/10 bg-paper-deep/50 p-4"
                       >
                         <span
                           className={cn(
                             'inline-flex items-center gap-1.5 font-mono text-[0.625rem] tracking-[0.16em] uppercase',
-                            gate.kind === 'hard' ? 'text-accent' : 'text-muted-invert'
+                            gate.kind === 'hard' ? 'text-accent-ink' : 'text-muted'
                           )}
                         >
                           <span
                             aria-hidden="true"
                             className={cn(
                               'size-1.5 rounded-full',
-                              gate.kind === 'hard' ? 'bg-accent' : 'bg-muted-invert'
+                              gate.kind === 'hard' ? 'bg-accent' : 'bg-muted'
                             )}
                           />
                           {gate.kind} gate
                         </span>
-                        <p className="mt-2 text-[0.875rem] leading-relaxed text-paper/65">
+                        <p className="mt-2 text-[0.875rem] leading-relaxed text-ink/70">
                           {gate.text}
                         </p>
                       </li>

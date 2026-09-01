@@ -54,17 +54,12 @@ export const hero = {
     { label: 'Scope', value: 'Brand · Product · Code' },
     { label: 'Support', value: '30 days, every build' },
   ],
-  /** Hero imagery — art-directed abstract renders in the brand palette. */
-  media: {
-    primary: {
-      src: 'https://static.prod-images.emergentagent.com/jobs/8c6c3775-f625-4d8e-a146-759028ab4a0c/images/a8d60ecdd28ea9751f80e7ea4a9805a4a89fc725474feee200821a9ea108129d.jpeg',
-      alt: 'Abstract 3D composition of orange and black geometric forms on white',
-    },
-    card: {
-      src: 'https://static.prod-images.emergentagent.com/jobs/8c6c3775-f625-4d8e-a146-759028ab4a0c/images/9d7103691aa68bafe3cb231de3ef7be3845d0255658a3c653e9c64e1c9120898.jpeg',
-      alt: 'Glossy orange ribbon curve on white',
-    },
-  },
+  /**
+   * The service stack, drawn as typography inside the hero card rather than
+   * photographed — see Hero.tsx. Same four pillars as the marquee, in the
+   * order the copy uses them.
+   */
+  stack: ['Brand', 'Product', 'Front end', 'Back end'],
 } as const;
 
 export const address = {
@@ -75,16 +70,6 @@ export const address = {
     'We started this studio in 2026, so no, we cannot show you twenty years of case studies. What we can show you is exactly how we work, who is doing the work, and why we think most agencies make this harder than it needs to be.',
     'If you run an SMB and your current website looks like it was built by your nephew in 2015, we can help. If you are a funded startup racing toward your next round and you need a product that looks like you already raised the round after that, we can help with that too. Same team either way, just a different starting point.',
   ],
-  clients: [
-    {
-      label: 'SMB growing businesses',
-      body: 'Owners and operators done with template sites and DIY builders, who want something that looks like a real business because it is one. Services, ecommerce, local and regional brands.',
-    },
-    {
-      label: 'Funded startups',
-      body: 'Founders shipping products that need to look and feel like the round they are trying to raise, not the one they just closed. B2B and B2C, from pre-seed through Series B.',
-    },
-  ],
   industries: ['SaaS', 'Ecommerce', 'Healthcare', 'Fintech', 'Edtech', 'B2B'],
   regions: 'US · UK · Canada · Australia · NZ · UAE · Singapore · Europe',
   image: {
@@ -93,9 +78,31 @@ export const address = {
   },
 } as const;
 
+export const clientTypes = {
+  eyebrow: 'Who We Work With',
+  index: '02',
+  heading: 'A few kinds of clients, one team.',
+  intro:
+    'Same team either way, just a different starting point. What changes is where we start, not who shows up.',
+  items: [
+    {
+      label: 'Pre-launch founders',
+      body: "Founders who have validated an idea and locked a name, and need a professional identity in place before they build anything — or before they bring on a team, ours or anyone else's, to build it.",
+    },
+    {
+      label: 'Growing SMBs',
+      body: 'Owners and operators done with template sites and DIY builders, who want something that looks like a real business because it is one. Services, ecommerce, local and regional brands.',
+    },
+    {
+      label: 'Funded startups',
+      body: 'Founders shipping products that need to look and feel like the round they are trying to raise, not the one they just closed. B2B and B2C, from pre-seed through Series B.',
+    },
+  ],
+} as const;
+
 export const editorial = {
   eyebrow: 'What We Believe',
-  index: '02',
+  index: '03',
   heading:
     'A website that looks great and does nothing for your revenue is an expensive piece of art.',
   intro:
@@ -118,10 +125,6 @@ export const editorial = {
       text: 'If your competitor is winning with a worse product, the problem is not the product. It’s the front door.',
     },
   ],
-  image: {
-    src: 'https://static.prod-images.emergentagent.com/jobs/8c6c3775-f625-4d8e-a146-759028ab4a0c/images/36288436484a86d7c45f93da371eb3a1f050e2d27314c53f7b4e9ad390d532ec.jpeg',
-    alt: 'Bauhaus-inspired poster of layered orange and black circles and arcs',
-  },
 } as const;
 
 export const statement = {
@@ -142,7 +145,7 @@ export type Stage = {
 
 export const process = {
   eyebrow: 'How We Work',
-  index: '03',
+  index: '04',
   heading: 'Seven stages. Every one has a name attached to it, not a department.',
   intro:
     'Every stage ends with either a quick internal check or an actual decision from you, so you always know exactly where things stand and who is on the hook for what.',
@@ -238,7 +241,7 @@ export const process = {
 
 export const cta = {
   eyebrow: 'Start the Conversation',
-  index: '04',
+  index: '05',
   heading:
     'Tell us what you are building. We will tell you honestly if we are the right people for it.',
   body: 'A few lines about your business and where you are stuck. A real person reads every message and replies — no chatbot pretending to be one.',
@@ -248,10 +251,6 @@ export const cta = {
     { label: 'Reply time', value: 'Under 24 hours' },
     { label: 'Timezones', value: 'US · UK · IN · APAC' },
   ],
-  image: {
-    src: 'https://static.prod-images.emergentagent.com/jobs/8c6c3775-f625-4d8e-a146-759028ab4a0c/images/8814acbbc563ed58f0c4ebd5175b6386c7043f5caf3610a0bca0d017e3960656.jpeg',
-    alt: 'Flowing ribbons of orange light on a near-black field',
-  },
 } as const;
 
 export const footer = {

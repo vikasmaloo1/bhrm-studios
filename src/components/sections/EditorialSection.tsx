@@ -1,14 +1,23 @@
-import Image from 'next/image';
 import { Container } from '@/components/layout/Container';
 import { SectionHeading } from '@/components/ui/SectionHeading';
-import { FloatingShape } from '@/components/visuals/FloatingShape';
-import { MaskReveal, Parallax } from '@/lib/motion/primitives';
+import { DriftText } from '@/lib/motion/DriftText';
+import { MaskReveal } from '@/lib/motion/primitives';
 import { Scrub } from '@/lib/motion/Scrub';
 import { editorial } from '@/content/home';
 
 /**
- * What We Believe — beliefs as an editorial list, with giant outline
- * typography drifting behind on scroll and floating geometry in the margins.
+ * What We Believe — section 02.
+ *
+ * Same differential scroll-text treatment as the Address section: heading,
+ * intro and belief list each drift at their own speed rather than fading in
+ * as one flat unit. The giant outline "Beliefs" wordmark drifting sideways
+ * behind is text, not decoration, and stays — it is exactly the kind of
+ * typography-driven motion the brief asks for.
+ *
+ * The previous pass had a sticky photo here plus two floating geometric
+ * shapes drifting independently of the content; both removed. The section
+ * is pure typography now, and reads stronger for it — this is the best
+ * writing in the copy, and it does not need a picture standing next to it.
  */
 export function EditorialSection() {
   return (
@@ -30,57 +39,20 @@ export function EditorialSection() {
         </Scrub>
       </div>
 
-      {/* Floating geometry — continuous, independent of scroll */}
-      <FloatingShape
-        variant="ring"
-        className="top-[16rem] right-[6%] hidden size-16 lg:block"
-        drift={18}
-      />
-      <FloatingShape
-        variant="square"
-        tone="ink"
-        spin
-        className="bottom-[10rem] left-[3%] hidden size-10 lg:block"
-        drift={12}
-        delay={0.8}
-      />
-
       <Container className="relative">
         <div className="grid gap-16 lg:grid-cols-[minmax(0,26rem)_minmax(0,1fr)] lg:gap-20">
-          {/* Sticky anchor */}
           <div className="lg:sticky lg:top-32 lg:self-start">
-            <SectionHeading
-              index={editorial.index}
-              eyebrow={editorial.eyebrow}
-              heading={editorial.heading}
-              intro={editorial.intro}
-              className="[&_h2]:!text-h3"
-            />
-
-            <div data-cursor="view" className="group hidden lg:block">
-              <MaskReveal
-                from="up"
-                delay={0.15}
-                className="relative mt-12 aspect-[4/5] overflow-hidden rounded-plate"
-              >
-                <Parallax strength={7} scaleOut className="relative h-full w-full">
-                  <Image
-                    src={editorial.image.src}
-                    alt=""
-                    fill
-                    sizes="22rem"
-                    className="object-cover transition-transform duration-[1200ms] ease-[var(--ease-out-expo)] group-hover:scale-[1.07]"
-                  />
-                </Parallax>
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-ink/40 via-transparent to-transparent" />
-                <p className="absolute bottom-5 left-5 max-w-[80%] font-mono text-[0.6875rem] tracking-[0.16em] text-paper uppercase">
-                  / A studio is a set of positions before it is a portfolio.
-                </p>
-              </MaskReveal>
-            </div>
+            <DriftText speed={0.25}>
+              <SectionHeading
+                index={editorial.index}
+                eyebrow={editorial.eyebrow}
+                heading={editorial.heading}
+                intro={editorial.intro}
+                className="[&_h2]:!text-h3"
+              />
+            </DriftText>
           </div>
 
-          {/* Beliefs list */}
           <ol className="flex flex-col">
             {editorial.beliefs.map((belief, index) => (
               <li
@@ -97,21 +69,14 @@ export function EditorialSection() {
                     </span>
                   </MaskReveal>
 
-                  <MaskReveal from="up" delay={index * 0.05}>
+                  <DriftText speed={0.3 + (index % 3) * 0.15} distance={50}>
                     <p className="text-h3 text-balance text-ink transition-[color,transform] duration-500 ease-[var(--ease-out-expo)] group-hover:translate-x-2 group-hover:text-accent-ink">
                       {belief.text}
                     </p>
-                  </MaskReveal>
+                  </DriftText>
                 </div>
               </li>
             ))}
-
-            <MaskReveal
-              from="up"
-              className="relative mt-4 aspect-[16/11] overflow-hidden rounded-plate lg:hidden"
-            >
-              <Image src={editorial.image.src} alt="" fill sizes="100vw" className="object-cover" />
-            </MaskReveal>
           </ol>
         </div>
       </Container>

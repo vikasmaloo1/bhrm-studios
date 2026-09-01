@@ -1,76 +1,49 @@
 import Image from 'next/image';
 import { Container } from '@/components/layout/Container';
 import { SectionHeading } from '@/components/ui/SectionHeading';
-import { FloatingShape } from '@/components/visuals/FloatingShape';
+import { DriftText } from '@/lib/motion/DriftText';
 import { MaskReveal, Parallax } from '@/lib/motion/primitives';
 import { address } from '@/content/home';
 
 /**
- * The Honest Address — who we are, who we build for.
+ * The Honest Address — section 01.
  *
- * Two-column asymmetry: on the left, the running prose + client pill labels;
- * on the right, a tall image that extends past the section boundary, with a
- * rotating industries strip below it.
+ * The client asked specifically for this section's text to move the way
+ * their reference example did: controlled, scroll-linked, lines separating
+ * at different speeds rather than a simple fade. `DriftText` gives the
+ * heading and each paragraph its own speed, so they visibly drift apart and
+ * settle back together as you scroll through — not four elements moving as
+ * one block.
+ *
+ * No floating decoration here anymore — the previous pass had geometric
+ * shapes drifting in the margins independent of the content, which read as
+ * decorative filler rather than motion with a purpose.
  */
 export function AddressSection() {
   return (
     <section id="address" className="bhmr-noise relative py-section" data-testid="address-section">
-      {/* Floating geometry — continuous motion in the margins */}
-      <FloatingShape
-        variant="cross"
-        tone="accent"
-        spin
-        className="top-[8rem] right-[4%] hidden size-9 lg:block"
-        drift={14}
-      />
-      <FloatingShape
-        variant="dot"
-        tone="accent"
-        className="top-[55%] left-[1.5%] hidden size-3 lg:block"
-        drift={22}
-        delay={0.6}
-      />
       <Container>
         <div className="grid gap-12 lg:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] lg:gap-20">
           <div>
-            <SectionHeading
-              index={address.index}
-              eyebrow={address.eyebrow}
-              heading={address.heading}
-              as="h2"
-              className="[&_h2]:!text-h3"
-            />
+            <DriftText speed={0.25}>
+              <SectionHeading
+                index={address.index}
+                eyebrow={address.eyebrow}
+                heading={address.heading}
+                as="h2"
+                className="[&_h2]:!text-h3"
+              />
+            </DriftText>
 
             <div className="mt-12 flex flex-col gap-6 lg:mt-16">
               {address.paragraphs.map((p, i) => (
-                <MaskReveal key={i} from="up" drift={false} delay={i * 0.05}>
+                <DriftText key={i} speed={0.45 + i * 0.25} distance={70}>
                   <p className="max-w-[38rem] text-lead text-ink/75">{p}</p>
-                </MaskReveal>
+                </DriftText>
               ))}
             </div>
 
-            {/* Two client types side by side */}
-            <div className="mt-16 grid gap-6 sm:grid-cols-2 lg:mt-20">
-              {address.clients.map((client, i) => (
-                <MaskReveal
-                  key={client.label}
-                  from="up"
-                  delay={0.08 + i * 0.06}
-                  className="group relative overflow-hidden rounded-plate border border-ink/10 bg-paper-deep/50 p-7 transition-[border-color,transform,box-shadow] duration-500 ease-[var(--ease-out-expo)] hover:-translate-y-1.5 hover:border-accent/60 hover:shadow-[0_30px_60px_-40px_rgba(10,10,10,0.35)]"
-                >
-                  <p className="font-mono text-meta tracking-[0.16em] text-accent-ink uppercase">
-                    0{i + 1} / Client
-                  </p>
-                  <h3 className="bhmr-display mt-4 text-[clamp(1.375rem,2vw,1.75rem)] text-ink">
-                    {client.label}
-                  </h3>
-                  <p className="mt-4 text-[0.9375rem] leading-relaxed text-ink/70">{client.body}</p>
-                </MaskReveal>
-              ))}
-            </div>
-
-            {/* Industries + regions */}
-            <MaskReveal from="up" delay={0.2} className="mt-14">
+            <DriftText speed={0.7} distance={60} className="mt-16 lg:mt-20">
               <p className="font-mono text-meta tracking-[0.16em] text-muted uppercase">
                 Industries we know
               </p>
@@ -85,12 +58,12 @@ export function AddressSection() {
                 ))}
               </ul>
               <p className="mt-6 text-[0.9375rem] text-ink/60">Working across {address.regions}.</p>
-            </MaskReveal>
+            </DriftText>
           </div>
 
           {/* Sticky media column */}
           <div className="lg:sticky lg:top-32 lg:self-start">
-            <div data-cursor="view" className="group">
+            <div className="group">
               <MaskReveal
                 from="up"
                 delay={0.15}
@@ -99,21 +72,19 @@ export function AddressSection() {
                 <Parallax strength={9} scaleOut className="relative h-full w-full">
                   <Image
                     src={address.image.src}
-                    alt=""
+                    alt={address.image.alt}
                     fill
                     sizes="(max-width: 1024px) 100vw, 40vw"
-                    className="object-cover transition-transform duration-[1200ms] ease-[var(--ease-out-expo)] group-hover:scale-[1.07]"
+                    className="object-cover transition-transform duration-[1200ms] ease-[var(--ease-out-expo)] group-hover:scale-[1.05]"
                   />
                 </Parallax>
 
-                {/* Corner tag */}
                 <div className="absolute top-4 left-4 rounded-pill bg-paper/95 px-3 py-1.5 font-mono text-[0.625rem] tracking-[0.16em] text-ink uppercase backdrop-blur">
                   / Studio
                 </div>
               </MaskReveal>
             </div>
 
-            {/* Numbers strip */}
             <MaskReveal from="up" delay={0.2}>
               <dl className="bhmr-rule mt-8 grid grid-cols-3 gap-4 pt-6">
                 <div>
