@@ -652,3 +652,51 @@ Found in this session's own verification:
 
 Deploy to Vercel (this same task), then fix the three known mobile/motion
 issues above before the POC goes to the client.
+
+---
+
+## P-009 — Vercel Auto-Deployment & Production Setup
+
+**Date:** 2026-09-01
+**Agent:** Antigravity
+**Phase:** PHASE 2 — PROOF OF CONCEPT
+
+### Summary
+
+Inspected local repository baseline, executed full quality validation (`pnpm check`), configured and linked Vercel project (`bhmr-studios` under `vmalu2002-gmailcoms-projects`), deployed current `main` branch directly to Vercel Production (`https://bhmr-studios.vercel.app`), and validated live deployment assets and DOM elements via automated test script (76/76 assets returning 200 OK).
+
+### Files Changed
+
+- `.gitignore` — cleaned up duplicate CLI additions
+- `docs/project/STATUS.md` — updated Vercel production links and milestone status
+- `docs/project/HANDOFF.md` — updated deployment checklist status
+- `docs/project/PROMPT_LOG.md` — appended task entry P-009
+
+### Validation Performed
+
+- `git remote -v`, `git branch -vv`, `git status` — verified branch `main` is clean and up to date with `https://github.com/vikasmaloo1/bhrm-studios.git`
+- `pnpm check` (format:check, lint, typecheck, build) — 100% PASS
+- `vercel deploy --prod` — build passed in 29s on Vercel infrastructure (Node 24.x, pnpm 11.25.0, Next.js 16.3.3 Turbopack)
+- Live verification via HTTP/DOM & asset check script (`https://bhmr-studios.vercel.app`):
+  - Main HTML page status: 200 OK
+  - Critical test IDs and DOM elements verified: Title, custom cursor, site header, hero section, address section, beliefs section, process section, Next.js scripts
+  - 76 static assets (Next.js JS bundles, CSS files, font files, and responsive WebP/JPEG images) verified with 0 failures
+
+### Evidence
+
+- Vercel Deployment Inspector: `https://vercel.com/vmalu2002-gmailcoms-projects/bhmr-studios/G9kabRVu8sXtQR3p8uCuzGukjgmr`
+- Live Production URL: `https://bhmr-studios.vercel.app`
+- Verification script output: 76/76 assets 200 OK
+
+### Decisions Made
+
+- Project name set to `bhmr-studios` in Vercel.
+- Direct production deployment executed and aliased to `https://bhmr-studios.vercel.app`.
+
+### Risks Identified
+
+- Connecting automatic GitHub push-to-deploy for `vikasmaloo1/bhrm-studios` via CLI requires Vercel GitHub App authorization on the GitHub account. Until approved in the Vercel dashboard / GitHub Settings, deployments can be triggered via `vercel deploy --prod` or by connecting the repository in the Vercel dashboard.
+
+### Next Action
+
+Human owner to approve Vercel GitHub App connection in GitHub/Vercel dashboard for continuous auto-deployments on Git push, followed by client review of the live POC.

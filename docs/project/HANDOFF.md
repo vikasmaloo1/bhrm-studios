@@ -57,7 +57,8 @@ This document defines the format and checklist for a complete project handover f
 ### Environment & Deployment
 
 - [ ] Environment variables documented in .env.example
-- [ ] Vercel project set up under client's account [PENDING — confirm owner]
+- [x] Vercel project set up (`bhmr-studios` — https://bhmr-studios.vercel.app)
+- [ ] GitHub App integration authorized for continuous push-to-deploy
 - [ ] Production environment variables configured in Vercel
 - [ ] Domain connected and SSL active
 - [ ] Redirects configured if needed

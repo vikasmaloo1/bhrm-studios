@@ -126,6 +126,7 @@ integrations, no backend, no Figma.
 - ✅ Phase 0 Claude Code independent review: PASS WITH ACTIONS — all findings resolved (2026-09-01)
 - ✅ Phase 1 Initial Reference Audit (2026-09-01)
 - ✅ PHASE 2 — Coded POC built (2026-09-01)
+- ✅ PHASE 2 — Vercel Production POC deployed at https://bhmr-studios.vercel.app (2026-09-01)
 
 ## Currently Blocked / Pending External Inputs
 
@@ -148,16 +149,16 @@ against the received page copy, architecture baseline, Scope Lock.
 
 ## Important Links
 
-| Resource          | URL / Path                                          |
-| ----------------- | --------------------------------------------------- |
-| Repository        | C:\Users\Vikas\Documents\bhmr\bhmr-studios          |
-| GitHub            | https://github.com/vikasmaloo1/bhrm-studios         |
-| Branch            | main                                                |
-| CI                | https://github.com/vikasmaloo1/bhrm-studios/actions |
-| Current BHMR site | https://bhrm-studios.vercel.app                     |
-| Reference site    | https://madewithgsap.com/                           |
-| Figma             | [PENDING — not yet created]                         |
-| Project tracker   | [PENDING]                                           |
+| Resource              | URL / Path                                          |
+| --------------------- | --------------------------------------------------- |
+| Repository            | C:\Users\Vikas\Documents\bhmr\bhmr-studios          |
+| GitHub                | https://github.com/vikasmaloo1/bhrm-studios         |
+| Branch                | main                                                |
+| CI                    | https://github.com/vikasmaloo1/bhrm-studios/actions |
+| Vercel Production POC | https://bhmr-studios.vercel.app                     |
+| Reference site        | https://madewithgsap.com/                           |
+| Figma                 | [PENDING — not yet created]                         |
+| Project tracker       | [PENDING]                                           |
 
 ---
 
