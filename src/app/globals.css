@@ -1,26 +1,159 @@
 @import 'tailwindcss';
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+/* ==========================================================================
+   BHMR Studios — design tokens (POC)
+
+   Retains the brand equity already present on the current site: warm paper,
+   warm near-black ink, and the BHMR orange accent. Values here are POC
+   working tokens, not an approved brand system — final values are set during
+   the design phase with client input (see docs/design/DESIGN_SYSTEM.md).
+   ========================================================================== */
+
+@theme {
+  /* Surface — warm paper, not white. White reads cheap at this scale. */
+  --color-paper: #f4f1ea;
+  --color-paper-deep: #e9e4d9;
+  --color-paper-edge: #dcd5c7;
+
+  /* Ink — warm near-black. Pure #000 is too hard against warm paper. */
+  --color-ink: #14120f;
+  --color-ink-soft: #262220;
+  --color-ink-line: #35302b;
+
+  /* Text */
+  --color-muted: #6f665a;
+  --color-muted-invert: #a49a8c;
+
+  /* Accent — BHMR orange.
+     Three roles, because one orange cannot do all of them accessibly:
+     - `accent`      surfaces and graphics (button fills, rails, dots). Text
+                     placed on it must be `ink` (5.6:1), never paper (2.9:1).
+     - `accent-hover` a lighter step, so the dark label on top gains contrast
+                     on hover rather than losing it.
+     - `accent-ink`  the accent used AS text on paper. The bright orange only
+                     reaches 2.9:1 there; this one clears 4.5:1 at any size. */
+  --color-accent: #ff4a1c;
+  --color-accent-hover: #ff6a3d;
+  --color-accent-ink: #c4320b;
+
+  /* Type */
+  --font-display: var(--font-instrument-serif), Georgia, 'Times New Roman', serif;
+  --font-sans:
+    var(--font-instrument-sans), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  /* Editorial display scale — fluid, tuned for a long headline */
+  /* Fluid type. The lower bound of each clamp is set for a 375px phone, where
+     an over-large display size turns the headline into a wall of nine-character
+     lines — the single most common way an editorial layout fails on mobile. */
+  --text-display: clamp(2.125rem, 5.4vw, 5.75rem);
+  --text-display--line-height: 1;
+  --text-display--letter-spacing: -0.022em;
+
+  --text-h2: clamp(1.75rem, 4.4vw, 4rem);
+  --text-h2--line-height: 1.06;
+  --text-h2--letter-spacing: -0.02em;
+
+  --text-h3: clamp(1.3125rem, 2.4vw, 2.25rem);
+  --text-h3--line-height: 1.18;
+  --text-h3--letter-spacing: -0.012em;
+
+  --text-lead: clamp(1rem, 1.35vw, 1.375rem);
+  --text-lead--line-height: 1.55;
+
+  --text-meta: 0.6875rem;
+  --text-meta--line-height: 1.2;
+  --text-meta--letter-spacing: 0.14em;
+
+  /* Layout */
+  --spacing-gutter: clamp(1.25rem, 4vw, 4rem);
+  --spacing-section: clamp(5rem, 11vw, 11rem);
+
+  /* Radii */
+  --radius-pill: 999px;
+
+  /* Motion */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+/* Marquee track. Two tracks sit side by side and both translate by exactly
+   one track width, so the loop is seamless. */
+@keyframes bhmr-marquee {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-100%, 0, 0);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  /* The nav is fixed; give in-page anchors somewhere to land. */
+  :where(html) {
+    scroll-behavior: smooth;
+    scroll-padding-top: 6rem;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :where(html) {
+      scroll-behavior: auto;
+    }
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* Visible, branded focus ring on every interactive element. */
+  :where(a, button, [tabindex]):focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::selection {
+    background-color: var(--color-accent);
+    color: var(--color-paper);
+  }
+}
+
+@layer utilities {
+  /* Paper grain. A single inline SVG turbulence tile — no image request. */
+  .bhmr-grain::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.32;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+  }
+
+  .bhmr-grain-invert::after {
+    mix-blend-mode: screen;
+    opacity: 0.14;
+  }
+
+  /* Line-mask reveal: each line sits in an overflow-hidden clip. */
+  .bhmr-line-mask {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.08em;
+    margin-bottom: -0.08em;
+  }
+
+  /* Pre-animation state. Removed by the motion layer once GSAP takes over,
+     so content is never permanently hidden if JS fails or is disabled. */
+  .bhmr-pending > * {
+    will-change: transform, opacity;
+  }
 }
