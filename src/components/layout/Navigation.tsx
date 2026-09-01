@@ -9,10 +9,13 @@ import { cn } from '@/lib/utils/cn';
  * Fixed pill navigation.
  *
  * Desktop keeps the pill treatment already established on the current BHMR
- * site; it condenses once the page scrolls. Mobile gets a real full-height
- * sheet rather than a shrunken desktop bar — including focus containment and
- * scroll locking, because a menu that leaks focus to the page behind it is a
- * keyboard trap in the other direction.
+ * site; it condenses once the page scrolls. Mobile opens a compact card
+ * anchored under the pill — not a full-screen takeover — matching the
+ * current live site's own menu pattern: rounded corners, a normal-weight
+ * link list and the CTA inside the card, closed by tapping outside it, the
+ * toggle itself, or Escape. Still gets real focus containment and scroll
+ * locking while open, because a menu that leaks focus to the page behind it
+ * is a keyboard trap in the other direction.
  */
 export function Navigation() {
   const [scrolled, setScrolled] = useState(false);
@@ -126,7 +129,12 @@ export function Navigation() {
               aria-expanded={open}
               aria-controls="mobile-menu"
               data-testid="mobile-menu-toggle"
-              className="flex size-11 items-center justify-center rounded-pill border border-ink/15 bg-paper/70 backdrop-blur-xl lg:hidden"
+              className={cn(
+                'flex size-11 items-center justify-center border backdrop-blur-xl transition-all duration-300 ease-[var(--ease-out-expo)] lg:hidden',
+                open
+                  ? 'rounded-xl border-accent bg-paper'
+                  : 'rounded-pill border-ink/15 bg-paper/70'
+              )}
             >
               <span className="sr-only">{open ? 'Close menu' : 'Open menu'}</span>
               <span aria-hidden="true" className="relative block h-3 w-4">
@@ -146,45 +154,61 @@ export function Navigation() {
             </button>
           </div>
         </div>
-      </div>
 
-      {/* Mobile sheet */}
-      <div
-        id="mobile-menu"
-        ref={panelRef}
-        hidden={!open}
-        data-testid="mobile-menu-panel"
-        className="fixed inset-0 top-0 z-40 bg-paper px-gutter pt-28 pb-10 lg:hidden"
-      >
-        <nav aria-label="Mobile" className="flex flex-col">
-          {nav.links.map((link, index) => (
-            <a
-              key={link.label}
-              href={link.href}
-              onClick={() => setOpen(false)}
-              data-testid={`mobile-nav-link-${link.href.replace('#', '')}`}
-              className="bhmr-display border-b border-ink/10 py-5 text-[clamp(1.75rem,9vw,2.5rem)] leading-none text-ink"
-            >
-              <span className="mr-4 align-middle font-mono text-meta tracking-[0.16em] text-accent-ink">
-                {String(index + 1).padStart(2, '0')}
-              </span>
-              {link.label}
-            </a>
-          ))}
-        </nav>
-
-        <Button
-          href={nav.cta.href}
-          size="lg"
-          className="mt-9 w-full"
+        {/* Tap-outside-to-close catcher — sits behind the card, in front of
+          the page. Not `hidden` when closed, just untouchable and invisible,
+          so it never blocks a click on the page underneath. */}
+        <button
+          type="button"
+          aria-hidden="true"
+          tabIndex={-1}
           onClick={() => setOpen(false)}
-        >
-          {nav.cta.label}
-        </Button>
+          className={cn(
+            'fixed inset-0 z-30 cursor-default lg:hidden',
+            open ? 'pointer-events-auto' : 'pointer-events-none'
+          )}
+        />
 
-        <p className="mt-9 font-mono text-meta tracking-[0.16em] text-muted uppercase">
-          {site.location}
-        </p>
+        {/* Mobile menu — a compact card anchored under the pill, not a
+          full-screen takeover: it stays a dropdown off the nav itself,
+          matching the current live site's pattern rather than the previous
+          pass's oversized full-viewport sheet. */}
+        <div
+          id="mobile-menu"
+          ref={panelRef}
+          inert={!open}
+          aria-hidden={!open}
+          data-testid="mobile-menu-panel"
+          className={cn(
+            'absolute top-full left-gutter right-gutter z-40 mt-3 origin-top rounded-[1.75rem] border border-ink/10 bg-paper p-5 shadow-[0_30px_80px_-30px_rgba(20,18,15,0.35)] transition-[opacity,transform] duration-300 ease-[var(--ease-out-expo)] lg:hidden',
+            open
+              ? 'pointer-events-auto translate-y-0 scale-100 opacity-100'
+              : 'pointer-events-none -translate-y-2 scale-95 opacity-0'
+          )}
+        >
+          <nav aria-label="Mobile" className="flex flex-col gap-5">
+            {nav.links.map((link) => (
+              <a
+                key={link.label}
+                href={link.href}
+                onClick={() => setOpen(false)}
+                data-testid={`mobile-nav-link-${link.href.replace('#', '')}`}
+                className="text-lead text-ink"
+              >
+                {link.label}
+              </a>
+            ))}
+          </nav>
+
+          <Button
+            href={nav.cta.href}
+            size="lg"
+            className="mt-5 w-full"
+            onClick={() => setOpen(false)}
+          >
+            {nav.cta.label}
+          </Button>
+        </div>
       </div>
     </header>
   );
