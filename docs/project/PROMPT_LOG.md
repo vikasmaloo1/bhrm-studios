@@ -212,3 +212,86 @@ Transitioned from Phase 0 to Phase 1 (Discovery and Requirements) upon human own
 ### Next Action
 
 Human owner to provide the project proposal / quotation and page copy documents for consolidation into docs/product/PRD.md.
+
+---
+
+## P-004 — Phase 0 Closure and Authorized Phase 1 Execution Handover
+
+**Date:** 2026-09-01
+**Agent:** CLAUDE CODE (temporary execution owner under D-009)
+**Phase:** PHASE 0 closure → PHASE 1 Discovery
+
+### Summary
+
+The human project owner (Vikas Maloo) granted Claude Code temporary execution ownership of the
+repository through the coded POC. This entry records the governance reconciliation performed before
+any new product work began, and draws a clear line between work performed _before_ authorization and
+work performed _under_ it.
+
+### Governance findings reconciled
+
+1. **P-001 agent attribution** — already addressed by P-001-C. No further change; that correction stands.
+2. **Phase 0 → Phase 1 approval gap** — commit `870744b` wrote an APPROVED phase-gate row into
+   STATUS.md and started Phase 1 work with no backing entry in DECISIONS.md. Recorded as **R-007**.
+   Closed **forward** by D-009, which is genuine written human authorization. **No approval was
+   backdated or fabricated.**
+3. **Phase 1 work already performed without authorization** — `docs/product/REFERENCE_AUDIT.md` and
+   the P-003 log entry were produced under the unbacked approval. They are retained, superseded by
+   the fuller audit at `docs/reference/REFERENCE_AUDIT.md`, and are now covered retrospectively by
+   D-009. Retained rather than deleted, per append-only discipline.
+4. **D-007 / D-008 text corruption** — repaired in place under D-009. Root cause identified: the
+   entries were written via a PowerShell double-quoted string, so `` `r ``, `` `n `` and `` `b ``
+   were interpreted as escape sequences and consumed the leading letters of `react`, `next`,
+   `babel` and `review`. A literal `0x08` byte was present in the file. Only corrupted characters
+   were restored; no decision content changed. Exception noted in the DECISIONS.md header.
+
+### Clear separation of record
+
+| Category                        | What it covers                                                        |
+| ------------------------------- | --------------------------------------------------------------------- |
+| **Historical record**           | P-001, P-001-C, P-002, P-003 — unchanged                              |
+| **Work done pre-authorization** | `docs/product/REFERENCE_AUDIT.md`, STATUS Phase 1 rows from `870744b` |
+| **Current human authorization** | D-009 (this task packet)                                              |
+| **Newly authorized work**       | Everything in P-004, P-005 and P-006                                  |
+
+### Source documents located and read
+
+Not previously available to any agent run; found in the owner's local Downloads folder:
+
+- `BHMR_Studios_Website_Proposal_Quotation_Final.docx` — the approved proposal (₹52,000, 30 Aug 2026)
+- `BHMR_Studios_AI_Project_Execution_Plan.docx`
+- `BHMR_Studios_Phase_1_Execution_and_AI_Prompt_Playbook.docx`
+- `BHMR_Studios_Windows_Project_Repository_Setup_Manual.docx`
+
+**Still missing:** the nine approved page-copy documents (R-009, D-014).
+
+### Files Changed
+
+- `docs/project/DECISIONS.md` — D-007/D-008 repaired; D-009…D-014 appended; exception note added
+- `docs/project/RISKS.md` — R-007 (resolved), R-008, R-009, R-010 added
+- `docs/project/STATUS.md` — Phase 0 closed with evidence; phase-gate table now requires decision IDs
+- `docs/project/HANDOFF.md` — next owner and action updated
+- `docs/project/PROMPT_LOG.md` — this entry
+
+### Validation Performed
+
+- `git check-ignore -v .env.example` — no output (correctly tracked)
+- `git ls-files .env.example` — present
+- `git check-ignore -v .env.local` — matched by `.gitignore` (correctly ignored)
+- `git ls-remote --heads origin` — remote reachable, `main` tracking `origin/main`
+- `pnpm format:check`, `pnpm lint`, `pnpm typecheck`, `pnpm build` — all PASS
+
+### Decisions Made
+
+D-009 (human authorization), D-010 (remote spelling — open), D-011 (GSAP for POC),
+D-012 (phase-numbering reconciliation), D-013 (POC commercially unclassified — open),
+D-014 (PRD evidence-status policy)
+
+### Risks Identified
+
+R-007 (resolved via D-009), R-008 (reviewer independence), R-009 (page copy missing),
+R-010 (POC outside quotation)
+
+### Next Action
+
+Phase 1 Discovery: reference audit, PRD consolidation, architecture baseline.

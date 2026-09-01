@@ -4,12 +4,13 @@
 
 ## Project Overview
 
-| Field             | Value                                |
-| ----------------- | ------------------------------------ |
-| **Project**       | BHMR Studios Website Redesign        |
-| **Current Phase** | PHASE 1 — DISCOVERY AND REQUIREMENTS |
-| **Status**        | IN PROGRESS                          |
-| **Last Updated**  | 2026-09-01                           |
+| Field               | Value                                                               |
+| ------------------- | ------------------------------------------------------------------- |
+| **Project**         | BHMR Studios Website Redesign                                       |
+| **Current Phase**   | PHASE 1 — DISCOVERY AND REQUIREMENTS                                |
+| **Status**          | IN PROGRESS — authorized by D-009                                   |
+| **Last Updated**    | 2026-09-01                                                          |
+| **Execution owner** | CLAUDE CODE (temporary, per D-009) — Codex remains governance owner |
 
 ---
 
@@ -45,16 +46,39 @@
 | Claude Code independent review    | ✅ DONE | Verdict: PASS WITH ACTIONS — all findings resolved                                           |
 | Phase 0 corrective commit         | ✅ DONE | chore: resolve phase 0 review findings                                                       |
 
-### PHASE 1 — DISCOVERY AND REQUIREMENTS ← CURRENT
+**Phase 0 closure**
 
-| Task                      | Status         | Notes                                                                |
-| ------------------------- | -------------- | -------------------------------------------------------------------- |
-| Phase 1 Kickoff           | ✅ DONE        | Human owner authorized transition                                    |
-| Reference site audit      | ✅ DONE        | Live site + Made With GSAP audited (docs/product/REFERENCE_AUDIT.md) |
-| Client proposal review    | ⏳ AWAITING    | Awaiting human owner to provide proposal / quotation document        |
-| Page copy document review | ⏳ AWAITING    | Awaiting human owner to provide copy for all 9 intended pages        |
-| PRD consolidation         | ⏳ IN PROGRESS | Updating PRD skeleton with reference discovery findings              |
-| PRD approval              | ⏳ PENDING     | Human sign-off required                                              |
+| Field                  | Value                                                                       |
+| ---------------------- | --------------------------------------------------------------------------- |
+| **Completion date**    | 2026-09-01                                                                  |
+| **Closing commit**     | `chore: close phase 0 and authorize phase 1`                                |
+| **Validation**         | `pnpm format:check`, `pnpm lint`, `pnpm typecheck`, `pnpm build` — all PASS |
+| **Authorization**      | D-009 — human owner (Vikas Maloo)                                           |
+| **Independent review** | Claude Code, 2026-09-01 — PASS WITH ACTIONS, all findings closed            |
+| **Next phase**         | Phase 1 — Discovery and Requirements                                        |
+
+### PHASE 1 — DISCOVERY AND REQUIREMENTS — PARTIAL / DEFERRED
+
+Authorized by **D-009**. See R-007 for how the earlier undocumented transition was reconciled.
+
+> **Scope note (2026-09-01):** The human owner narrowed this run to the coded POC only. Full
+> Discovery consolidation — the 24-section PRD rewrite, architecture baseline and scope-lock
+> red-team — was **deliberately not performed** and is deferred to a later authorized run.
+> What is marked DONE below is genuinely done; nothing else is claimed.
+
+| Task                        | Status      | Notes                                                                                  |
+| --------------------------- | ----------- | -------------------------------------------------------------------------------------- |
+| Phase 1 authorization       | ✅ DONE     | D-009 — written human authorization                                                    |
+| Client proposal review      | ✅ DONE     | `BHMR_Studios_Website_Proposal_Quotation_Final` (30 Aug 2026, ₹52,000) read and mapped |
+| AI execution plan review    | ✅ DONE     | `BHMR_Studios_AI_Project_Execution_Plan` read and mapped                               |
+| Phase 1 playbook review     | ✅ DONE     | `BHMR_Studios_Phase_1_Execution_and_AI_Prompt_Playbook` read and mapped                |
+| Page copy documents         | ✅ RECEIVED | All 9 supplied to `docs/references/` during this run — R-009 resolved                  |
+| Reference / visual audit    | ✅ DONE     | `docs/product/REFERENCE_AUDIT.md` (from `870744b`)                                     |
+| Homepage copy → POC content | ✅ DONE     | Extracted verbatim into `src/content/home.ts`                                          |
+| PRD consolidation           | ⏸️ DEFERRED | Out of scope for this run — PRD remains the earlier DRAFT skeleton                     |
+| Architecture baseline       | ⏸️ DEFERRED | `docs/architecture/ARCHITECTURE.md` remains PROPOSED from Phase 0                      |
+| Discovery red-team review   | ⏸️ DEFERRED | Not performed                                                                          |
+| PRD approval / Scope Lock   | ⏳ PENDING  | Requires the deferred work above, then human sign-off                                  |
 
 ### PHASE 2 — PROOF OF CONCEPT
 
@@ -118,7 +142,12 @@
 
 ## Phase Gate Approvals
 
-| Phase             | Approval | Date       | By          |
-| ----------------- | -------- | ---------- | ----------- |
-| Phase 0 → Phase 1 | APPROVED | 2026-09-01 | Human owner |
-| Phase 1 → Phase 2 | PENDING  | —          | Human owner |
+Every approval row must cite a decision ID. A row without one is invalid (see R-007).
+
+| Phase                         | Approval  | Date       | By                  | Decision                                 |
+| ----------------------------- | --------- | ---------- | ------------------- | ---------------------------------------- |
+| Phase 0 → Phase 1             | APPROVED  | 2026-09-01 | Vikas Maloo (owner) | D-009                                    |
+| Phase 1 → Phase 2 (POC build) | APPROVED  | 2026-09-01 | Vikas Maloo (owner) | D-009                                    |
+| Scope Lock (PRD approval)     | PENDING   | —          | BHMR client + owner | —                                        |
+| POC acceptance                | PENDING   | —          | BHMR client         | —                                        |
+| Phase 2 → Phase 3 (Figma)     | **GATED** | —          | BHMR client         | — — must not start before POC acceptance |

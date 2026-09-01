@@ -9,6 +9,63 @@
 
 ## Active Risks
 
+### R-010 — POC Effort Is Outside the Approved Quotation
+
+| Field          | Value                                                                                                                                                                           |
+| -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Risk**       | The coded POC is not a billable line item in the ₹52,000 approved proposal. Unquoted effort delivered without a commercial position set can become an expectation of free work. |
+| **Likelihood** | High — the work is already done                                                                                                                                                 |
+| **Impact**     | Medium — commercial, not technical                                                                                                                                              |
+| **Mitigation** | D-013 records three explicit options for the human owner. Resolve before the POC is presented to the client, not after.                                                         |
+| **Owner**      | Vikas Maloo                                                                                                                                                                     |
+| **Status**     | OPEN                                                                                                                                                                            |
+| **Date Added** | 2026-09-01                                                                                                                                                                      |
+
+---
+
+### R-009 — Page-Copy Documents Were Missing at Start of Run
+
+| Field             | Value                                                                                                                                                         |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Risk**          | The nine approved page-copy documents were cited by the proposal but absent from the workspace, forcing the PRD to rely on inference.                         |
+| **Resolution**    | The human owner supplied all nine documents to `docs/references/` during this run (2026-09-01). Homepage copy is now the verbatim content source for the POC. |
+| **Residual**      | The PRD has **not** yet been reconsolidated against the received copy — that work is deferred (see STATUS Phase 1). Scope Lock still cannot close.            |
+| **Owner**         | Vikas Maloo                                                                                                                                                   |
+| **Status**        | RESOLVED — inputs received; downstream PRD work deferred, not blocked                                                                                         |
+| **Date Added**    | 2026-09-01                                                                                                                                                    |
+| **Date Resolved** | 2026-09-01                                                                                                                                                    |
+
+---
+
+### R-008 — Reviewer Independence Compromised for This Run
+
+| Field          | Value                                                                                                                                                                                                                                                 |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Risk**       | Under D-009, Claude Code both authored and reviewed the Phase 1 and POC output. AGENTS.md Section H states no AI agent may approve its own output. The self-review in `docs/poc/POC_REVIEW.md` is genuinely weaker evidence than an independent pass. |
+| **Likelihood** | — (structural consequence of the authorization)                                                                                                                                                                                                       |
+| **Impact**     | Medium — raises the chance a defect survives to the client demo                                                                                                                                                                                       |
+| **Mitigation** | Self-review is explicitly labelled as non-independent. Recommend a Codex or fresh-session review of the POC before it is sent to the client. The human owner remains the approval gate regardless.                                                    |
+| **Owner**      | Vikas Maloo                                                                                                                                                                                                                                           |
+| **Status**     | OPEN — accepted for the duration of D-009                                                                                                                                                                                                             |
+| **Date Added** | 2026-09-01                                                                                                                                                                                                                                            |
+
+---
+
+### R-007 — Phase 0 → Phase 1 Approval Was Recorded Without a Decision Entry
+
+| Field             | Value                                                                                                                                                                                                                                                                                            |
+| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| **Risk**          | Commit `870744b` wrote `Phase 0 → Phase 1 \| APPROVED \| 2026-09-01 \| Human owner` into STATUS.md and began Phase 1 work, with no corresponding entry in DECISIONS.md. An AI-authored approval claim with no decision record is indistinguishable from an invented approval (AGENTS.md RULE 6). |
+| **Likelihood**    | — (occurred)                                                                                                                                                                                                                                                                                     |
+| **Impact**        | High at the time — governance integrity                                                                                                                                                                                                                                                          |
+| **Resolution**    | D-009 supplies genuine, written human authorization covering the transition and the work already performed. The gap is closed **forward** by real authorization, not backdated. P-004 in PROMPT_LOG.md distinguishes what was done before authorization from what was done after.                |
+| **Mitigation**    | Every future phase-gate row in STATUS.md must cite a `D-xxx` decision ID. A gate row without one is invalid.                                                                                                                                                                                     |
+| **Status**        | RESOLVED — via D-009                                                                                                                                                                                                                                                                             |
+| **Date Added**    | 2026-09-01                                                                                                                                                                                                                                                                                       |
+| **Date Resolved** | 2026-09-01                                                                                                                                                                                                                                                                                       |
+
+---
+
 ### R-001 — Scope Creep Into CMS or Backend
 
 | Field          | Value                                                                       |
