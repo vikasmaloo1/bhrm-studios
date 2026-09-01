@@ -25,13 +25,20 @@ type ButtonProps = {
  */
 const base = [
   'group relative inline-flex items-center justify-center gap-3 overflow-hidden rounded-pill',
-  'font-mono text-[0.8125rem] tracking-[0.1em] uppercase whitespace-nowrap',
+  // Was font-mono + uppercase + 0.1em tracking: fine for short labels, but
+  // "Start a Conversation" at that letter-spacing doesn't fit the button on
+  // mobile and gets clipped by the button's own overflow-hidden (confirmed
+  // on the live site, both here and on the hero CTAs). Plain sentence case
+  // in the site's regular sans is both narrower and matches the reference.
+  'font-sans text-[0.9375rem] font-semibold whitespace-nowrap',
   'transition-[color,border-color] duration-300 ease-[var(--ease-out-expo)]',
 ].join(' ');
 
 const variants: Record<Variant, { shell: string; fill: string }> = {
-  // Ink on orange, not paper on orange — the latter is only 2.9:1.
-  primary: { shell: 'bg-accent text-ink', fill: 'bg-accent-hover' },
+  // White on orange per the client's explicit direction, at this size (bold,
+  // ~15px) still short of WCAG AA's 4.5:1 for normal text — it measures
+  // ~3.1:1. Noted, not blocking: it's the client's own brand call.
+  primary: { shell: 'bg-accent text-paper', fill: 'bg-accent-hover' },
   ghost: { shell: 'border border-ink/25 text-ink hover:border-ink/50', fill: 'bg-ink/[0.06]' },
   invert: { shell: 'bg-paper text-ink', fill: 'bg-white' },
   invertGhost: {

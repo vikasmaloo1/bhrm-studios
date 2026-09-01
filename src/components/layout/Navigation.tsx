@@ -53,9 +53,16 @@ export function Navigation() {
     return () => document.removeEventListener('keydown', onKeyDown);
   }, [open]);
 
-  // Move focus into the sheet when it opens.
+  // Move focus into the card when it opens — onto the card itself, not its
+  // first link. Focusing the link drew a highly visible focus ring across
+  // it on every open (mouse clicks included, since a programmatic .focus()
+  // call reads as keyboard-style focus to the browser), which doesn't
+  // happen in the reference and isn't something a user chose by tabbing to
+  // it. The card is still a real focus target (`tabIndex={-1}`), so screen
+  // readers and keyboard users land inside the menu; Tab from there reaches
+  // the links normally.
   useEffect(() => {
-    if (open) panelRef.current?.querySelector('a')?.focus();
+    if (open) panelRef.current?.focus();
   }, [open]);
 
   return (
@@ -78,22 +85,21 @@ export function Navigation() {
       >
         <div
           className={cn(
-            'flex w-full items-center justify-between gap-6 rounded-pill border transition-all duration-500 ease-[var(--ease-out-expo)]',
-            // The pill is `fixed`, so whatever the page is doing scrolls
-            // underneath it. On mobile that previously meant zero background
-            // until 24px of scroll — text ran right up against (and behind)
-            // the pill with no separation, confirmed on the live site over
-            // both the process cards and the footer copy. It now carries a
-            // background from the very first frame on mobile; desktop keeps
-            // the original transparent-until-scroll look.
+            'flex w-full items-center justify-between gap-6 rounded-pill border py-2 pr-2 pl-3 backdrop-blur-xl transition-all duration-500 ease-[var(--ease-out-expo)]',
+            // Always visible — a thin accent border and a light fill on the
+            // pill at all times, not transparent-until-scroll. Fixed nav
+            // sitting over scrolling content needs its own background from
+            // the first frame (confirmed on the live site, text was running
+            // behind it with nothing there), and the reference keeps the
+            // orange outline on every breakpoint, not just after scrolling.
             scrolled
-              ? 'border-ink/10 bg-paper/85 py-2 pr-2 pl-3 shadow-[0_10px_40px_-24px_rgba(20,18,15,0.5)] backdrop-blur-xl'
-              : 'border-ink/10 bg-paper/70 py-2 pr-2 pl-3 backdrop-blur-xl lg:border-transparent lg:bg-transparent lg:pl-0'
+              ? 'border-accent/60 bg-paper shadow-[0_10px_40px_-24px_rgba(20,18,15,0.5)]'
+              : 'border-accent/50 bg-paper/90'
           )}
         >
           <a
             href="#top"
-            className="bhmr-display inline-flex min-h-11 shrink-0 items-center rounded-[0.35rem] bg-accent px-3 text-[0.8125rem] tracking-[-0.01em] whitespace-nowrap text-ink sm:px-3.5 sm:text-[0.9375rem]"
+            className="bhmr-display inline-flex min-h-9 shrink-0 items-center rounded-[0.35rem] bg-accent px-3 text-[0.75rem] tracking-[-0.01em] whitespace-nowrap text-paper sm:px-3.5 sm:text-[0.8125rem]"
           >
             {site.name}
           </a>
@@ -104,7 +110,7 @@ export function Navigation() {
                 key={link.label}
                 href={link.href}
                 data-testid={`nav-link-${link.href.replace('#', '')}`}
-                className="relative font-mono text-[0.75rem] tracking-[0.12em] whitespace-nowrap text-ink/75 uppercase transition-colors duration-200 hover:text-ink after:absolute after:-bottom-1.5 after:left-0 after:h-px after:w-0 after:bg-accent after:transition-[width] after:duration-300 after:ease-[var(--ease-out-expo)] hover:after:w-full"
+                className="relative font-sans text-[0.9375rem] whitespace-nowrap text-ink/75 transition-colors duration-200 hover:text-ink after:absolute after:-bottom-1.5 after:left-0 after:h-px after:w-0 after:bg-accent after:transition-[width] after:duration-300 after:ease-[var(--ease-out-expo)] hover:after:w-full"
               >
                 {link.label}
               </a>
@@ -176,11 +182,12 @@ export function Navigation() {
         <div
           id="mobile-menu"
           ref={panelRef}
+          tabIndex={-1}
           inert={!open}
           aria-hidden={!open}
           data-testid="mobile-menu-panel"
           className={cn(
-            'absolute top-full left-gutter right-gutter z-40 mt-3 origin-top rounded-[1.75rem] border border-ink/10 bg-paper p-5 shadow-[0_30px_80px_-30px_rgba(20,18,15,0.35)] transition-[opacity,transform] duration-300 ease-[var(--ease-out-expo)] lg:hidden',
+            'absolute top-full left-gutter right-gutter z-40 mt-3 origin-top rounded-[1.75rem] border border-ink/10 bg-paper p-5 shadow-[0_30px_80px_-30px_rgba(20,18,15,0.35)] transition-[opacity,transform] duration-300 ease-[var(--ease-out-expo)] outline-none lg:hidden',
             open
               ? 'pointer-events-auto translate-y-0 scale-100 opacity-100'
               : 'pointer-events-none -translate-y-2 scale-95 opacity-0'
@@ -200,12 +207,7 @@ export function Navigation() {
             ))}
           </nav>
 
-          <Button
-            href={nav.cta.href}
-            size="lg"
-            className="mt-5 w-full"
-            onClick={() => setOpen(false)}
-          >
+          <Button href={nav.cta.href} className="mt-5 w-full" onClick={() => setOpen(false)}>
             {nav.cta.label}
           </Button>
         </div>

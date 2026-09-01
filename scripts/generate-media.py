@@ -4,7 +4,7 @@ Generate the BHMR POC's original visual artifacts.
 Everything here is drawn from scratch — no stock, no scraping, nothing from
 any reference site, nothing hotlinked from a third-party domain. Palette
 matches the live design tokens in src/app/globals.css (white / near-black /
-BHMR orange #ff5a1f) — update both together if the brand palette changes.
+BHMR orange #ff4400) — update both together if the brand palette changes.
 
 Re-run:  python scripts/generate-media.py
 """
@@ -16,7 +16,7 @@ from PIL import Image, ImageDraw, ImageFilter
 SS = 2
 
 INK = (10, 10, 10)
-ACCENT = (255, 90, 31)
+ACCENT = (255, 68, 0)
 EMBER = (255, 160, 100)
 
 OUT = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "public", "media")
