@@ -39,7 +39,7 @@ export function Marquee({ text, tone = 'ink', className }: MarqueeProps) {
             <span key={index} className="flex shrink-0 items-center">
               <span
                 className={cn(
-                  'px-8 font-display text-[clamp(1.5rem,3vw,2.5rem)] whitespace-nowrap',
+                  'bhmr-display px-8 text-[clamp(1.5rem,3.4vw,3rem)] whitespace-nowrap',
                   tone === 'ink' ? 'text-ink/85' : 'text-paper/85'
                 )}
               >

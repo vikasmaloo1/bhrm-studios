@@ -1,17 +1,24 @@
 import type { Metadata } from 'next';
-import { Instrument_Sans, Instrument_Serif } from 'next/font/google';
+import { Archivo, DM_Serif_Display, Instrument_Sans, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 
 /**
- * Instrument Serif carries the display voice — high contrast, editorial, and
- * close to the serif already in use on the current BHMR site, so the POC reads
- * as an evolution of the brand rather than a replacement of it.
+ * Four faces, each with one job.
  *
- * Instrument Sans handles UI and body from the same family, which keeps the
- * pairing coherent without a second typeface to license.
+ * Archivo 900 in caps carries the display voice — the heavy, tight, confident
+ * treatment the client pointed to, with words picked out in accent. DM Serif
+ * Display appears only as an italic emphasis against it. Instrument Sans is
+ * for reading, JetBrains Mono for labels and indices.
  */
-const instrumentSerif = Instrument_Serif({
-  variable: '--font-instrument-serif',
+const archivo = Archivo({
+  variable: '--font-archivo',
+  subsets: ['latin'],
+  weight: ['500', '700', '900'],
+  display: 'swap',
+});
+
+const dmSerif = DM_Serif_Display({
+  variable: '--font-dm-serif',
   subsets: ['latin'],
   weight: '400',
   style: ['normal', 'italic'],
@@ -21,6 +28,13 @@ const instrumentSerif = Instrument_Serif({
 const instrumentSans = Instrument_Sans({
   variable: '--font-instrument-sans',
   subsets: ['latin'],
+  display: 'swap',
+});
+
+const jetbrainsMono = JetBrains_Mono({
+  variable: '--font-jetbrains-mono',
+  subsets: ['latin'],
+  weight: ['400', '500'],
   display: 'swap',
 });
 
@@ -34,7 +48,7 @@ export default function RootLayout({ children }: LayoutProps<'/'>) {
   return (
     <html
       lang="en"
-      className={`${instrumentSerif.variable} ${instrumentSans.variable} h-full antialiased`}
+      className={`${archivo.variable} ${dmSerif.variable} ${instrumentSans.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col">{children}</body>
     </html>

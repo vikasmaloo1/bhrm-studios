@@ -1,7 +1,8 @@
 import type { ComponentPropsWithoutRef, ReactNode } from 'react';
 import { cn } from '@/lib/utils/cn';
+import { Magnetic } from '@/lib/motion/primitives';
 
-type Variant = 'primary' | 'ghost' | 'invert';
+type Variant = 'primary' | 'ghost' | 'invert' | 'invertGhost';
 type Size = 'md' | 'lg';
 
 type ButtonProps = {
@@ -10,30 +11,38 @@ type ButtonProps = {
   variant?: Variant;
   size?: Size;
   className?: string;
+  /** Lean toward the pointer on hover. Fine pointers only. */
+  magnetic?: boolean;
 } & Omit<ComponentPropsWithoutRef<'a'>, 'href' | 'className'>;
 
 /**
- * Motion pattern 5 — hover micro-interaction.
+ * The label sits in its own clip, and a duplicate rides underneath: on hover
+ * the pair slides up together, so the text swaps rather than just changing
+ * colour. Paired with a fill that wipes up from the bottom edge.
  *
- * The arrow travels and the surface lifts. Both are CSS transitions rather
- * than GSAP: it is cheaper, it survives reduced-motion via the media query
- * below, and GSAP earns nothing here.
+ * Both are CSS transitions — cheap, and they disappear correctly under
+ * `motion-reduce` without any JS involvement.
  */
-const base =
-  'group relative inline-flex items-center justify-center gap-2.5 rounded-pill font-medium ' +
-  'transition-[transform,background-color,color,border-color] duration-300 ease-[var(--ease-out-expo)] ' +
-  'motion-safe:hover:-translate-y-0.5 whitespace-nowrap';
+const base = [
+  'group relative inline-flex items-center justify-center gap-3 overflow-hidden rounded-pill',
+  'font-mono text-[0.8125rem] tracking-[0.1em] uppercase whitespace-nowrap',
+  'transition-[color,border-color] duration-300 ease-[var(--ease-out-expo)]',
+].join(' ');
 
-const variants: Record<Variant, string> = {
-  // Ink on orange, not paper on orange: the latter is only 2.9:1.
-  primary: 'bg-accent text-ink hover:bg-accent-hover',
-  ghost: 'border border-ink/20 text-ink hover:border-ink/45 hover:bg-ink/[0.04]',
-  invert: 'bg-paper text-ink hover:bg-white',
+const variants: Record<Variant, { shell: string; fill: string }> = {
+  // Ink on orange, not paper on orange — the latter is only 2.9:1.
+  primary: { shell: 'bg-accent text-ink', fill: 'bg-accent-hover' },
+  ghost: { shell: 'border border-ink/25 text-ink hover:border-ink/50', fill: 'bg-ink/[0.06]' },
+  invert: { shell: 'bg-paper text-ink', fill: 'bg-white' },
+  invertGhost: {
+    shell: 'border border-paper/30 text-paper hover:border-paper/60',
+    fill: 'bg-paper/[0.08]',
+  },
 };
 
 const sizes: Record<Size, string> = {
-  md: 'h-11 px-5 text-[0.9375rem]',
-  lg: 'h-[3.25rem] px-7 text-base',
+  md: 'h-11 px-6',
+  lg: 'h-14 px-8 text-[0.875rem]',
 };
 
 export function Button({
@@ -42,23 +51,56 @@ export function Button({
   variant = 'primary',
   size = 'md',
   className,
+  magnetic = false,
   ...rest
 }: ButtonProps) {
-  return (
-    <a href={href} className={cn(base, variants[variant], sizes[size], className)} {...rest}>
-      <span>{children}</span>
+  const v = variants[variant];
+
+  const button = (
+    <a href={href} className={cn(base, v.shell, sizes[size], className)} {...rest}>
+      {/* Fill wipes up from the bottom edge on hover. */}
+      <span
+        aria-hidden="true"
+        className={cn(
+          'absolute inset-0 origin-bottom scale-y-0 transition-transform duration-400 ease-[var(--ease-out-expo)] motion-safe:group-hover:scale-y-100',
+          v.fill
+        )}
+      />
+
+      {/* Label swap. The visible copy slides out as its twin slides in. */}
+      <span className="relative block overflow-hidden">
+        <span className="block transition-transform duration-400 ease-[var(--ease-out-expo)] motion-safe:group-hover:-translate-y-full">
+          {children}
+        </span>
+        <span
+          aria-hidden="true"
+          className="absolute inset-0 block translate-y-full transition-transform duration-400 ease-[var(--ease-out-expo)] motion-safe:group-hover:translate-y-0"
+        >
+          {children}
+        </span>
+      </span>
+
       <svg
         aria-hidden="true"
         viewBox="0 0 16 16"
-        className="h-3.5 w-3.5 transition-transform duration-300 ease-[var(--ease-out-expo)] motion-safe:group-hover:translate-x-1"
+        className="relative h-3.5 w-3.5 shrink-0 transition-transform duration-400 ease-[var(--ease-out-expo)] motion-safe:group-hover:translate-x-1"
         fill="none"
         stroke="currentColor"
-        strokeWidth="1.6"
+        strokeWidth="1.7"
         strokeLinecap="round"
         strokeLinejoin="round"
       >
         <path d="M2.5 8h11M9 3.5 13.5 8 9 12.5" />
       </svg>
     </a>
+  );
+
+  if (!magnetic) return button;
+  // The wrapper has to mirror the button's own responsive width, otherwise a
+  // `w-full sm:w-auto` button stays full-width forever inside a w-full shell.
+  return (
+    <Magnetic className={cn('inline-flex', className?.includes('w-full') && 'w-full sm:w-auto')}>
+      {button}
+    </Magnetic>
   );
 }

@@ -83,7 +83,7 @@ export function Navigation() {
         >
           <a
             href="#top"
-            className="shrink-0 rounded-[0.3rem] bg-accent px-2.5 py-1.5 text-[0.75rem] font-semibold tracking-[0.02em] whitespace-nowrap text-ink uppercase sm:px-3 sm:text-[0.8125rem]"
+            className="bhmr-display inline-flex min-h-11 shrink-0 items-center rounded-[0.35rem] bg-accent px-3 text-[0.8125rem] tracking-[-0.01em] whitespace-nowrap text-ink sm:px-3.5 sm:text-[0.9375rem]"
           >
             {site.name}
           </a>
@@ -93,7 +93,7 @@ export function Navigation() {
               <a
                 key={link.label}
                 href={link.href}
-                className="relative whitespace-nowrap text-[0.9375rem] text-ink/75 transition-colors duration-200 hover:text-ink after:absolute after:-bottom-1.5 after:left-0 after:h-px after:w-0 after:bg-accent after:transition-[width] after:duration-300 after:ease-[var(--ease-out-expo)] hover:after:w-full"
+                className="relative font-mono text-[0.75rem] tracking-[0.12em] whitespace-nowrap text-ink/75 uppercase transition-colors duration-200 hover:text-ink after:absolute after:-bottom-1.5 after:left-0 after:h-px after:w-0 after:bg-accent after:transition-[width] after:duration-300 after:ease-[var(--ease-out-expo)] hover:after:w-full"
               >
                 {link.label}
               </a>
@@ -106,7 +106,9 @@ export function Navigation() {
                 utilities, so stylesheet order decides the winner, not the
                 order they appear in the class attribute. */}
             <span className="hidden sm:block">
-              <Button href={nav.cta.href}>{nav.cta.label}</Button>
+              <Button href={nav.cta.href} magnetic>
+                {nav.cta.label}
+              </Button>
             </span>
 
             <button
@@ -150,9 +152,9 @@ export function Navigation() {
               key={link.label}
               href={link.href}
               onClick={() => setOpen(false)}
-              className="border-b border-ink/10 py-5 font-display text-[2rem] leading-none text-ink"
+              className="bhmr-display border-b border-ink/10 py-5 text-[clamp(1.75rem,9vw,2.5rem)] leading-none text-ink"
             >
-              <span className="mr-4 align-middle font-sans text-meta tracking-[0.14em] text-muted">
+              <span className="mr-4 align-middle font-mono text-meta tracking-[0.16em] text-accent-ink">
                 {String(index + 1).padStart(2, '0')}
               </span>
               {link.label}
@@ -169,7 +171,9 @@ export function Navigation() {
           {nav.cta.label}
         </Button>
 
-        <p className="mt-9 text-meta tracking-[0.14em] text-muted uppercase">{site.location}</p>
+        <p className="mt-9 font-mono text-meta tracking-[0.16em] text-muted uppercase">
+          {site.location}
+        </p>
       </div>
     </header>
   );

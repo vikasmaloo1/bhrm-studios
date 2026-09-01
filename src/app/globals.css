@@ -3,19 +3,20 @@
 /* ==========================================================================
    BHMR Studios — design tokens (POC)
 
-   Retains the brand equity already present on the current site: warm paper,
-   warm near-black ink, and the BHMR orange accent. Values here are POC
-   working tokens, not an approved brand system — final values are set during
-   the design phase with client input (see docs/design/DESIGN_SYSTEM.md).
+   Retains the brand equity already on the current site: warm paper, warm
+   near-black ink, BHMR orange, editorial serif. Values here are POC working
+   tokens, not an approved brand system — final values are set during the
+   design phase with client input (docs/design/DESIGN_SYSTEM.md).
    ========================================================================== */
 
 @theme {
-  /* Surface — warm paper, not white. White reads cheap at this scale. */
+  /* Surface — warm paper, never white. The reference set converges here:
+     Iventions runs #f3efeb, the BHMR revamp #fafaf8. */
   --color-paper: #f4f1ea;
   --color-paper-deep: #e9e4d9;
   --color-paper-edge: #dcd5c7;
 
-  /* Ink — warm near-black. Pure #000 is too hard against warm paper. */
+  /* Ink — warm near-black. Pure #000 is brittle against warm paper. */
   --color-ink: #14120f;
   --color-ink-soft: #262220;
   --color-ink-line: #35302b;
@@ -24,59 +25,71 @@
   --color-muted: #6f665a;
   --color-muted-invert: #a49a8c;
 
-  /* Accent — BHMR orange.
-     Three roles, because one orange cannot do all of them accessibly:
-     - `accent`      surfaces and graphics (button fills, rails, dots). Text
-                     placed on it must be `ink` (5.6:1), never paper (2.9:1).
-     - `accent-hover` a lighter step, so the dark label on top gains contrast
-                     on hover rather than losing it.
-     - `accent-ink`  the accent used AS text on paper. The bright orange only
-                     reaches 2.9:1 there; this one clears 4.5:1 at any size. */
+  /* Accent — BHMR orange, three roles, because one value cannot do all of
+     them accessibly:
+     - accent       surfaces and graphics. Text on it must be ink (5.6:1).
+     - accent-hover lighter step, so a dark label gains contrast on hover.
+     - accent-ink   the accent used AS text on paper; clears 4.5:1 at any size. */
   --color-accent: #ff4a1c;
   --color-accent-hover: #ff6a3d;
   --color-accent-ink: #c4320b;
 
-  /* Type */
-  --font-display: var(--font-instrument-serif), Georgia, 'Times New Roman', serif;
+  /* Type — four roles.
+     - display  heavy grotesk, set in caps. This is the voice the client
+                pointed at: massive, tight, confident, with individual words
+                picked out in accent. Not a delicate serif.
+     - serif    kept only for emphasis moments (a pull quote, one italic
+                clause), which is what gives the caps something to play off.
+     - sans     reading copy.
+     - mono     labels, indices, meta. The layer that reads "studio". */
+  --font-display: var(--font-archivo), 'Helvetica Neue', Arial, sans-serif;
+  --font-serif: var(--font-dm-serif), Georgia, 'Times New Roman', serif;
   --font-sans:
     var(--font-instrument-sans), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-mono: var(--font-jetbrains-mono), ui-monospace, 'SF Mono', Menlo, monospace;
 
-  /* Editorial display scale — fluid, tuned for a long headline */
-  /* Fluid type. The lower bound of each clamp is set for a 375px phone, where
-     an over-large display size turns the headline into a wall of nine-character
-     lines — the single most common way an editorial layout fails on mobile. */
-  --text-display: clamp(2.125rem, 5.4vw, 5.75rem);
-  --text-display--line-height: 1;
-  --text-display--letter-spacing: -0.022em;
+  /* Display scale. Heavy caps take much tighter leading than a serif would.
+     Lower bounds tuned for a 360px phone. */
+  /* The hero headline is a long sentence, not a two-word statement, so `mega`
+     is tuned to land it in four or five full-width lines rather than to be as
+     large as possible. */
+  --text-mega: clamp(1.875rem, 5.5vw, 5.5rem);
+  --text-mega--line-height: 0.94;
+  --text-mega--letter-spacing: -0.03em;
 
-  --text-h2: clamp(1.75rem, 4.4vw, 4rem);
-  --text-h2--line-height: 1.06;
-  --text-h2--letter-spacing: -0.02em;
+  --text-display: clamp(2.125rem, 6.4vw, 6.5rem);
+  --text-display--line-height: 0.9;
+  --text-display--letter-spacing: -0.03em;
 
-  --text-h3: clamp(1.3125rem, 2.4vw, 2.25rem);
-  --text-h3--line-height: 1.18;
-  --text-h3--letter-spacing: -0.012em;
+  --text-h2: clamp(1.75rem, 4.6vw, 4.25rem);
+  --text-h2--line-height: 0.95;
+  --text-h2--letter-spacing: -0.028em;
+
+  --text-h3: clamp(1.375rem, 2.5vw, 2.5rem);
+  --text-h3--line-height: 1.15;
+  --text-h3--letter-spacing: -0.014em;
 
   --text-lead: clamp(1rem, 1.35vw, 1.375rem);
   --text-lead--line-height: 1.55;
 
   --text-meta: 0.6875rem;
   --text-meta--line-height: 1.2;
-  --text-meta--letter-spacing: 0.14em;
+  --text-meta--letter-spacing: 0.16em;
 
   /* Layout */
-  --spacing-gutter: clamp(1.25rem, 4vw, 4rem);
-  --spacing-section: clamp(5rem, 11vw, 11rem);
+  --spacing-gutter: clamp(1.25rem, 4vw, 4.5rem);
+  --spacing-section: clamp(6rem, 13vw, 14rem);
 
-  /* Radii */
   --radius-pill: 999px;
+  --radius-plate: clamp(1rem, 2vw, 2rem);
 
   /* Motion */
   --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Marquee track. Two tracks sit side by side and both translate by exactly
-   one track width, so the loop is seamless. */
+/* Marquee track. Two tracks sit side by side, each translating exactly one
+   track width, so the loop is seamless. */
 @keyframes bhmr-marquee {
   from {
     transform: translate3d(0, 0, 0);
@@ -86,12 +99,31 @@
   }
 }
 
+/* Scroll cue — a fill that travels down the hairline and resets. */
+@keyframes bhmr-cue {
+  0% {
+    transform: scaleY(0);
+    transform-origin: top;
+  }
+  45% {
+    transform: scaleY(1);
+    transform-origin: top;
+  }
+  55% {
+    transform: scaleY(1);
+    transform-origin: bottom;
+  }
+  100% {
+    transform: scaleY(0);
+    transform-origin: bottom;
+  }
+}
+
 @layer base {
   html {
     -webkit-text-size-adjust: 100%;
   }
 
-  /* The nav is fixed; give in-page anchors somewhere to land. */
   :where(html) {
     scroll-behavior: smooth;
     scroll-padding-top: 6rem;
@@ -110,9 +142,11 @@
     font-synthesis-weight: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
+    /* Pinned sections translate children horizontally; never let that
+       produce a horizontal scrollbar on the document. */
+    overflow-x: clip;
   }
 
-  /* Visible, branded focus ring on every interactive element. */
   :where(a, button, [tabindex]):focus-visible {
     outline: 2px solid var(--color-accent);
     outline-offset: 3px;
@@ -126,34 +160,47 @@
 }
 
 @layer utilities {
-  /* Paper grain. A single inline SVG turbulence tile — no image request. */
+  /* Paper grain. One inline SVG turbulence tile — no network request. */
   .bhmr-grain::after {
     content: '';
     position: absolute;
     inset: 0;
     pointer-events: none;
     z-index: 1;
-    opacity: 0.32;
+    opacity: 0.3;
     mix-blend-mode: multiply;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
   }
 
   .bhmr-grain-invert::after {
     mix-blend-mode: screen;
-    opacity: 0.14;
+    opacity: 0.13;
   }
 
-  /* Line-mask reveal: each line sits in an overflow-hidden clip. */
+  /* Line-mask reveal: each visual line sits in its own overflow clip. */
   .bhmr-line-mask {
     display: block;
     overflow: hidden;
-    padding-bottom: 0.08em;
-    margin-bottom: -0.08em;
+    padding-bottom: 0.1em;
+    margin-bottom: -0.1em;
   }
 
-  /* Pre-animation state. Removed by the motion layer once GSAP takes over,
-     so content is never permanently hidden if JS fails or is disabled. */
-  .bhmr-pending > * {
-    will-change: transform, opacity;
+  /* Hairline rule used to separate editorial blocks. */
+  .bhmr-rule {
+    border-top: 1px solid color-mix(in oklab, var(--color-ink) 14%, transparent);
+  }
+
+  .bhmr-rule-invert {
+    border-top: 1px solid color-mix(in oklab, var(--color-paper) 14%, transparent);
+  }
+
+  /* Heavy display caps. Applied as one utility so every headline on the page
+     shares identical weight, tracking and case — the thing that makes a
+     type system read as a system. */
+  .bhmr-display {
+    font-family: var(--font-display);
+    font-weight: 900;
+    text-transform: uppercase;
+    font-feature-settings: 'ss01';
   }
 }

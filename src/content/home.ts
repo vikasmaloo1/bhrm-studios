@@ -32,18 +32,32 @@ export const nav = {
   cta: { label: 'Start a Conversation', href: '#start' },
 } as const;
 
+/**
+ * A headline segment. `accent` picks the word out in BHMR orange — the
+ * treatment used on the current marketing site, where the emphasis lands on
+ * specific words inside the sentence rather than on a trailing clause.
+ */
+export type HeadlineWord = { text: string; accent?: boolean };
+
 export const hero = {
   eyebrow: 'BHMR Studios',
   meta: 'Ahmedabad, India',
   /**
-   * The full headline. The current live site truncates this after
-   * "worse product" — the supplied copy runs through "and a better site."
-   * and the closing clause is the point of the sentence, so it is restored.
+   * The full headline, word-segmented for accent emphasis.
+   *
+   * The current live site truncates this after "worse product". The supplied
+   * copy runs through "and a better site." — the clause that lands the whole
+   * argument — so it is restored here.
    */
-  headline: {
-    lead: 'Your website should not be the reason you lose customers to a competitor with a worse product',
-    emphasis: 'and a better site.',
-  },
+  headline: [
+    { text: 'Your website' },
+    { text: 'should not be' },
+    { text: 'the reason you' },
+    { text: 'lose customers', accent: true },
+    { text: 'to a competitor' },
+    { text: 'with a worse product' },
+    { text: 'and a better site.', accent: true },
+  ] satisfies HeadlineWord[],
   subline:
     'We design and build the whole thing, brand, product, front end, back end, so nobody on your team has to play project manager between three freelancers who never reply on the same day.',
   actions: [
@@ -51,6 +65,13 @@ export const hero = {
     { label: 'Start a Conversation', href: '#start', variant: 'ghost' as const },
   ],
   marquee: 'We build brands, products, and code',
+  /** Mono meta strip under the hero — the "studio" register. */
+  meta_strip: [
+    { label: 'Studio', value: 'Ahmedabad, India' },
+    { label: 'Founded', value: '2026' },
+    { label: 'Scope', value: 'Brand · Product · Front end · Back end' },
+    { label: 'Support', value: '30 days, every package' },
+  ],
 } as const;
 
 export const editorial = {
@@ -72,6 +93,20 @@ export const editorial = {
       text: 'You should be able to explain why your product looks the way it does, in one sentence, without needing us in the room. If you cannot, we have not done our job yet.',
     },
   ],
+} as const;
+
+/**
+ * The pinned statement between the beliefs and the process.
+ *
+ * The sentence is lifted verbatim from the homepage subline ("We design and
+ * build the whole thing, brand, product, front end, back end") — not invented
+ * for the layout.
+ */
+export const statement = {
+  label: 'What we do',
+  words: ['We', 'design', 'and', 'build', 'the', 'whole', 'thing.'],
+  support:
+    'Brand, product, front end, back end. One team that actually talks to itself, so you are not managing contractors instead of running your business.',
 } as const;
 
 export type Gate = {
