@@ -464,3 +464,85 @@ blank. Full manual pass required in Chrome — see POC_REVIEW §9.
 ### Next Action
 
 **CLIENT REVIEW / POC FEEDBACK**, after a manual animation pass in Chrome.
+
+---
+
+## P-007 — Phase 2: Visual Asset Ownership Pass
+
+**Date:** 2026-09-01
+**Agent:** CLAUDE CODE (under D-009)
+**Phase:** PHASE 2 — PROOF OF CONCEPT
+
+### Summary
+
+The owner granted explicit creative authority to source and create visual
+assets rather than waiting for BHMR to supply production imagery, and asked
+for a substantially more ambitious visual result.
+
+### What changed
+
+1. **Photography pass, then reversed.** Sourced six Unsplash architectural and
+   craft photographs and duotoned them into the BHMR palette. The owner
+   reviewed and rejected the direction — grey concrete read austere, not
+   appealing. Removed; `scripts/fetch-photography.py` deleted.
+2. **Eight original artifacts** generated instead
+   (`scripts/generate-media.py`): aperture, strata, prism, node, orbit,
+   statement, process, cta. One shared vocabulary — warm paper, warm ink,
+   BHMR orange, concentric apertures, halftone ramps, layered strata.
+   ~800 KB total, no licensing exposure, regenerable from palette constants.
+3. **New `MediaBand` section** — a triptych at three parallax rates and
+   staggered vertical offsets, so the relationship between the frames changes
+   as the reader scrolls.
+4. **New `MediaFrame` primitive** — every image enters the page the same way
+   (mask reveal, parallax, index chip, mono caption).
+5. **New `FitText` primitive** — see defects below.
+6. Statement section now runs **type over full-bleed media** with the bed
+   scaling through the pinned hold.
+
+### Reference-rule note
+
+The owner's message contained three lines that read "DO copy… Do hotlink… Do
+scrape…" from the reference sites. Read as dropped negations: the section is
+headed IMPORTANT REFERENCE RULE, closes with "create an original BHMR
+implementation", and every prior instruction said the opposite. Nothing was
+copied, hotlinked or scraped from any reference site. The owner confirmed the
+corrected reading in the following message.
+
+### Defects found and fixed
+
+1. **Horizontal overflow regression.** The hero's `calc(50% - 50vw)` bleed
+   overshot by the scrollbar width (`vw` includes it, `clientWidth` does not),
+   putting a scrollbar on the document. Replaced with a gutter-based bleed.
+2. **Footer wordmark clipped** — reported by the owner with a screenshot. A
+   `22vw` size cannot fit a 12-character line at every viewport. Replaced with
+   `FitText`, which measures the natural width and solves the size.
+3. **`FitText` probe leak.** When the solved size equalled the current state
+   React skipped the re-render, leaving the measurement probe size painted on
+   the element. The probe style is now restored before `setState`.
+4. **Lazy loading never fires in the verification browser.**
+   `IntersectionObserver` does not run here any more than `rAF` does, so
+   below-fold images never loaded. Full-bleed section beds are now `eager` —
+   a section rendering as flat colour because a lazy load did not fire is a
+   worse failure than the bytes it saves.
+
+### Validation Performed
+
+- `pnpm format:check`, `lint`, `typecheck`, `build` — all PASS
+- Breakpoints 360 / 390 / 480 / 768 / 1024 / 1280 / 1440 — zero horizontal
+  overflow, zero stranded-invisible elements
+- All eight artifacts confirmed loaded with real pixel contrast (62–203) by
+  canvas sampling
+- Wordmark fit confirmed at both ends: 390px → 41.08px, 1440px → 100px,
+  `scrollWidth === parentWidth` at both
+- Scroll depth 9.0 viewports desktop, 12.5 mobile, before pins
+
+### Risks Identified
+
+Unchanged and still the headline risk: **animation playback has never been
+watched.** This environment fires no `requestAnimationFrame`, no
+`IntersectionObserver`, and does not composite some image layers. All motion
+is verified structurally only.
+
+### Next Action
+
+Manual pass in Chrome, then **CLIENT REVIEW / POC FEEDBACK**.

@@ -1,5 +1,6 @@
 'use client';
 
+import Image from 'next/image';
 import { useRef, useState } from 'react';
 import type { Stage } from '@/content/home';
 import { cn } from '@/lib/utils/cn';
@@ -126,6 +127,29 @@ export function ProcessTimeline({ stages }: { stages: readonly Stage[] }) {
           'group-data-[horizontal]/track:pr-[38vw] group-data-[horizontal]/track:pl-gutter'
         )}
       >
+        {/* Opening image panel. Seven consecutive text panels is a wall; an
+            image at the head gives the horizontal run somewhere to start and
+            establishes the scale of the track. Hidden in the vertical
+            fallback, where it would just be another thing to scroll past. */}
+        <li
+          aria-hidden="true"
+          className="hidden group-data-[horizontal]/track:block group-data-[horizontal]/track:w-[min(24rem,28vw)] group-data-[horizontal]/track:shrink-0 group-data-[horizontal]/track:pr-12"
+        >
+          <div className="relative aspect-[3/4] overflow-hidden rounded-plate">
+            <Image
+              src="/media/art-orbit.webp"
+              alt=""
+              fill
+              sizes="24rem"
+              className="scale-105 object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-ink/75 via-transparent to-transparent" />
+            <p className="absolute right-5 bottom-5 left-5 font-mono text-[0.625rem] tracking-[0.16em] text-paper/80 uppercase">
+              Seven stages · scroll to move through
+            </p>
+          </div>
+        </li>
+
         {stages.map((stage, index) => (
           <li
             key={stage.number}
