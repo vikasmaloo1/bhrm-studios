@@ -1,7 +1,7 @@
-﻿# BHMR Studios — Website Redesign
+# BHMR Studios — Website Redesign
 
 **Phase:** PHASE 0 — PROJECT BOOTSTRAP
-**Status:** IN PROGRESS
+**Status:** PHASE 0 COMPLETE — AWAITING PHASE 1 APPROVAL
 
 ---
 
@@ -158,12 +158,12 @@ Homepage · About · Services · Pricing · Work With Us · Careers · Director 
 
 ## Important URLs
 
-| Resource       | URL                             |
-| -------------- | ------------------------------- |
-| Current site   | https://bhrm-studios.vercel.app |
-| Reference site | https://madewithgsap.com/       |
-| GitHub         | [PENDING]                       |
-| Figma          | [PENDING — not yet created]     |
+| Resource       | URL                                         |
+| -------------- | ------------------------------------------- |
+| Current site   | https://bhrm-studios.vercel.app             |
+| Reference site | https://madewithgsap.com/                   |
+| GitHub         | https://github.com/vikasmaloo1/bhrm-studios |
+| Figma          | [PENDING — not yet created]                 |
 
 ---
 

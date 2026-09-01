@@ -1,4 +1,4 @@
-﻿# Risk Register — BHMR Studios
+# Risk Register — BHMR Studios
 
 ---
 
@@ -42,7 +42,7 @@
 | **Risk**       | HubSpot, Google Sheets, and other integration credentials may not be available when engineering begins |
 | **Likelihood** | Low                                                                                                    |
 | **Impact**     | Medium — forms can be mocked, but integration testing is blocked                                       |
-| **Mitigation** | Placeholders in `.env.example`. Integration work deferred to Phase 4.                                  |
+| **Mitigation** | Placeholders in .env.example. Integration work deferred to Phase 4.                                    |
 | **Status**     | OPEN                                                                                                   |
 | **Date Added** | 2026-09-01                                                                                             |
 
@@ -61,19 +61,27 @@
 
 ---
 
-### R-005 — GitHub Repository Not Yet Created
+### R-006 — Gitleaks Secret Scan Is CI-Only
 
-| Field          | Value                                                                                      |
-| -------------- | ------------------------------------------------------------------------------------------ |
-| **Risk**       | GitHub remote has not been created. CI cannot push. Remote backup does not exist.          |
-| **Likelihood** | — (known current state)                                                                    |
-| **Impact**     | Medium — no remote backup until resolved                                                   |
-| **Mitigation** | Human owner creates GitHub repo and provides remote URL, or authorizes Codex to create it. |
-| **Status**     | OPEN                                                                                       |
-| **Date Added** | 2026-09-01                                                                                 |
+| Field          | Value                                                                                                                               |
+| -------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| **Risk**       | The Gitleaks secret scan step runs in GitHub Actions CI only. It cannot be verified locally without installing the Gitleaks binary. |
+| **Likelihood** | Low — CI will catch secrets before they reach origin/main                                                                           |
+| **Impact**     | Low — the CI gate is the correct enforcement point for secret scanning                                                              |
+| **Mitigation** | CI runs on every push and PR to main. Do not commit secrets. .env.local is gitignored. AGENTS.md RULE 7–10 enforced.                |
+| **Status**     | OPEN — accepted; CI-only is intentional                                                                                             |
+| **Date Added** | 2026-09-01                                                                                                                          |
 
 ---
 
 ## Resolved Risks
 
-None
+### R-005 — GitHub Repository Not Yet Created
+
+| Field             | Value                                                                                                                                     |
+| ----------------- | ----------------------------------------------------------------------------------------------------------------------------------------- |
+| **Risk**          | GitHub remote had not been created. CI cannot push. Remote backup does not exist.                                                         |
+| **Resolution**    | GitHub repository created at https://github.com/vikasmaloo1/bhrm-studios. Remote added as origin. main branch pushed. CI workflow active. |
+| **Status**        | RESOLVED                                                                                                                                  |
+| **Date Added**    | 2026-09-01                                                                                                                                |
+| **Date Resolved** | 2026-09-01                                                                                                                                |

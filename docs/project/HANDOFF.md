@@ -1,7 +1,21 @@
-﻿# Handoff Document — BHMR Studios
+# Handoff Document — BHMR Studios
 
 **STATUS: TEMPLATE — to be completed at project handover**
 **Last updated: 2026-09-01**
+
+---
+
+## Current State (Phase 0 Complete)
+
+Phase 0 has been completed and reviewed. The next task is:
+
+**Phase 1 — Source & Requirement Audit**
+
+Before starting Phase 1, the human owner must:
+
+1. Approve Phase 0 completion
+2. Supply the project proposal / quotation document
+3. Supply all page copy documents for the 9 intended pages
 
 ---
 
@@ -15,7 +29,7 @@ This document defines the format and checklist for a complete project handover f
 
 ### Repository
 
-- [ ] All feature branches merged to `main`
+- [ ] All feature branches merged to main
 - [ ] Repository is clean (no uncommitted changes)
 - [ ] All TODO comments resolved or documented
 - [ ] README.md is accurate and current
@@ -23,7 +37,7 @@ This document defines the format and checklist for a complete project handover f
 
 ### Environment & Deployment
 
-- [ ] Environment variables documented in `.env.example`
+- [ ] Environment variables documented in .env.example
 - [ ] Vercel project set up under client's account [PENDING — confirm owner]
 - [ ] Production environment variables configured in Vercel
 - [ ] Domain connected and SSL active
@@ -40,7 +54,7 @@ This document defines the format and checklist for a complete project handover f
 
 ### Quality Validation
 
-- [ ] `pnpm check` passes (format, lint, typecheck, build)
+- [ ] pnpm check passes (format, lint, typecheck, build)
 - [ ] All E2E tests pass
 - [ ] Accessibility: no critical violations
 - [ ] Performance: Core Web Vitals green
@@ -90,3 +104,4 @@ This document defines the format and checklist for a complete project handover f
 
 _Owner: CODEX_
 _Status: TEMPLATE_
+_Next task: Phase 1 — Source & Requirement Audit_

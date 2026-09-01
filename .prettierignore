@@ -1,4 +1,4 @@
-﻿# Build outputs
+# Build outputs
 .next/
 out/
 build/
@@ -15,4 +15,15 @@ next-env.d.ts
 *.tsbuildinfo
 
 # Public assets
-public/
+# Binary files (images, fonts, favicons) are excluded.
+# Text-based assets (SVG, JSON manifests) in public/ are intentionally
+# NOT excluded so Prettier can format them if needed.
+public/**/*.ico
+public/**/*.png
+public/**/*.jpg
+public/**/*.jpeg
+public/**/*.gif
+public/**/*.woff
+public/**/*.woff2
+public/**/*.ttf
+public/**/*.eot
