@@ -1,4 +1,5 @@
 import { Container } from '@/components/layout/Container';
+import { FooterWordmark } from '@/components/layout/FooterWordmark';
 import { MaskReveal } from '@/lib/motion/primitives';
 import { footer, nav, site } from '@/content/home';
 
@@ -13,7 +14,7 @@ import { footer, nav, site } from '@/content/home';
  */
 export function Footer() {
   return (
-    <footer className="bhmr-grain bhmr-grain-invert relative overflow-hidden bg-ink text-paper">
+    <footer className="bhmr-noise bhmr-noise-invert relative overflow-hidden bg-ink text-paper">
       <Container className="relative pt-20 pb-10 lg:pt-24">
         <div className="grid gap-14 lg:grid-cols-[minmax(0,1fr)_minmax(0,26rem)] lg:gap-20">
           <div>
@@ -94,15 +95,8 @@ export function Footer() {
         </div>
       </Container>
 
-      {/* Oversized wordmark, cropped by both edges. */}
-      <MaskReveal from="up" drift={false} className="relative mt-4 select-none lg:mt-8">
-        <p
-          aria-hidden="true"
-          className="bhmr-display -mb-[0.16em] w-full text-center text-[clamp(4.5rem,22vw,20rem)] leading-[0.8] whitespace-nowrap text-paper/[0.07]"
-        >
-          BHMR Studios
-        </p>
-      </MaskReveal>
+      {/* Oversized wordmark — letters rise as the page bottoms out. */}
+      <FooterWordmark />
     </footer>
   );
 }

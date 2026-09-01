@@ -1,71 +1,57 @@
 @import 'tailwindcss';
 
 /* ==========================================================================
-   BHMR Studios — design tokens (POC)
+   BHMR Studios — POC design tokens
 
-   Retains the brand equity already on the current site: warm paper, warm
-   near-black ink, BHMR orange, editorial serif. Values here are POC working
-   tokens, not an approved brand system — final values are set during the
-   design phase with client input (docs/design/DESIGN_SYSTEM.md).
+   Clean white surface, near-black ink, BHMR orange accent (#FF5A1F).
+   High contrast, premium digital-studio aesthetic. Deliberately not a
+   warm-paper editorial look.
    ========================================================================== */
 
 @theme {
-  /* Surface — warm paper, never white. The reference set converges here:
-     Iventions runs #f3efeb, the BHMR revamp #fafaf8. */
-  --color-paper: #f4f1ea;
-  --color-paper-deep: #e9e4d9;
-  --color-paper-edge: #dcd5c7;
+  /* Surface — pure white with a whisper-quiet neutral for depth breaks. */
+  --color-paper: #ffffff;
+  --color-paper-deep: #f4f4f2;
+  --color-paper-edge: #e7e6e2;
 
-  /* Ink — warm near-black. Pure #000 is brittle against warm paper. */
-  --color-ink: #14120f;
-  --color-ink-soft: #262220;
-  --color-ink-line: #35302b;
+  /* Ink — near-black, warm at 4% to avoid the plastic feel of pure #000. */
+  --color-ink: #0a0a0a;
+  --color-ink-soft: #1c1c1c;
+  --color-ink-line: #2b2b2b;
 
   /* Text */
-  --color-muted: #6f665a;
-  --color-muted-invert: #a49a8c;
+  --color-muted: #6b6b68;
+  --color-muted-invert: #a3a19c;
 
-  /* Accent — BHMR orange, three roles, because one value cannot do all of
-     them accessibly:
-     - accent       surfaces and graphics. Text on it must be ink (5.6:1).
-     - accent-hover lighter step, so a dark label gains contrast on hover.
-     - accent-ink   the accent used AS text on paper; clears 4.5:1 at any size. */
-  --color-accent: #ff4a1c;
-  --color-accent-hover: #ff6a3d;
-  --color-accent-ink: #c4320b;
+  /* Accent — BHMR Orange. Three roles:
+     - accent       surfaces / graphics. Text on it must be ink.
+     - accent-hover slightly lighter step for interactive states.
+     - accent-ink   accent when used AS text on white; clears 4.5:1. */
+  --color-accent: #ff5a1f;
+  --color-accent-hover: #ff7a44;
+  --color-accent-ink: #d63f0a;
 
-  /* Type — four roles.
-     - display  heavy grotesk, set in caps. This is the voice the client
-                pointed at: massive, tight, confident, with individual words
-                picked out in accent. Not a delicate serif.
-     - serif    kept only for emphasis moments (a pull quote, one italic
-                clause), which is what gives the caps something to play off.
-     - sans     reading copy.
-     - mono     labels, indices, meta. The layer that reads "studio". */
+  /* Type — four roles */
   --font-display: var(--font-archivo), 'Helvetica Neue', Arial, sans-serif;
   --font-serif: var(--font-dm-serif), Georgia, 'Times New Roman', serif;
   --font-sans:
     var(--font-instrument-sans), ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --font-mono: var(--font-jetbrains-mono), ui-monospace, 'SF Mono', Menlo, monospace;
 
-  /* Display scale. Heavy caps take much tighter leading than a serif would.
-     Lower bounds tuned for a 360px phone. */
-  /* The hero headline is a long sentence, not a two-word statement, so `mega`
-     is tuned to land it in four or five full-width lines rather than to be as
-     large as possible. */
-  --text-mega: clamp(1.875rem, 5.5vw, 5.5rem);
-  --text-mega--line-height: 0.94;
-  --text-mega--letter-spacing: -0.03em;
+  /* Display scale */
+  --text-mega: clamp(2.25rem, 8.4vw, 8.5rem);
+  --text-mega--line-height: 0.92;
+  --text-mega--letter-spacing: -0.035em;
 
-  --text-display: clamp(2.125rem, 6.4vw, 6.5rem);
-  --text-display--line-height: 0.9;
-  --text-display--letter-spacing: -0.03em;
+  --text-display: clamp(2.5rem, 7.6vw, 7.5rem);
+  --text-display--line-height: 0.88;
+  --text-display--letter-spacing: -0.032em;
 
-  --text-h2: clamp(1.75rem, 4.6vw, 4.25rem);
-  --text-h2--line-height: 0.95;
+  --text-h2: clamp(1.875rem, 5vw, 4.75rem);
+  --text-h2--line-height: 0.94;
   --text-h2--letter-spacing: -0.028em;
 
-  --text-h3: clamp(1.375rem, 2.5vw, 2.5rem);
+  --text-h3: clamp(1.375rem, 2.6vw, 2.5rem);
   --text-h3--line-height: 1.15;
   --text-h3--letter-spacing: -0.014em;
 
@@ -88,35 +74,29 @@
   --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* Marquee track. Two tracks sit side by side, each translating exactly one
-   track width, so the loop is seamless. */
 @keyframes bhmr-marquee {
-  from {
-    transform: translate3d(0, 0, 0);
-  }
-  to {
-    transform: translate3d(-100%, 0, 0);
-  }
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-100%, 0, 0); }
 }
 
-/* Scroll cue — a fill that travels down the hairline and resets. */
 @keyframes bhmr-cue {
-  0% {
-    transform: scaleY(0);
-    transform-origin: top;
-  }
-  45% {
-    transform: scaleY(1);
-    transform-origin: top;
-  }
-  55% {
-    transform: scaleY(1);
-    transform-origin: bottom;
-  }
-  100% {
-    transform: scaleY(0);
-    transform-origin: bottom;
-  }
+  0% { transform: scaleY(0); transform-origin: top; }
+  45% { transform: scaleY(1); transform-origin: top; }
+  55% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+@keyframes bhmr-pulse {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+@keyframes bhmr-spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes bhmr-spin-reverse {
+  to { transform: rotate(-360deg); }
 }
 
 @layer base {
@@ -142,8 +122,6 @@
     font-synthesis-weight: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
-    /* Pinned sections translate children horizontally; never let that
-       produce a horizontal scrollbar on the document. */
     overflow-x: clip;
   }
 
@@ -160,47 +138,82 @@
 }
 
 @layer utilities {
-  /* Paper grain. One inline SVG turbulence tile — no network request. */
-  .bhmr-grain::after {
+  /* Subtle grid backdrop — barely perceptible, adds structure to the white. */
+  .bhmr-grid-bg {
+    background-image:
+      linear-gradient(to right, rgba(10, 10, 10, 0.035) 1px, transparent 1px),
+      linear-gradient(to bottom, rgba(10, 10, 10, 0.035) 1px, transparent 1px);
+    background-size: clamp(3rem, 6vw, 6rem) clamp(3rem, 6vw, 6rem);
+  }
+
+  /* Fine noise — invisible until you look. */
+  .bhmr-noise::after {
     content: '';
     position: absolute;
     inset: 0;
     pointer-events: none;
     z-index: 1;
-    opacity: 0.3;
+    opacity: 0.05;
     mix-blend-mode: multiply;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
-  .bhmr-grain-invert::after {
+  .bhmr-noise-invert::after {
     mix-blend-mode: screen;
-    opacity: 0.13;
+    opacity: 0.08;
   }
 
-  /* Line-mask reveal: each visual line sits in its own overflow clip. */
   .bhmr-line-mask {
     display: block;
     overflow: hidden;
-    padding-bottom: 0.1em;
-    margin-bottom: -0.1em;
+    padding-bottom: 0.2em;
+    margin-bottom: -0.2em;
   }
 
-  /* Hairline rule used to separate editorial blocks. */
   .bhmr-rule {
-    border-top: 1px solid color-mix(in oklab, var(--color-ink) 14%, transparent);
+    border-top: 1px solid rgba(10, 10, 10, 0.1);
   }
 
   .bhmr-rule-invert {
-    border-top: 1px solid color-mix(in oklab, var(--color-paper) 14%, transparent);
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
   }
 
-  /* Heavy display caps. Applied as one utility so every headline on the page
-     shares identical weight, tracking and case — the thing that makes a
-     type system read as a system. */
   .bhmr-display {
     font-family: var(--font-display);
     font-weight: 900;
     text-transform: uppercase;
     font-feature-settings: 'ss01';
+    letter-spacing: -0.02em;
   }
+
+  /* Serif italic emphasis — the counterweight to heavy caps */
+  .bhmr-serif-italic {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    text-transform: none;
+    letter-spacing: -0.01em;
+  }
+
+  /* Giant outline typography — background scale, drifts on scroll. */
+  .bhmr-outline {
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(10, 10, 10, 0.13);
+  }
+
+  .bhmr-outline-paper {
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(246, 245, 242, 0.22);
+  }
+
+  .bhmr-outline-accent {
+    color: transparent;
+    -webkit-text-stroke: 1.5px rgba(255, 90, 31, 0.45);
+  }
+}
+
+/* Custom cursor active — hide the native one everywhere. */
+.bhmr-cursor-on,
+.bhmr-cursor-on * {
+  cursor: none !important;
 }

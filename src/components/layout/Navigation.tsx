@@ -56,7 +56,7 @@ export function Navigation() {
   }, [open]);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50">
+    <header className="fixed inset-x-0 top-0 z-50" data-testid="site-header">
       {/* Four nav stops sit before the content; give keyboard users a way past. */}
       <a
         href="#main"
@@ -93,6 +93,7 @@ export function Navigation() {
               <a
                 key={link.label}
                 href={link.href}
+                data-testid={`nav-link-${link.href.replace('#', '')}`}
                 className="relative font-mono text-[0.75rem] tracking-[0.12em] whitespace-nowrap text-ink/75 uppercase transition-colors duration-200 hover:text-ink after:absolute after:-bottom-1.5 after:left-0 after:h-px after:w-0 after:bg-accent after:transition-[width] after:duration-300 after:ease-[var(--ease-out-expo)] hover:after:w-full"
               >
                 {link.label}
@@ -117,6 +118,7 @@ export function Navigation() {
               onClick={() => setOpen((value) => !value)}
               aria-expanded={open}
               aria-controls="mobile-menu"
+              data-testid="mobile-menu-toggle"
               className="flex size-11 items-center justify-center rounded-pill border border-ink/15 bg-paper/70 backdrop-blur-xl lg:hidden"
             >
               <span className="sr-only">{open ? 'Close menu' : 'Open menu'}</span>
@@ -144,6 +146,7 @@ export function Navigation() {
         id="mobile-menu"
         ref={panelRef}
         hidden={!open}
+        data-testid="mobile-menu-panel"
         className="fixed inset-0 top-0 z-40 bg-paper px-gutter pt-28 pb-10 lg:hidden"
       >
         <nav aria-label="Mobile" className="flex flex-col">
@@ -152,6 +155,7 @@ export function Navigation() {
               key={link.label}
               href={link.href}
               onClick={() => setOpen(false)}
+              data-testid={`mobile-nav-link-${link.href.replace('#', '')}`}
               className="bhmr-display border-b border-ink/10 py-5 text-[clamp(1.75rem,9vw,2.5rem)] leading-none text-ink"
             >
               <span className="mr-4 align-middle font-mono text-meta tracking-[0.16em] text-accent-ink">
