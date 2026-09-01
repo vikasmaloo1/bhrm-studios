@@ -387,3 +387,80 @@ decisions raised.
 ### Next Action
 
 **CLIENT REVIEW / POC FEEDBACK.** Not to be marked approved by any agent.
+
+---
+
+## P-006 — Phase 2: POC Quality Rework
+
+**Date:** 2026-09-01
+**Agent:** CLAUDE CODE (under D-009)
+**Phase:** PHASE 2 — PROOF OF CONCEPT
+
+### Summary
+
+The human owner reviewed the first POC in a browser and rejected it: not
+enough motion, depth, media or interaction — "a fairly standard static
+marketing page". Reworked against a wider reference audit, then reset the
+type system after the owner supplied screenshots of the treatment he wanted.
+
+### Reference audit
+
+Audited `madewithgsap.com`, `bhrm-studios.vercel.app`, `bhmrstudios.com`,
+`uplink.itsoffbrand.com`, `trionn.com`, `iventions.com`, `minhpham.design`.
+`storytelling.plank.com` was unreachable (navigation denied) and was skipped.
+
+Convergent findings the first POC missed: 7–29 viewports of scroll (it had
+5.6), 12–21 pinned elements (it had none), clip-path masks rather than
+opacity fades as the reveal verb (Iventions 292, Minh Pham 89, Uplink 63),
+and a mono face for labels. Warm off-white was validated — Iventions runs
+`#f3efeb` against our `#f4f1ea`.
+
+### Type system reset
+
+The owner supplied two screenshots and said the existing styling was wrong.
+The direction he pointed at is his own marketing site: heavy uppercase
+grotesk with individual phrases picked out in orange **inside** the sentence.
+Replaced the serif-led system with Archivo 900 caps for display, DM Serif
+Display retained only for emphasis, Instrument Sans for reading, JetBrains
+Mono for labels.
+
+### Media
+
+Four original plates generated from scratch via `scripts/generate-media.py` —
+Swiss-editorial halftone gradients, crisp discs and concentric arcs in the
+BHMR palette. No stock, nothing scraped, nothing copied. 548KB source, served
+through `next/image`.
+
+### Defects found and fixed during the rework
+
+1. `hidden` + `inline-flex` collision left the desktop CTA visible at 375px.
+2. Magnetic wrapper forced `w-full` past the `sm` breakpoint, stacking the
+   hero buttons on desktop.
+3. Hero plate climbed over the last headline line.
+4. Rotated gradients in the media generator left black corner artifacts.
+5. Layer-stack planes collapsed into one (translateZ ran along each plane's
+   own rotated axis) — component since replaced.
+6. Footer links were 16px tall and the logo 32px; raised to 44px.
+
+### Validation Performed
+
+- `pnpm format:check`, `lint`, `typecheck`, `build` — all PASS
+- Breakpoints 360/390/480/768/1024/1280/1440 — zero horizontal overflow,
+  zero stranded-invisible elements, zero broken anchors, no heading skips
+- Scroll depth 8.7–12.1 viewports before pins
+- All four plates confirmed carrying real pixel data by canvas sampling
+- Horizontal pin layout verified by forcing `data-horizontal`: 7 panels,
+  1993px travel, clean column fallback
+
+### Risks Identified
+
+**Animation playback remains unverified.** The verification browser delivers
+zero `requestAnimationFrame` callbacks and does not composite some image
+layers. Motion is verified structurally only. The hero plate was proven
+present three separate ways (topmost element at its centre, loaded at
+546×655, 34.5% accent-orange pixels by canvas sample) despite screenshotting
+blank. Full manual pass required in Chrome — see POC_REVIEW §9.
+
+### Next Action
+
+**CLIENT REVIEW / POC FEEDBACK**, after a manual animation pass in Chrome.

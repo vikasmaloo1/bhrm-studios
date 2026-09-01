@@ -82,30 +82,60 @@ requiring photography the client has not supplied.
 
 ## 4. Motion
 
-Six patterns, all from shared tokens in `src/lib/motion/tokens.ts` — which is
-what makes them read as one motion language rather than six ideas.
+Eleven behaviours, all built from shared primitives in `src/lib/motion/` so
+the page has one motion vocabulary rather than a pile of one-off tweens.
 
-| #   | Pattern                 | Where              | Implementation                   |
-| --- | ----------------------- | ------------------ | -------------------------------- |
-| 1   | Hero entrance           | Headline           | GSAP, line-mask rise, staggered  |
-| 2   | Scroll text reveal      | Section headings   | GSAP + ScrollTrigger, same mask  |
-| 3   | Section reveal          | All content blocks | GSAP, fade + 24px rise           |
-| 4   | Media reveal + parallax | Hero layer stack   | GSAP, staggered settle, scrubbed |
-| 5   | Hover micro-interaction | Buttons, nav links | CSS transitions                  |
-| 6   | Scroll-linked progress  | Process rail       | GSAP ScrollTrigger, scrubbed     |
+| #   | Behaviour                | Trigger                       | Elements                             | Implementation                                                     |
+| --- | ------------------------ | ----------------------------- | ------------------------------------ | ------------------------------------------------------------------ |
+| 1   | Headline line reveal     | on load, 0.15s                | `h1` visual lines                    | GSAP, per-line clip mask, `yPercent 108 → 0`, staggered            |
+| 2   | Hero plate wipe          | on load, 0.6s                 | hero media plate                     | GSAP `clipPath inset(0 0 100% 0) → inset(0)` + `scale 1.12 → 1`    |
+| 3   | Hero content rise        | on load, 0.75s                | subline, actions, spec strip         | GSAP `opacity/y`, staggered                                        |
+| 4   | Hero plate parallax      | scrub, hero top→bottom        | hero plate image                     | GSAP `yPercent 12`, `scrub: true`                                  |
+| 5   | Hero recede              | scrub, hero centre→top        | whole hero stage                     | GSAP `scale 0.965`, `opacity 0.4` — next section climbs over it    |
+| 6   | Scroll cue fade          | scrub, first 200px            | cue                                  | GSAP opacity; the bar itself is a CSS keyframe                     |
+| 7   | Section mask reveal      | ScrollTrigger `top 82%`, once | every heading, eyebrow, belief, card | `MaskReveal` — clip-path, four directions                          |
+| 8   | Editorial media parallax | scrub                         | editorial plate                      | `Parallax`, `yPercent ±7`, `scale 1.06 → 1`                        |
+| 9   | Statement word resolve   | pinned scrub, `+=120%`        | each word of the statement           | GSAP colour tween `paper-edge → ink`, stagger 0.4                  |
+| 10  | Process horizontal run   | pinned scrub, `+=1993px`      | the seven-stage track                | GSAP `x → -(scrollWidth - clientWidth)`, `scrub: 0.8`, `pin: true` |
+| 11  | Hover micro-interactions | pointer                       | buttons, nav, footer links, email    | CSS transitions + GSAP `quickTo` for magnetic                      |
 
-Deliberately **not** done: scroll hijacking, pinned sections, a preloader,
-cursor effects. The current site's hero pins and fights the scroll; that is
-the behaviour flagged as "breaks down", and it is not reproduced here.
+**Button hover** is a compound: a fill wipes up from the bottom edge, the
+label slides out while a duplicate slides in beneath it, and the arrow
+travels. All CSS — a hover state does not need a timeline, and CSS drops out
+correctly under `motion-reduce` with no JS involved.
 
-Patterns 5 uses CSS rather than GSAP because a hover transition does not need
-a timeline. The marquee is a CSS keyframe for the same reason — a permanently
-running animation should not occupy the JS thread.
+**Magnetic hover** (`Magnetic`) is gated behind
+`(hover: hover) and (pointer: fine)`, so it never runs on touch, where there
+is no hover state and the transform would only fight the tap.
 
-**Line splitting is measured, not hard-coded.** GSAP's SplitText is a paid
-plugin, so `TextReveal` groups words by `offsetTop` to find real visual lines.
-That keeps the mask correct at every width; a hard-coded split would break at
-the first unexpected viewport.
+Deliberately **not** done: scroll hijacking / smooth-scroll libraries, custom
+cursors, preloaders, WebGL. Four of the five reference sites run Lenis; it is
+the single biggest contributor to their "feel", and it is also scroll
+hijacking — which is exactly the behaviour the client reported as broken on
+the current revamp. It is available as an opt-in if she wants it after seeing
+this.
+
+### Mobile behaviour
+
+| Behaviour       | Below `lg` (1024)                               | Below `md` (768)                       |
+| --------------- | ----------------------------------------------- | -------------------------------------- |
+| Process section | vertical list, per-row reveal + active tracking | same                                   |
+| Statement       | —                                               | no pin; single scroll-triggered reveal |
+| Magnetic        | disabled (coarse pointer)                       | disabled                               |
+| Hero plate      | moves below the copy, full width                | same                                   |
+| Nav             | full-height sheet with focus trap               | same                                   |
+
+`gsap.matchMedia()` owns both boundaries and reverts cleanly on resize across
+them, so rotating a tablet does not leave a half-applied pin.
+
+### Reduced motion
+
+`useShouldAnimate()` is the single gate every primitive checks. When the user
+prefers reduced motion **no effect runs at all** — no "from" state is ever
+applied, so nothing is hidden and nothing needs un-hiding. The two CSS
+animations (marquee, scroll cue) are behind `motion-safe:`. Reduced motion is
+respected live: the hook is a `useSyncExternalStore` over `matchMedia`, so
+toggling the OS setting mid-session reverts the animations immediately.
 
 ---
 
@@ -199,21 +229,68 @@ Measured, not assumed:
 
 ## 9. Known limitations
 
-1. **Motion was not visually confirmed frame-by-frame.** The verification
-   browser never delivered a frame (zero rAF callbacks despite reporting
-   visible), so animation was validated by construction, by DOM state, and by
-   the watchdog's fallback path — not by watching it run. **Open the preview
-   in a normal browser before sending it to the client.** This is the single
-   most important outstanding check.
-2. Nav labels are the POC's own sections, not the nine-page IA. Shipping
-   Services/Pricing/FAQ links with nowhere to go would reproduce the exact
-   defect this POC exists to disprove.
-3. `Container`'s `wide` variant and `Button`'s `invert` variant are defined
-   but currently unused — they exist for the sections not yet built.
-4. No favicon or OG image yet; the scaffold default is still in place.
-5. Cross-browser testing (Safari, Firefox, Edge) has not been done. The 3D
-   transform stack in `LayerStack` is the most likely place for a difference.
-6. Design tokens are POC working values, not an approved brand system.
+1. **Animation playback has never been watched.** The verification browser in
+   this environment delivers **zero `requestAnimationFrame` callbacks** while
+   reporting `visibilityState: "visible"`, so no animation could be played
+   back or filmed. Every behaviour in section 4 is verified by construction
+   and by DOM/computed-style inspection only. **Timing, easing and pacing are
+   unproven and must be checked in Chrome.**
+2. **Image compositing in the verification browser is unreliable.** The hero
+   plate renders blank in screenshots. It was proven present three ways: the
+   `<img>` is the topmost element at the plate's centre, it is loaded at
+   546×655 with opacity 1, and canvas sampling shows **34.5% of its pixels are
+   the accent orange**. The artwork is correct; the renderer is not painting
+   that layer. Confirm visually in Chrome.
+3. **The pinned behaviours could not be exercised.** ScrollTrigger `pin` needs
+   a running frame loop. The horizontal track's _layout_ was verified by
+   forcing `data-horizontal` (7 panels, row direction, 1993px of travel, clean
+   column fallback), but the pin itself, its scrub feel, and pin-spacing on
+   resize are unverified.
+4. Cross-browser testing (Safari, Firefox, Edge) has not been done. The
+   likeliest divergences are `clip-path` transitions and pinned sections in
+   Safari.
+5. No favicon or OG image yet.
+6. Nav labels are the POC's own sections, not the nine-page IA — shipping
+   links to pages that do not exist would reproduce the defect this POC is
+   meant to disprove.
+7. Design tokens are POC working values, not an approved brand system.
+8. `Counter` and the `invert` button variant are built but unused; they exist
+   for sections not yet in scope.
+
+### What I verified programmatically
+
+- **Breakpoints 360 / 390 / 480 / 768 / 1024 / 1280 / 1440:** zero horizontal
+  overflow (`scrollWidth === clientWidth`, and no element escaping its
+  container outside a deliberate clip), zero stranded-invisible elements.
+- **Scroll depth:** 8.7–12.1 viewports before pins; ~12 with both pins active.
+- **Media:** all four plates load and carry real pixel variation (canvas
+  sampled, not just `complete === true`).
+- **Links:** all in-page anchors resolve; zero broken.
+- **Structure:** one `h1`, no skipped heading levels, `lang` set.
+- **Fonts:** Archivo resolved on `h1` (79px at 1440, 30px at 360), JetBrains
+  Mono resolved on labels.
+- **Horizontal mode:** forced on — `flex-direction: row`, 7 × 480px panels,
+  3418px track, 1993px travel, `h-screen`; forced off — clean `column`.
+- **Touch targets:** raised to 44px minimum in the footer and logo.
+- **Nav:** desktop links at ≥1024, sheet below; sheet traps focus, closes on
+  Escape, restores focus, locks body scroll.
+- **Gates:** `pnpm format:check`, `lint`, `typecheck`, `build` all pass.
+
+### What must be checked manually in Chrome
+
+1. Every animation in section 4 — does it play, and does the **timing feel
+   right**? This is the whole unverified surface.
+2. The hero plate and all four generated plates actually appearing.
+3. The pinned horizontal process run: does it pin cleanly, scrub at a
+   comfortable rate, and release without a jump?
+4. The pinned statement: word-by-word resolve, and that `+=120%` is not too
+   long a hold.
+5. Resize across 1024 and 768 while mid-page — pins should re-init without
+   leaving gaps.
+6. Scroll performance / jank, especially the two scrubbed pins on a laptop.
+7. `prefers-reduced-motion: reduce` — everything static, nothing hidden.
+8. Real touch behaviour on a phone: no magnetic effects, no pin, momentum
+   scrolling unaffected.
 
 ---
 

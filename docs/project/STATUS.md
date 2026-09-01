@@ -9,7 +9,7 @@
 | **Project**         | BHMR Studios Website Redesign                                       |
 | **Current Phase**   | PHASE 2 — POC — READY FOR CLIENT REVIEW                             |
 | **Status**          | BUILT — awaiting client review                                      |
-| **Last Updated**    | 2026-09-01                                                          |
+| **Last Updated**    | 2026-09-01 (POC rework)                                             |
 | **Execution owner** | CLAUDE CODE (temporary, per D-009) — Codex remains governance owner |
 
 ---

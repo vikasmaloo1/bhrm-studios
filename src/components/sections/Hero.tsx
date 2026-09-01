@@ -171,18 +171,19 @@ export function Hero() {
               className="relative aspect-[4/5] overflow-hidden rounded-plate border border-ink/10 shadow-[0_40px_90px_-50px_rgba(20,18,15,0.55)] lg:mb-[-7rem] lg:aspect-[3/3.6]"
               aria-hidden="true"
             >
-              <div data-hero-plate-inner className="absolute inset-0 h-[114%]">
-                <Image
-                  src="/media/plate-hero.webp"
-                  alt=""
-                  fill
-                  priority
-                  sizes="(max-width: 1024px) 100vw, 38vw"
-                  // Bias the crop toward the disc; the plate's top-left is pale
-                  // paper and would otherwise vanish into the background.
-                  className="object-cover object-[58%_58%]"
-                />
-              </div>
+              {/* Parallax runs on the image itself. An extra wrapper here only
+                  adds a compositing layer for no benefit. The crop is biased
+                  toward the disc: the plate's top-left is pale paper and would
+                  otherwise vanish into the page background. */}
+              <Image
+                data-hero-plate-inner
+                src="/media/plate-hero.webp"
+                alt=""
+                fill
+                priority
+                sizes="(max-width: 1024px) 100vw, 38vw"
+                className="scale-110 object-cover object-[58%_55%]"
+              />
             </div>
           </div>
         </Container>
