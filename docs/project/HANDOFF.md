@@ -7,14 +7,14 @@
 
 ## Current State
 
-| Field             | Value                                                  |
-| ----------------- | ------------------------------------------------------ |
-| **Phase 0**       | ✅ COMPLETE (2026-09-01)                               |
-| **Phase 1**       | 🔄 IN PROGRESS — Discovery authorized under D-009      |
-| **Phase 2 (POC)** | ⏳ NOT STARTED                                         |
-| **Current owner** | CLAUDE CODE (temporary execution owner, D-009)         |
-| **Next action**   | Phase 1 Discovery — reference audit, PRD, architecture |
-| **Authorization** | D-009                                                  |
+| Field             | Value                                                          |
+| ----------------- | -------------------------------------------------------------- |
+| **Phase 0**       | ✅ COMPLETE (2026-09-01)                                       |
+| **Phase 1**       | PARTIAL — inputs read; PRD/architecture consolidation deferred |
+| **Phase 2 (POC)** | BUILT — ready for client review                                |
+| **Current owner** | Human owner (Vikas Maloo)                                      |
+| **Next action**   | **CLIENT REVIEW / POC FEEDBACK**                               |
+| **Authorization** | D-009                                                          |
 
 ### ⛔ Hard stop currently in force
 
@@ -26,13 +26,15 @@ integrations, production deployment, and DNS.
 
 ### Open items the human owner must resolve
 
-| #   | Item                                                     | Reference    |
-| --- | -------------------------------------------------------- | ------------ |
-| 1   | Supply the nine approved page-copy documents             | R-009, D-014 |
-| 2   | Confirm the `bhrm` vs `bhmr` spelling (repo + domain)    | D-010        |
-| 3   | Set the commercial position for the POC effort           | D-013, R-010 |
-| 4   | Confirm primary conversion goal and audience priority    | PRD §6, §4   |
-| 5   | Confirm analytics provider and cookie-consent obligation | PRD §16, §17 |
+| #   | Item                                                     | Reference     |
+| --- | -------------------------------------------------------- | ------------- |
+| 1   | Supply the nine approved page-copy documents             | R-009, D-014  |
+| 2   | Confirm the `bhrm` vs `bhmr` spelling (repo + domain)    | D-010         |
+| 3   | Set the commercial position for the POC effort           | D-013, R-010  |
+| 4   | Confirm primary conversion goal and audience priority    | PRD §6, §4    |
+| 5   | Confirm analytics provider and cookie-consent obligation | PRD §16, §17  |
+| 6   | Watch the POC motion in a real browser before sending    | POC_REVIEW §9 |
+| 7   | Optional independent review of the POC                   | R-008         |
 
 ---
 
@@ -121,4 +123,4 @@ This document defines the format and checklist for a complete project handover f
 
 _Owner: CODEX_
 _Status: TEMPLATE_
-_Next task: Phase 1 — Discovery (authorized under D-009)_
+_Next task: CLIENT REVIEW / POC FEEDBACK_

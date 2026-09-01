@@ -24,11 +24,15 @@ export function Marquee({ text, tone = 'ink', className }: MarqueeProps) {
         className
       )}
     >
+      {/* The line is read once for assistive tech; the eight visible copies
+          are decorative and would otherwise be announced eight times. */}
+      <span className="sr-only">{text}</span>
+
       {/* Two identical tracks; the second covers the seam as the first exits. */}
       {[0, 1].map((track) => (
         <div
           key={track}
-          aria-hidden={track === 1 ? 'true' : undefined}
+          aria-hidden="true"
           className="flex shrink-0 items-center motion-safe:animate-[bhmr-marquee_38s_linear_infinite]"
         >
           {items.map((_, index) => (

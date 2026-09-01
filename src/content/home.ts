@@ -15,12 +15,19 @@ export const site = {
   tagline: 'The embedded build partner',
 } as const;
 
+/**
+ * Navigation.
+ *
+ * These point at sections that exist in this POC, not at the full nine-page
+ * IA (Services, Pricing, Careers, …). Shipping a nav whose links go nowhere
+ * is precisely the "parts of it break down" problem this POC has to disprove,
+ * so every link here resolves. The full IA returns when those pages do.
+ */
 export const nav = {
   links: [
-    { label: 'Services', href: '#capabilities' },
-    { label: 'Pricing', href: '#pricing' },
+    { label: 'What We Believe', href: '#beliefs' },
+    { label: 'How We Work', href: '#process' },
     { label: 'Work With Us', href: '#start' },
-    { label: 'FAQ', href: '#faq' },
   ],
   cta: { label: 'Start a Conversation', href: '#start' },
 } as const;
@@ -40,8 +47,8 @@ export const hero = {
   subline:
     'We design and build the whole thing, brand, product, front end, back end, so nobody on your team has to play project manager between three freelancers who never reply on the same day.',
   actions: [
-    { label: 'View Our Services', href: '#capabilities', variant: 'primary' as const },
-    { label: 'See Pricing', href: '#pricing', variant: 'ghost' as const },
+    { label: 'How We Work', href: '#process', variant: 'primary' as const },
+    { label: 'Start a Conversation', href: '#start', variant: 'ghost' as const },
   ],
   marquee: 'We build brands, products, and code',
 } as const;

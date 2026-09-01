@@ -91,7 +91,7 @@ export function LayerStack() {
       {/* Plane size and stack spacing scale together, so the composition keeps
           its proportions instead of overflowing its box on a phone. */}
       <div
-        className="absolute top-1/2 left-1/2 [--plane-gap:26px] [--plane-size:9rem] sm:[--plane-gap:36px] sm:[--plane-size:12rem] lg:[--plane-gap:46px] lg:[--plane-size:16rem]"
+        className="absolute top-1/2 left-1/2 [--plane-gap:26px] [--plane-size:9rem] sm:[--plane-gap:36px] sm:[--plane-size:12rem] lg:[--plane-gap:54px] lg:[--plane-size:18rem]"
         style={{
           transform: 'rotateX(58deg) rotateZ(-42deg)',
           transformStyle: 'preserve-3d',
@@ -113,16 +113,16 @@ export function LayerStack() {
               style={
                 layer.accent
                   ? {
-                      borderColor: 'rgba(255,74,28,0.7)',
+                      borderColor: 'rgba(255,74,28,0.85)',
                       background:
-                        'linear-gradient(135deg, rgba(255,74,28,0.30), rgba(255,74,28,0.10))',
+                        'linear-gradient(135deg, rgba(255,74,28,0.38), rgba(255,74,28,0.14))',
                       boxShadow: '0 30px 70px -30px rgba(255,74,28,0.7)',
                     }
                   : {
-                      borderColor: 'rgba(20,18,15,0.28)',
+                      borderColor: 'rgba(20,18,15,0.38)',
                       background:
-                        'linear-gradient(135deg, rgba(255,255,255,0.85), rgba(233,228,217,0.45))',
-                      boxShadow: '0 30px 70px -34px rgba(20,18,15,0.55)',
+                        'linear-gradient(135deg, rgba(255,255,255,0.95), rgba(220,213,199,0.55))',
+                      boxShadow: '0 34px 80px -30px rgba(20,18,15,0.75)',
                     }
               }
             />

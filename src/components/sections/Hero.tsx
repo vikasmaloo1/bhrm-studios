@@ -22,7 +22,7 @@ export function Hero() {
     <section id="top" className="bhmr-grain relative overflow-hidden pt-32 sm:pt-36 lg:pt-40">
       {/* Visual sits behind the type on large screens, below it on small. */}
       <div
-        className="pointer-events-none absolute top-[6%] right-[-4%] hidden h-[62%] w-[40%] lg:block"
+        className="pointer-events-none absolute top-[2%] right-[-5%] hidden h-[80%] w-[44%] lg:block"
         aria-hidden="true"
       >
         <LayerStack />
@@ -78,7 +78,7 @@ export function Hero() {
         </div>
       </Container>
 
-      <div className="relative z-10 mt-16 lg:mt-28">
+      <div className="relative z-10 mt-16 lg:mt-20">
         <Marquee text={hero.marquee} />
       </div>
     </section>

@@ -57,6 +57,14 @@ export function Navigation() {
 
   return (
     <header className="fixed inset-x-0 top-0 z-50">
+      {/* Four nav stops sit before the content; give keyboard users a way past. */}
+      <a
+        href="#main"
+        className="sr-only focus-visible:not-sr-only focus-visible:absolute focus-visible:top-4 focus-visible:left-4 focus-visible:z-60 focus-visible:rounded-pill focus-visible:bg-ink focus-visible:px-5 focus-visible:py-3 focus-visible:text-[0.875rem] focus-visible:text-paper"
+      >
+        Skip to content
+      </a>
+
       {/* Must sit above the mobile sheet, otherwise the sheet paints over the
           close button and the only way out is Escape. */}
       <div

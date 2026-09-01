@@ -295,3 +295,95 @@ R-010 (POC outside quotation)
 ### Next Action
 
 Phase 1 Discovery: reference audit, PRD consolidation, architecture baseline.
+
+---
+
+## P-005 — Phase 2: Coded Proof of Concept
+
+**Date:** 2026-09-01
+**Agent:** CLAUDE CODE (temporary execution owner under D-009)
+**Phase:** PHASE 2 — PROOF OF CONCEPT
+
+### Summary
+
+Built the bounded coded POC: navigation, hero, one editorial section, one
+process section, CTA and footer. Scope boundary held — no additional pages, no
+forms, no integrations, no backend, no CMS, no Figma.
+
+Mid-run the human owner narrowed the task to the POC alone, so the planned
+Phase 1 PRD/architecture consolidation was **stopped rather than completed**,
+and STATUS.md records it as DEFERRED rather than claiming it done.
+
+Also mid-run, the human owner supplied the nine page-copy documents to
+`docs/references/`, closing R-009. Homepage copy became the POC's content
+source; the other eight informed voice and system only.
+
+### Source material read
+
+All nine page-copy documents, the approved proposal, the AI execution plan,
+the Phase 1 playbook, plus a client WhatsApp thread supplied by the owner. The
+thread was decisive: the client likes the current revamp's UI and animation
+but reports it is **inconsistent across pages, not fully responsive, and parts
+break down**, and that the previous developer **hard-coded instead of using a
+design system**. The POC was aimed squarely at those four complaints.
+
+### Files Changed
+
+Created — `src/content/home.ts`; `src/lib/utils/cn.ts`;
+`src/lib/motion/{tokens,gsap,Reveal,TextReveal}`;
+`src/components/layout/{Container,Navigation,Footer}`;
+`src/components/ui/{Button,Eyebrow,SectionHeading,Marquee}`;
+`src/components/sections/{Hero,EditorialSection,ProcessSection,ProcessTimeline,CTASection}`;
+`src/components/visuals/LayerStack`; `docs/poc/POC_REVIEW.md`;
+`docs/poc/CLIENT_POC_SUMMARY.md`; `.claude/launch.json`
+
+Modified — `src/app/{globals.css,layout.tsx,page.tsx}`; `package.json`;
+`pnpm-lock.yaml`; project memory files
+
+### Validation Performed
+
+- `pnpm format:check` — PASS
+- `pnpm lint` — PASS (zero warnings)
+- `pnpm typecheck` — PASS
+- `pnpm build` — PASS (static prerender)
+- Responsive at 320 / 375 / 768 / 1440 — zero horizontal overflow, measured
+- Contrast — all 23 text/background pairs pass WCAG AA, minimum 4.89:1
+- Anchors — all 15 in-page links resolve, zero broken
+- Mobile sheet — focus moves in, Escape closes, focus returns, scroll locks
+- Structure — one `h1`, no skipped heading levels, `lang` set
+
+### Defects found and fixed during the build
+
+1. `hidden` + `inline-flex` both being display utilities meant the desktop CTA
+   stayed visible at 375px; stylesheet order, not class order, decides.
+2. Mobile sheet painted over its own close button (z-index).
+3. ScrollTrigger cached positions before fonts loaded, stranding sections
+   invisible.
+4. If the frame loop never runs, GSAP "from" states hide content permanently —
+   added a watchdog that falls back to plain rendering.
+5. Paper-on-orange was 2.9:1 — split the accent into three roles.
+6. Layer-stack planes collapsed into one (translateZ ran along each plane's
+   own rotated axis).
+7. Nav pointed at anchors that did not exist.
+
+### Evidence
+
+`docs/poc/POC_REVIEW.md` — full review, including limitations.
+
+### Decisions Made
+
+D-011 exercised (GSAP installed, confined to `src/lib/motion/`). No new
+decisions raised.
+
+### Risks Identified
+
+- **Motion never visually confirmed.** The verification browser delivered zero
+  `requestAnimationFrame` callbacks while reporting `visibilityState:
+"visible"`, so animation playback could not be watched. Validated by
+  construction and DOM state only. Must be checked in a real browser before
+  the client sees it.
+- R-008 stands: this run's review is not independent.
+
+### Next Action
+
+**CLIENT REVIEW / POC FEEDBACK.** Not to be marked approved by any agent.

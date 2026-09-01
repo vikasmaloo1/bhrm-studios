@@ -7,8 +7,8 @@
 | Field               | Value                                                               |
 | ------------------- | ------------------------------------------------------------------- |
 | **Project**         | BHMR Studios Website Redesign                                       |
-| **Current Phase**   | PHASE 1 — DISCOVERY AND REQUIREMENTS                                |
-| **Status**          | IN PROGRESS — authorized by D-009                                   |
+| **Current Phase**   | PHASE 2 — POC — READY FOR CLIENT REVIEW                             |
+| **Status**          | BUILT — awaiting client review                                      |
 | **Last Updated**    | 2026-09-01                                                          |
 | **Execution owner** | CLAUDE CODE (temporary, per D-009) — Codex remains governance owner |
 
@@ -80,11 +80,25 @@ Authorized by **D-009**. See R-007 for how the earlier undocumented transition w
 | Discovery red-team review   | ⏸️ DEFERRED | Not performed                                                                          |
 | PRD approval / Scope Lock   | ⏳ PENDING  | Requires the deferred work above, then human sign-off                                  |
 
-### PHASE 2 — PROOF OF CONCEPT
+### PHASE 2 — PROOF OF CONCEPT ← CURRENT · READY FOR CLIENT REVIEW
 
-| Task         | Status     | Notes |
-| ------------ | ---------- | ----- |
-| POC planning | ⏳ PENDING |       |
+Authorized by **D-009**. Boundary held: no additional pages, no forms, no
+integrations, no backend, no Figma.
+
+| Task                     | Status      | Notes                                                                    |
+| ------------------------ | ----------- | ------------------------------------------------------------------------ |
+| POC scope agreed         | ✅ DONE     | Nav, hero, editorial, process, CTA, footer                               |
+| Design tokens            | ✅ DONE     | `src/app/globals.css` `@theme` — no hard-coded values in components      |
+| Component library        | ✅ DONE     | 13 components + 4 motion modules                                         |
+| Content wiring           | ✅ DONE     | Verbatim from `docs/references/Homepage_Copy.docx`                       |
+| Motion (6 patterns)      | ✅ DONE     | GSAP + CSS; full reduced-motion fallback                                 |
+| Responsive               | ✅ DONE     | Verified 320 / 375 / 768 / 1440 — zero horizontal overflow               |
+| Accessibility            | ✅ DONE     | All 23 text pairs pass WCAG AA (min 4.89:1); skip link; focus management |
+| Quality gates            | ✅ DONE     | `pnpm check` — format, lint, typecheck, build all pass                   |
+| POC review pack          | ✅ DONE     | `docs/poc/POC_REVIEW.md`, `docs/poc/CLIENT_POC_SUMMARY.md`               |
+| Visual motion playback   | ⚠️ NOT DONE | Verification browser delivered zero frames — check in a real browser     |
+| Independent review       | ⏳ PENDING  | R-008 — recommended before the client sees it                            |
+| **Client review of POC** | ⏳ PENDING  | **Next action. Client decision — not ours to mark.**                     |
 
 ### PHASE 3 — DESIGN
 
@@ -111,6 +125,7 @@ Authorized by **D-009**. See R-007 for how the earlier undocumented transition w
 - ✅ PHASE 0 — PROJECT BOOTSTRAP (2026-09-01)
 - ✅ Phase 0 Claude Code independent review: PASS WITH ACTIONS — all findings resolved (2026-09-01)
 - ✅ Phase 1 Initial Reference Audit (2026-09-01)
+- ✅ PHASE 2 — Coded POC built (2026-09-01)
 
 ## Currently Blocked / Pending External Inputs
 
@@ -119,9 +134,15 @@ Authorized by **D-009**. See R-007 for how the earlier undocumented transition w
 
 ## Next Recommended Task
 
-1. Human owner to provide project proposal / quotation text or file.
-2. Human owner to provide page copy documents for the 9 pages.
-3. Consolidate inputs into docs/product/PRD.md.
+**CLIENT REVIEW / POC FEEDBACK.**
+
+1. Open the POC in a normal browser and confirm the motion plays correctly.
+2. Optionally run an independent review pass (R-008).
+3. Send the POC to the client with `docs/poc/CLIENT_POC_SUMMARY.md`.
+4. Settle the commercial position on POC effort (D-013).
+
+Deferred until after the client confirms direction: PRD reconsolidation
+against the received page copy, architecture baseline, Scope Lock.
 
 ---
 
