@@ -4,12 +4,12 @@
 
 ## Project Overview
 
-| Field             | Value                                          |
-| ----------------- | ---------------------------------------------- |
-| **Project**       | BHMR Studios Website Redesign                  |
-| **Current Phase** | PHASE 0 — PROJECT BOOTSTRAP                    |
-| **Status**        | COMPLETE — READY FOR PHASE 1 REVIEW / APPROVAL |
-| **Last Updated**  | 2026-09-01                                     |
+| Field             | Value                                |
+| ----------------- | ------------------------------------ |
+| **Project**       | BHMR Studios Website Redesign        |
+| **Current Phase** | PHASE 1 — DISCOVERY AND REQUIREMENTS |
+| **Status**        | IN PROGRESS                          |
+| **Last Updated**  | 2026-09-01                           |
 
 ---
 
@@ -35,9 +35,9 @@
 | docs/architecture/                | ✅ DONE | PROPOSED status                                                                              |
 | docs/design/DESIGN_SYSTEM.md      | ✅ DONE | PLANNING status                                                                              |
 | docs/project/ memory files        | ✅ DONE | STATUS, DECISIONS, RISKS, HANDOFF, PROMPT_LOG                                                |
-| README.md                         | ✅ DONE |                                                                                              |
+| README.md                         | ✅ DONE | Project overview & developer guide                                                           |
 | .github/workflows/ci.yml          | ✅ DONE | Quality checks + Gitleaks secret scan                                                        |
-| .github/pull_request_template.md  | ✅ DONE |                                                                                              |
+| .github/pull_request_template.md  | ✅ DONE | PR template & quality gate checklist                                                         |
 | Git initialized                   | ✅ DONE | main branch                                                                                  |
 | GitHub remote                     | ✅ DONE | https://github.com/vikasmaloo1/bhrm-studios                                                  |
 | Initial commit                    | ✅ DONE | chore: initialize BHMR project foundation                                                    |
@@ -45,15 +45,16 @@
 | Claude Code independent review    | ✅ DONE | Verdict: PASS WITH ACTIONS — all findings resolved                                           |
 | Phase 0 corrective commit         | ✅ DONE | chore: resolve phase 0 review findings                                                       |
 
-### PHASE 1 — DISCOVERY AND REQUIREMENTS ← NEXT
+### PHASE 1 — DISCOVERY AND REQUIREMENTS ← CURRENT
 
-| Task                        | Status     | Notes                                   |
-| --------------------------- | ---------- | --------------------------------------- |
-| Source / requirements audit | ⏳ PENDING | Awaiting human approval to open Phase 1 |
-| Client proposal review      | ⏳ PENDING | Human to supply proposal document       |
-| Page copy document review   | ⏳ PENDING | Human to supply all page copy documents |
-| PRD consolidation           | ⏳ PENDING |                                         |
-| PRD approval                | ⏳ PENDING | Human sign-off required                 |
+| Task                      | Status         | Notes                                                                |
+| ------------------------- | -------------- | -------------------------------------------------------------------- |
+| Phase 1 Kickoff           | ✅ DONE        | Human owner authorized transition                                    |
+| Reference site audit      | ✅ DONE        | Live site + Made With GSAP audited (docs/product/REFERENCE_AUDIT.md) |
+| Client proposal review    | ⏳ AWAITING    | Awaiting human owner to provide proposal / quotation document        |
+| Page copy document review | ⏳ AWAITING    | Awaiting human owner to provide copy for all 9 intended pages        |
+| PRD consolidation         | ⏳ IN PROGRESS | Updating PRD skeleton with reference discovery findings              |
+| PRD approval              | ⏳ PENDING     | Human sign-off required                                              |
 
 ### PHASE 2 — PROOF OF CONCEPT
 
@@ -85,17 +86,18 @@
 
 - ✅ PHASE 0 — PROJECT BOOTSTRAP (2026-09-01)
 - ✅ Phase 0 Claude Code independent review: PASS WITH ACTIONS — all findings resolved (2026-09-01)
+- ✅ Phase 1 Initial Reference Audit (2026-09-01)
 
-## Currently Blocked
+## Currently Blocked / Pending External Inputs
 
-- None
+- **Awaiting Client Proposal / Scope Document:** To verify exact deliverables, exclusions, and business constraints.
+- **Awaiting Page Copy Documents:** Copy for Homepage, About, Services, Pricing, Work With Us, Careers, Director of BD, Privacy Policy, Terms of Service.
 
 ## Next Recommended Task
 
-1. Human owner: approve Phase 0 completion
-2. Supply project proposal / quotation document
-3. Supply all page copy documents
-4. Open Phase 1 — Source & Requirement Audit
+1. Human owner to provide project proposal / quotation text or file.
+2. Human owner to provide page copy documents for the 9 pages.
+3. Consolidate inputs into docs/product/PRD.md.
 
 ---
 
@@ -116,6 +118,7 @@
 
 ## Phase Gate Approvals
 
-| Phase             | Approval | Date | By          |
-| ----------------- | -------- | ---- | ----------- |
-| Phase 0 → Phase 1 | PENDING  | —    | Human owner |
+| Phase             | Approval | Date       | By          |
+| ----------------- | -------- | ---------- | ----------- |
+| Phase 0 → Phase 1 | APPROVED | 2026-09-01 | Human owner |
+| Phase 1 → Phase 2 | PENDING  | —          | Human owner |

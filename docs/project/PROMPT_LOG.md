@@ -173,3 +173,42 @@ All checks confirmed locally. Secret scan configured in CI — verifiable via Gi
 ### Next Action
 
 Phase 1 — Source & Requirement Audit
+
+---
+
+## P-003 — Phase 1: Initiation & Reference Site Audit
+
+**Date:** 2026-09-01  
+**Agent:** CODEX / ANTIGRAVITY  
+**Phase:** PHASE 1 — DISCOVERY AND REQUIREMENTS
+
+### Summary
+
+Transitioned from Phase 0 to Phase 1 (Discovery and Requirements) upon human owner instruction. Conducted an automated, read-only audit of both reference websites (https://bhrm-studios.vercel.app and https://madewithgsap.com/) in accordance with .agent/rules/reference-audit.md. Documented existing routing, component structure, and motion observations in docs/product/REFERENCE_AUDIT.md.
+
+### Files Changed
+
+- Created: docs/product/REFERENCE_AUDIT.md — Detailed audit of current live site and GSAP motion reference.
+- Modified: docs/project/STATUS.md — Updated phase to Phase 1: Discovery & Requirements, logged reference audit completion, and marked external inputs awaiting human owner.
+- Modified: docs/project/PROMPT_LOG.md — Added P-003 entry.
+
+### Validation Performed
+
+- pnpm check (format check, lint, typecheck, build)
+
+### Evidence
+
+- docs/product/REFERENCE_AUDIT.md generated with extracted routes (/, /services, /pricing, /work-with-us, /about, /privacy, /terms, /design-system) and section components.
+- Live inspection logs recorded.
+
+### Decisions Made
+
+- Confirmed that Careers and Director of Business Development are new additions to the website scope that do not exist on the current live site.
+
+### Risks Identified
+
+- R-002 (Brand Assets / Copy Delays): Pending client copy documents and approved proposal to finalize PRD.
+
+### Next Action
+
+Human owner to provide the project proposal / quotation and page copy documents for consolidation into docs/product/PRD.md.
