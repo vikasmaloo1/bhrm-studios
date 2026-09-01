@@ -54,8 +54,14 @@ export function ProcessTimeline({ stages }: { stages: readonly Stage[] }) {
           return { x: r.left - box.left + r.width / 2, y: r.top - box.top + r.height / 2 };
         });
 
+        // Below 1024px every node sits at the same x (the dots run straight
+        // down the left edge — see the `lg:left-1/2` on [data-node]), so any
+        // sideways bow between them isn't a "gentle wave," it's a bezier
+        // control point pulling a straight line off to one side and back —
+        // visibly crooked, not the intended weave. Only bow the curve where
+        // the cards actually alternate sides.
         const desktop = window.matchMedia('(min-width: 1024px)').matches;
-        const amp = desktop ? Math.min(w * 0.16, 110) : 18;
+        const amp = desktop ? Math.min(w * 0.16, 110) : 0;
 
         let d = `M ${pts[0].x.toFixed(1)} ${pts[0].y.toFixed(1)}`;
         for (let i = 1; i < pts.length; i++) {

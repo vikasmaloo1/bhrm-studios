@@ -70,12 +70,16 @@ export function StatementSection() {
       className="bhmr-panel relative flex min-h-[70vh] items-center overflow-hidden bg-paper py-section md:min-h-screen md:py-0"
       data-testid="statement-section"
     >
-      {/* Giant outline wordmark drifting behind the statement — every
-          breakpoint now (client: visuals on tablet/mobile too), scaled to fit
-          small screens and clipped by the section's overflow-hidden. */}
+      {/* Giant outline wordmark drifting behind the statement — desktop/
+          tablet only. At mobile widths the same clamp() that scales it down
+          still leaves stroke-only "BHMR®" glyphs sitting directly behind the
+          real headline at nearly the same visual weight, reading as clutter
+          layered on top of the words rather than a backdrop behind them
+          (confirmed on the live site). The Beliefs section hides its own
+          giant wordmark below `md` for the same reason — same fix here. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 flex items-center overflow-hidden select-none"
+        className="pointer-events-none absolute inset-0 hidden items-center overflow-hidden select-none md:flex"
       >
         <p
           data-statement-giant
