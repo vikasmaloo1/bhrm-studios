@@ -76,9 +76,16 @@ export function Navigation() {
         <div
           className={cn(
             'flex w-full items-center justify-between gap-6 rounded-pill border transition-all duration-500 ease-[var(--ease-out-expo)]',
+            // The pill is `fixed`, so whatever the page is doing scrolls
+            // underneath it. On mobile that previously meant zero background
+            // until 24px of scroll — text ran right up against (and behind)
+            // the pill with no separation, confirmed on the live site over
+            // both the process cards and the footer copy. It now carries a
+            // background from the very first frame on mobile; desktop keeps
+            // the original transparent-until-scroll look.
             scrolled
               ? 'border-ink/10 bg-paper/85 py-2 pr-2 pl-3 shadow-[0_10px_40px_-24px_rgba(20,18,15,0.5)] backdrop-blur-xl'
-              : 'border-transparent bg-transparent py-2 pr-2 pl-0'
+              : 'border-ink/10 bg-paper/70 py-2 pr-2 pl-3 backdrop-blur-xl lg:border-transparent lg:bg-transparent lg:pl-0'
           )}
         >
           <a
