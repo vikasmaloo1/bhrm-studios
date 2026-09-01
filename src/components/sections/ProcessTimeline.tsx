@@ -8,47 +8,92 @@ import { ensureGsap, useIsomorphicLayoutEffect, useShouldAnimate } from '@/lib/m
 import { STAGE_ICONS } from './stageIcons';
 
 /**
- * The seven stages — white, per the client's explicit direction, built as a
- * connected vertical timeline (the reference model).
+ * The seven stages — a connected vertical timeline (the reference model).
  *
- * A single spine runs down the section — centred on desktop with the cards
- * alternating left/right of it, left-aligned on mobile with every card to its
- * right. As you scroll DOWN (never sideways) the spine draws itself in orange,
- * each node dot lights as the fill reaches it, and each card rises into view.
- * The motion communicates progression through the seven stages without
- * pinning or hijacking the scroll.
+ * A single spine snakes down the section: on desktop it weaves between the
+ * cards, which alternate left/right of centre; on mobile it runs down the
+ * left with a gentler wave and every card to its right. The spine is a real
+ * SVG path built at runtime from the actual node positions, so the curve
+ * always threads through the dots at any width. As you scroll DOWN the orange
+ * path draws itself in (stroke-dashoffset), each node lights as the draw
+ * reaches it, and each card rises into view. No pinning, no sideways scroll.
  *
- * Robustness: with no JS or under reduced motion the effect never runs — the
- * spine shows its light track, the orange fill stays at zero, and all seven
- * cards render in their natural, fully-visible positions.
+ * Robustness: with no JS or reduced motion the effect never runs — the cards
+ * render fully visible in their natural positions (the decorative spine is
+ * simply absent rather than broken).
  */
 export function ProcessTimeline({ stages }: { stages: readonly Stage[] }) {
   const scope = useRef<HTMLDivElement>(null);
-  const fillRef = useRef<HTMLSpanElement>(null);
+  const svgRef = useRef<SVGSVGElement>(null);
+  const trackRef = useRef<SVGPathElement>(null);
+  const progRef = useRef<SVGPathElement>(null);
   const shouldAnimate = useShouldAnimate();
 
   useIsomorphicLayoutEffect(() => {
     if (!shouldAnimate) return;
     const el = scope.current;
-    if (!el) return;
+    const svg = svgRef.current;
+    const track = trackRef.current;
+    const prog = progRef.current;
+    if (!el || !svg || !track || !prog) return;
     const gsap = ensureGsap();
 
     const ctx = gsap.context(() => {
-      // Spine draws in as the section passes through the viewport.
-      if (fillRef.current) {
-        gsap.fromTo(
-          fillRef.current,
-          { scaleY: 0 },
-          {
-            scaleY: 1,
-            ease: 'none',
-            transformOrigin: 'top',
-            scrollTrigger: { trigger: el, start: 'top 62%', end: 'bottom 78%', scrub: 0.6 },
-          }
-        );
-      }
+      let length = 0;
 
-      // Each node lights when the drawn line reaches it.
+      // Rebuild the curve from live node positions (also on every refresh:
+      // resize, font swap, orientation change).
+      const build = () => {
+        const nodes = gsap.utils.toArray<HTMLElement>('[data-node]', el);
+        if (nodes.length === 0) return;
+        const box = el.getBoundingClientRect();
+        const w = el.clientWidth;
+        const h = el.clientHeight;
+        const pts = nodes.map((n) => {
+          const r = n.getBoundingClientRect();
+          return { x: r.left - box.left + r.width / 2, y: r.top - box.top + r.height / 2 };
+        });
+
+        const desktop = window.matchMedia('(min-width: 1024px)').matches;
+        const amp = desktop ? Math.min(w * 0.16, 110) : 18;
+
+        let d = `M ${pts[0].x.toFixed(1)} ${pts[0].y.toFixed(1)}`;
+        for (let i = 1; i < pts.length; i++) {
+          const p = pts[i - 1];
+          const c = pts[i];
+          const dir = i % 2 === 1 ? 1 : -1; // alternate bow -> snaking S-curve
+          const cx = (p.x + amp * dir).toFixed(1);
+          d += ` C ${cx} ${p.y.toFixed(1)}, ${cx} ${c.y.toFixed(1)}, ${c.x.toFixed(1)} ${c.y.toFixed(1)}`;
+        }
+
+        svg.setAttribute('viewBox', `0 0 ${w} ${h}`);
+        track.setAttribute('d', d);
+        prog.setAttribute('d', d);
+        length = prog.getTotalLength();
+        prog.style.strokeDasharray = String(length);
+      };
+
+      build();
+
+      // Orange path draws in with scroll.
+      gsap.fromTo(
+        prog,
+        { strokeDashoffset: () => length },
+        {
+          strokeDashoffset: 0,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: el,
+            start: 'top 62%',
+            end: 'bottom 80%',
+            scrub: 0.6,
+            invalidateOnRefresh: true,
+            onRefreshInit: build,
+          },
+        }
+      );
+
+      // Nodes light as the draw reaches them.
       gsap.utils.toArray<HTMLElement>('[data-node]', el).forEach((node) => {
         gsap.to(node, {
           scrollTrigger: {
@@ -78,20 +123,28 @@ export function ProcessTimeline({ stages }: { stages: readonly Stage[] }) {
   return (
     <Container width="wide">
       <div ref={scope} className="relative" data-testid="process-timeline">
-        {/* ---- spine: light track + drawn orange fill ---- */}
-        <div
+        {/* ---- curvy spine: light track + drawn orange path ---- */}
+        <svg
+          ref={svgRef}
           aria-hidden="true"
-          className="absolute top-0 bottom-0 left-[26px] w-px -translate-x-1/2 bg-ink/12 lg:left-1/2"
+          preserveAspectRatio="none"
+          className="pointer-events-none absolute inset-0 z-0 h-full w-full overflow-visible"
         >
-          <span ref={fillRef} className="absolute inset-0 block origin-top scale-y-0 bg-accent" />
-        </div>
+          <path ref={trackRef} fill="none" stroke="rgba(10,10,10,0.12)" strokeWidth="1.5" />
+          <path
+            ref={progRef}
+            fill="none"
+            stroke="var(--color-accent)"
+            strokeWidth="2.5"
+            strokeLinecap="round"
+          />
+        </svg>
 
-        <ol className="relative flex flex-col gap-14 lg:gap-24">
+        <ol className="relative z-10 flex flex-col gap-14 lg:gap-24">
           {stages.map((stage, index) => {
             const left = index % 2 === 0;
             return (
               <li key={stage.number} data-stage className="relative">
-                {/* node dot on the spine, aligned to the card top */}
                 <span
                   data-node
                   aria-hidden="true"
@@ -102,8 +155,8 @@ export function ProcessTimeline({ stages }: { stages: readonly Stage[] }) {
                 <div
                   className={cn(
                     'pl-14 lg:pl-0',
-                    'lg:w-[calc(50%-3.25rem)]',
-                    left ? 'lg:mr-auto lg:pr-0' : 'lg:ml-auto'
+                    'lg:w-[calc(50%-3.75rem)]',
+                    left ? 'lg:mr-auto' : 'lg:ml-auto'
                   )}
                 >
                   <article

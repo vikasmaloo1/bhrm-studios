@@ -10,6 +10,7 @@ node_modules/
 
 # Test + tooling artifacts (not source)
 test_reports/
+.emergent/
 
 # Lock files (managed by pnpm)
 pnpm-lock.yaml
