@@ -18,9 +18,10 @@ export function CTASection() {
       <div aria-hidden="true" className="pointer-events-none absolute inset-0">
         <Parallax strength={9} className="h-full w-full">
           <Image
-            src="/media/plate-cta.webp"
+            src="/media/art-cta.webp"
             alt=""
             fill
+            loading="eager"
             sizes="100vw"
             className="scale-110 object-cover"
           />

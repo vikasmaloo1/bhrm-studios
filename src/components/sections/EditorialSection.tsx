@@ -1,7 +1,7 @@
-import Image from 'next/image';
 import { Container } from '@/components/layout/Container';
 import { SectionHeading } from '@/components/ui/SectionHeading';
-import { MaskReveal, Parallax } from '@/lib/motion/primitives';
+import { MediaFrame } from '@/components/ui/MediaFrame';
+import { MaskReveal } from '@/lib/motion/primitives';
 import { editorial } from '@/content/home';
 
 /**
@@ -28,21 +28,16 @@ export function EditorialSection() {
               intro={editorial.intro}
             />
 
-            <MaskReveal
-              from="up"
+            <MediaFrame
+              src="/media/art-orbit.webp"
+              alt=""
+              aspect="aspect-[4/5]"
+              caption="Ahmedabad, 2026"
               delay={0.15}
-              className="relative mt-12 hidden aspect-[4/5] overflow-hidden rounded-plate lg:block"
-            >
-              <Parallax strength={7} scaleOut className="h-full w-full">
-                <Image
-                  src="/media/plate-editorial.webp"
-                  alt=""
-                  fill
-                  sizes="24rem"
-                  className="object-cover"
-                />
-              </Parallax>
-            </MaskReveal>
+              parallax={7}
+              sizes="24rem"
+              className="mt-12 hidden lg:block"
+            />
           </div>
 
           {/* ---- beliefs ---- */}
@@ -70,18 +65,13 @@ export function EditorialSection() {
             ))}
 
             {/* Media on small screens, where the sticky column is hidden. */}
-            <MaskReveal
-              from="up"
-              className="relative mt-4 aspect-[16/11] overflow-hidden rounded-plate lg:hidden"
-            >
-              <Image
-                src="/media/plate-editorial.webp"
-                alt=""
-                fill
-                sizes="100vw"
-                className="object-cover"
-              />
-            </MaskReveal>
+            <MediaFrame
+              src="/media/art-orbit.webp"
+              alt=""
+              aspect="aspect-[16/11]"
+              sizes="100vw"
+              className="mt-4 lg:hidden"
+            />
           </ol>
         </div>
       </Container>

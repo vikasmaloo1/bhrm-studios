@@ -25,7 +25,14 @@ export function ProcessSection() {
     >
       {/* Generated plate, held well back so type stays the subject. */}
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-45">
-        <Image src="/media/plate-process.webp" alt="" fill sizes="100vw" className="object-cover" />
+        <Image
+          src="/media/art-process.webp"
+          alt=""
+          fill
+          loading="eager"
+          sizes="100vw"
+          className="object-cover"
+        />
         <div className="absolute inset-0 bg-gradient-to-b from-ink via-ink/55 to-ink" />
       </div>
 

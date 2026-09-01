@@ -1,6 +1,7 @@
 import { Navigation } from '@/components/layout/Navigation';
 import { Footer } from '@/components/layout/Footer';
 import { Hero } from '@/components/sections/Hero';
+import { MediaBand } from '@/components/sections/MediaBand';
 import { EditorialSection } from '@/components/sections/EditorialSection';
 import { StatementSection } from '@/components/sections/StatementSection';
 import { ProcessSection } from '@/components/sections/ProcessSection';
@@ -20,6 +21,7 @@ export default function Home() {
       <Navigation />
       <main id="main" tabIndex={-1} className="flex-1">
         <Hero />
+        <MediaBand />
         <EditorialSection />
         <StatementSection />
         <ProcessSection />
