@@ -184,8 +184,7 @@ are client components — the rest render on the server.
 - **No** state library, no CSS-in-JS, no icon library, no `clsx`/`tailwind-merge`
   — a six-line `cn()` covers the need.
 - **No** backend, database, CMS, auth, analytics, HubSpot or Google Sheets.
-- Imagery is eight generated artifacts (`scripts/generate-media.py`), not
-  stock. See `docs/poc/ASSETS.md`. Nothing is licensed,
+- Imagery is generated in CSS. Nothing is downloaded, nothing is licensed,
   nothing is copied from either reference site.
 
 ### Two robustness fixes worth calling out

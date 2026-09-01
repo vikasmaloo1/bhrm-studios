@@ -60,8 +60,7 @@ export function Hero() {
           '[data-hero-meta] > *',
           { opacity: 0, y: 14, duration: duration.fast, stagger: stagger.tight },
           1.0
-        )
-        .from('[data-hero-plate-caption]', { opacity: 0, y: 12, duration: duration.fast }, 1.35);
+        );
 
       // Plate drifts against the scroll.
       gsap.to('[data-hero-plate-inner]', {
@@ -125,7 +124,7 @@ export function Hero() {
           </TextReveal>
 
           {/* ---- argument left, media right ---- */}
-          <div className="mt-12 grid items-start gap-10 lg:mt-16 lg:grid-cols-[minmax(0,1fr)_minmax(0,42%)] lg:gap-14">
+          <div className="mt-12 grid items-start gap-10 lg:mt-16 lg:grid-cols-[minmax(0,1fr)_minmax(0,38%)] lg:gap-16">
             <div>
               <p data-hero-rise className="max-w-[34rem] text-lead text-muted">
                 {hero.subline}
@@ -165,48 +164,26 @@ export function Hero() {
               </dl>
             </div>
 
-            {/* The photograph breaks the container's right gutter and hangs
-                below the column beside it, crossing into the marquee band.
-                Breaking the grid on one side is what stops the hero reading as
-                two tidy boxes.
-
-                Bleeding by the gutter rather than `calc(50% - 50vw)`: the vw
-                unit includes the scrollbar, so the viewport-width version
-                overshoots by ~8px and puts a horizontal scrollbar on the
-                document. */}
+            {/* Plate hangs lower than the column beside it, so it crosses into
+                the marquee band instead of sitting inside a tidy row. */}
             <div
               data-hero-plate
-              className="relative aspect-[4/5] overflow-hidden rounded-plate lg:-mr-gutter lg:mb-[-7rem] lg:aspect-[3/3.9] lg:rounded-r-none"
+              className="relative aspect-[4/5] overflow-hidden rounded-plate border border-ink/10 shadow-[0_40px_90px_-50px_rgba(20,18,15,0.55)] lg:mb-[-7rem] lg:aspect-[3/3.6]"
+              aria-hidden="true"
             >
+              {/* Parallax runs on the image itself. An extra wrapper here only
+                  adds a compositing layer for no benefit. The crop is biased
+                  toward the disc: the plate's top-left is pale paper and would
+                  otherwise vanish into the page background. */}
               <Image
                 data-hero-plate-inner
-                src="/media/art-aperture.webp"
+                src="/media/plate-hero.webp"
                 alt=""
-                aria-hidden="true"
                 fill
                 priority
-                sizes="(max-width: 1024px) 100vw, 46vw"
-                className="scale-[1.12] object-cover"
+                sizes="(max-width: 1024px) 100vw, 38vw"
+                className="scale-110 object-cover object-[58%_55%]"
               />
-
-              {/* Warm the photograph into the page rather than letting it sit
-                  on top of the paper as a cold grey rectangle. */}
-              <div
-                aria-hidden="true"
-                className="absolute inset-0 bg-gradient-to-tr from-accent/22 via-transparent to-paper/25 mix-blend-multiply"
-              />
-
-              <div
-                data-hero-plate-caption
-                className="absolute right-5 bottom-5 left-5 flex items-end justify-between gap-4"
-              >
-                <span className="font-mono text-[0.625rem] tracking-[0.16em] text-paper/85 uppercase">
-                  One team, whole stack
-                </span>
-                <span className="font-mono text-[0.625rem] tracking-[0.16em] text-paper/60 tabular-nums">
-                  01 / 04
-                </span>
-              </div>
             </div>
           </div>
         </Container>

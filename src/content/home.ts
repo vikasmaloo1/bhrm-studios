@@ -96,40 +96,6 @@ export const editorial = {
 } as const;
 
 /**
- * Triptych band. Captions carry the argument rather than describing the
- * picture, so the images earn their place instead of decorating.
- */
-export const mediaBand = {
-  label: 'How the work looks before it looks like anything',
-  items: [
-    {
-      src: '/media/art-strata.webp',
-      alt: '',
-      aspect: 'aspect-[4/5]',
-      index: '01',
-      caption: 'Brand · Product · Front end · Back end',
-      parallax: 10,
-    },
-    {
-      src: '/media/art-prism.webp',
-      alt: '',
-      aspect: 'aspect-[4/5]',
-      index: '02',
-      caption: 'Layers that line up',
-      parallax: 6,
-    },
-    {
-      src: '/media/art-node.webp',
-      alt: '',
-      aspect: 'aspect-[16/10] lg:aspect-[4/5]',
-      index: '03',
-      caption: 'A system, not a page',
-      parallax: 13,
-    },
-  ],
-} as const;
-
-/**
  * The pinned statement between the beliefs and the process.
  *
  * The sentence is lifted verbatim from the homepage subline ("We design and

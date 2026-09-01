@@ -1,5 +1,4 @@
 import { Container } from '@/components/layout/Container';
-import { FitText } from '@/components/ui/FitText';
 import { MaskReveal } from '@/lib/motion/primitives';
 import { footer, nav, site } from '@/content/home';
 
@@ -95,13 +94,14 @@ export function Footer() {
         </div>
       </Container>
 
-      {/* Oversized wordmark closing the page. Sized by measurement rather than
-          a vw guess, so the full name always lands edge to edge instead of
-          running off and getting clipped. */}
-      <MaskReveal from="up" drift={false} className="relative mt-6 select-none px-gutter lg:mt-10">
-        <div aria-hidden="true" className="-mb-[0.155em]">
-          <FitText className="bhmr-display leading-[0.78] text-paper/[0.09]">BHMR STUDIOS</FitText>
-        </div>
+      {/* Oversized wordmark, cropped by both edges. */}
+      <MaskReveal from="up" drift={false} className="relative mt-4 select-none lg:mt-8">
+        <p
+          aria-hidden="true"
+          className="bhmr-display -mb-[0.16em] w-full text-center text-[clamp(4.5rem,22vw,20rem)] leading-[0.8] whitespace-nowrap text-paper/[0.07]"
+        >
+          BHMR Studios
+        </p>
       </MaskReveal>
     </footer>
   );
