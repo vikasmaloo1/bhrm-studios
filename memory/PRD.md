@@ -1,66 +1,42 @@
-# BHMR Studios — Homepage POC
+# BHMR Studios — POC PRD (working memory)
 
-## Original Problem Statement
+## What this is
+Single-page marketing POC for BHMR Studios (embedded design + build studio).
+Stack: Next.js 16 (App Router) + React 19 + Tailwind v4 + GSAP/ScrollTrigger.
+pnpm 11, Node 24. Scroll-driven, motion-forward. NO backend / forms / CMS /
+integrations — POC only.
 
-Build a single-page visual POC for BHMR Studios — a premium digital studio homepage. Clean white background, near-black typography, BHMR orange accent (#FF5A1F). Bold modern typography, rich imagery, real motion (GSAP/ScrollTrigger), premium studio aesthetic. No backend, no auth, no CMS.
+## Environment notes (this pod)
+- App is a Next.js project at the repo root `/app` (NOT the standard
+  frontend/backend split). Cloned from github.com/vikasmaloo1/bhrm-studios (main).
+- Node 24 lives at `/root/.node24/bin` (pod base only ships Node 20, too old
+  for pnpm 11). Always `export PATH=/root/.node24/bin:$PATH` before pnpm.
+- Dev server runs via supervisor program **nextjs** (`next dev` on 0.0.0.0:3000).
+  Restart: `sudo supervisorctl restart nextjs`.
+- Preview host added to `next.config.ts` allowedDevOrigins.
 
-## Tech Stack
+## Core requirements (client, static)
+- Hero title in **DM Serif Display**; white bg, near-black ink, BHMR orange (#FF5A1F) accent.
+- Must contain: Hero · scroll-text Section 01 (Honest Address) · Section 02
+  (Beliefs) · **7-stage process (white, vertical top-to-bottom pinned motion)** ·
+  three client types (Pre-launch founders / Growing SMBs / Funded startups) · CTA · Footer.
+- Motion from TEXT + COMPONENTS + SCROLL only — no floating blobs/dots/lamp/decoration.
+- Word-by-word smooth scroll-fill text (reference: bhrm-studios.vercel.app).
+- Everything responsive & motioned on mobile/tablet/desktop (1440/1280/1024/768/480/390/360).
 
-- **Framework:** Next.js 16 (App Router, React Compiler enabled), TypeScript 5 strict
-- **Styling:** Tailwind CSS v4 with `@theme` design tokens
-- **Motion:** GSAP + ScrollTrigger (masked reveals, parallax, pinned horizontal scroll, magnetic buttons, word-by-word ink reveal)
-- **Fonts:** Archivo Black display / DM Serif Display italic emphasis / Instrument Sans body / JetBrains Mono meta
-- **Runtime:** supervisor → `npm run dev` on port 3000
-- **Media:** Unsplash + inline SVG accents (no stock handshakes / rocks / meeting photos)
+## Implemented (2026-09-01)
+- `WordFillReveal` — smooth overlapping word-by-word scrubbed ink-in (Sections 01 & 02).
+- Vertical pinned 7-stage progression (`ProcessTimeline.tsx`) — desktop rail + dot,
+  mobile bottom progress bar; same idea all breakpoints.
+- Address section rebuilt typography-only; workspace/lamp photo removed (no replacement).
+- Statement orange gradient wash removed; outline wordmarks now show on mobile.
+- Client-type cards: staggered parallax + clip reveal + hover.
+- Validation: `pnpm check` passes; Playwright 8/8 at 1440/768/390 (no overflow,
+  progressive fill, counter 01→07, no nav overlap).
 
-## Architecture
+## Backlog / next (all gated on client acceptance)
+- P1: Real-browser playback smoothness sign-off (env can't render frames).
+- P2: Remaining pages, Figma, forms/HubSpot/Sheets, backend, DNS, production deploy — OUT OF SCOPE now.
 
-```
-src/
-├── app/
-│   ├── layout.tsx        — root layout + font stack
-│   ├── page.tsx          — homepage composition
-│   └── globals.css       — design tokens + utilities
-├── components/
-│   ├── layout/           — Navigation, Footer, Container
-│   ├── sections/         — Hero, Address, Editorial, Statement, Process (+timeline), CTA
-│   ├── ui/               — Button (label-swap + magnetic), Marquee, SectionHeading, Eyebrow
-│   └── visuals/          — LayerStack (isometric 3D CSS)
-├── content/home.ts       — all copy verbatim from BHMR sources
-└── lib/motion/           — gsap.ts, TextReveal, primitives (MaskReveal, Parallax, Magnetic, Counter), tokens
-```
-
-## What's Been Implemented (2026-01)
-
-- **Navigation** — pill nav that condenses on scroll, mobile sheet menu with focus containment
-- **Hero** — rotating orange sun-burst, oversized display headline w/ accent + serif italic emphasis, two overlapping media plates with parallax, meta strip, marquee band
-- **The Honest Address** — asymmetric two-col with sticky studio image, client-type cards, industries pills, region strip
-- **What We Believe** — sticky editorial heading + belief list with hover color shift
-- **Statement (hinge)** — pinned section, word-by-word ink reveal on scroll scrub, orange rule fills across
-- **How We Work** — dark section with pinned horizontal 7-stage timeline (progress rail), gates aside
-- **CTA** — full-bleed dark, oversized caps, magnetic button, meta strip
-- **Footer** — brand recap, email w/ hover underline, registration details, oversized cropped wordmark
-- **Motion language** — coherent tokens (durations, eases, staggers), respects `prefers-reduced-motion`, frame-loop watchdog fallback
-- **Responsive** — tested at 1920 desktop and 390 mobile; asymmetric layouts adapt independently, not just shrunk
-
-## Design Tokens
-
-- Surface: `#ffffff` (pure white), depth breaks with `#f4f4f2`
-- Ink: `#0a0a0a`
-- Accent: `#ff5a1f` (surfaces), `#d63f0a` (as text), `#ff7a44` (hover)
-- Display: Archivo 900 caps, tight tracking; DM Serif italic for emphasis
-
-## Backlog / Out of Scope
-
-- Other 8 pages (About, Services, Pricing, Work With Us, Careers, DBD, Privacy, ToS)
-- Backend, database, auth, CMS
-- HubSpot / Google Sheets integration
-- Careers functionality, dashboards
-- Production deployment (POC preview only)
-
-## Deferred Next Steps
-
-- P1: About + Services pages sharing the same design system
-- P1: Real case studies / work section once client provides assets
-- P2: Multi-step enquiry form (currently the CTA is an anchor)
-- P2: Analytics + performance tuning + accessibility audit against WCAG AA
+## Status
+PHASE 2 — POC — READY FOR CLIENT REVIEW. Rework in working tree only (not committed/deployed).

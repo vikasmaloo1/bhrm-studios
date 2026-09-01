@@ -826,3 +826,65 @@ and via the objective checks above, not by observation.
 Owner to view the reworked POC in a real browser and confirm the direction
 before it goes back to the client. Not committed — per standing instruction
 this pass remains in the working tree only.
+
+---
+
+## P-010 — POC refinement: mobile text-motion, vertical 7-stage, cleanup (2026-09-01)
+
+**Requested by:** Human owner, relaying client feedback on the deployed POC.
+
+**Task:** Focused motion + responsive pass. Make the scroll-driven text
+smoother (word-by-word, continuous interpolation) especially on mobile; make
+the seven-stage process a VERTICAL top-to-bottom pinned progression (no
+left/right travel) that also works intentionally on mobile; remove the
+remaining workspace/lamp photo with no replacement; fix fixed-nav overlap;
+keep white/near-black/orange + DM Serif hero. Still POC only.
+
+### Changes made
+
+- **New `WordFillReveal` motion primitive** (`src/lib/motion/WordFillReveal.tsx`):
+  each word is a server-rendered span that inks in (opacity 0.2 → 1) on a
+  scrubbed ScrollTrigger. Overlapping stagger (each 0.42 < duration 1) makes
+  it read as a moving gradient, not on/off toggles. Fill mapped to a constant
+  ~22px/word (18px mobile), capped at 1500px, so short and long paragraphs
+  resolve at the same comfortable pace and the viewport never strands in a
+  half-lit line. `scrub: 1` for glide.
+- **Address section** (`AddressSection.tsx`) rebuilt typography-only: the
+  workspace/lamp photograph is REMOVED with no replacement (client rule —
+  whitespace is acceptable). Heading holds the sticky left rail; the two
+  paragraphs fill word-by-word on scroll. Industries + region + stat strip
+  retained as content.
+- **Seven-stage process** (`ProcessTimeline.tsx`) rewritten from the pinned
+  *horizontal* track to a pinned **vertical single-card progression**: the
+  section pins, and as you scroll down each stage lifts away (y + clip) as the
+  next rises and clip-reveals in. Desktop shows a vertical rail whose dot +
+  fill travel down; mobile shows a slim bottom progress bar and a shorter
+  pinned scene (`build(endScale, scrub)` per breakpoint). Same design idea on
+  every width — not disabled on mobile.
+- **Statement section**: removed the decorative orange radial gradient wash
+  (client: no orange decoration/floating).
+- Editorial "Beliefs" outline wordmark and Statement "BHMR®" wordmark now
+  render on all breakpoints (scaled), clipped by their section — visuals no
+  longer desktop-only.
+
+### Validation Performed
+
+- `pnpm check` (format:check + lint + typecheck + build) — all PASS.
+- Automated Playwright pass (real viewports + scrolling, motion enabled) at
+  1440 / 768 / 390 — 8/8 checks pass:
+  - No horizontal overflow (scrollWidth == clientWidth) at all three widths.
+  - Word-fill is progressive: sampled first/mid/last word opacity moves
+    0.20→1.00 across scroll (not all-at-once); all 109 words reach 1.00.
+  - Process counter advances 01→07 vertically at every breakpoint; stage
+    titles change in order; active card never overlaps the fixed header.
+  - Mobile hamburger opens/closes; three client types present; CTA + footer
+    reachable; zero console/page errors.
+  - Confirmed no `<img>` (lamp/workspace photo) remains in the address section.
+
+### What still requires manual Chrome verification
+
+Per the standing environment limitation, animation *playback smoothness* was
+not observed frame-by-frame — it is verified structurally (GSAP/ScrollTrigger
+config) and via sampled opacity/counter values, not by eye. Owner should
+scroll the first two text sections and the seven-stage process slowly in a
+real browser at 390/768/1440 to confirm the feel.

@@ -5,6 +5,9 @@ const nextConfig: NextConfig = {
   allowedDevOrigins: [
     'design-showcase-poc.cluster-2.preview.emergentcf.cloud',
     'design-showcase-poc.preview.emergentagent.com',
+    '4e479c22-e284-4266-b222-4e3d21e9dc86.preview.emergentagent.com',
+    'bhmr-poc-refined.preview.emergentagent.com',
+    'bhmr-poc-refined.cluster-12.preview.emergentcf.cloud',
     'localhost',
   ],
   images: {

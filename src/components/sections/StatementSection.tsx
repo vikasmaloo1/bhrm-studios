@@ -70,24 +70,16 @@ export function StatementSection() {
       className="relative flex min-h-[70vh] items-center overflow-hidden bg-paper py-section md:min-h-screen md:py-0"
       data-testid="statement-section"
     >
-      {/* Orange gradient wash */}
+      {/* Giant outline wordmark drifting behind the statement — every
+          breakpoint now (client: visuals on tablet/mobile too), scaled to fit
+          small screens and clipped by the section's overflow-hidden. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute inset-0 opacity-[0.06]"
-        style={{
-          background:
-            'radial-gradient(circle at 20% 30%, #ff5a1f 0%, transparent 55%), radial-gradient(circle at 80% 70%, #ff5a1f 0%, transparent 55%)',
-        }}
-      />
-
-      {/* Giant outline wordmark drifting behind the statement — md+ only */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none absolute inset-0 hidden items-center overflow-hidden select-none md:flex"
+        className="pointer-events-none absolute inset-0 flex items-center overflow-hidden select-none"
       >
         <p
           data-statement-giant
-          className="bhmr-display bhmr-outline relative pl-[2vw] text-[clamp(9rem,28vw,26rem)] leading-none whitespace-nowrap"
+          className="bhmr-display bhmr-outline relative pl-[2vw] text-[clamp(4.5rem,27vw,26rem)] leading-none whitespace-nowrap"
         >
           BHMR®
         </p>

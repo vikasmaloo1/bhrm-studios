@@ -129,6 +129,29 @@ integrations, no backend, no Figma.
 - `pnpm check` passes. Verified 360/390/768/1024/1440 — zero horizontal
   overflow, zero stranded-invisible elements, all client-type cards present.
 
+**POC refinement pass — motion + mobile (2026-09-01, P-010)** — second round
+of client feedback on the deployed POC: mobile text-scroll felt abrupt, the
+seven-stage motion should run top-to-bottom (not left-to-right), and the
+workspace/lamp photo should go. Reworked in place, not committed:
+
+- New `WordFillReveal` primitive: word-by-word scrubbed ink-in (opacity
+  0.2→1) with overlapping stagger and a constant per-word scroll budget, so
+  Sections 1–2 read as a smooth moving gradient on every device — replaces
+  the earlier chunkier `DriftText` fade on the Address/Beliefs body copy.
+- Seven-stage process flipped from pinned **horizontal** to pinned
+  **vertical single-card progression** (client-specified top-to-bottom): each
+  stage lifts away as the next clip-reveals in; desktop vertical rail + dot,
+  mobile slim bottom progress bar and shorter pinned scene. Same design idea
+  on all breakpoints, not disabled on mobile.
+- Address section workspace/lamp photograph **removed with no replacement**
+  (typography-only now); Statement orange gradient wash removed; giant
+  outline wordmarks now show on mobile too.
+- Automated Playwright verification (motion on, real viewports) at
+  1440/768/390: 8/8 pass — progressive word-fill (0.20→1.00), process counter
+  01→07 vertically at every width, no horizontal overflow, no nav overlap,
+  no lamp image. `pnpm check` passes. Frame-by-frame playback smoothness
+  still needs a real-browser eye check (standing env limitation).
+
 ### PHASE 3 — DESIGN
 
 | Task        | Status     | Notes                    |

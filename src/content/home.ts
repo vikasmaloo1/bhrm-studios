@@ -73,8 +73,8 @@ export const address = {
   industries: ['SaaS', 'Ecommerce', 'Healthcare', 'Fintech', 'Edtech', 'B2B'],
   regions: 'US · UK · Canada · Australia · NZ · UAE · Singapore · Europe',
   image: {
-    src: 'https://images.unsplash.com/photo-1524758631624-e2822e304c36?auto=format&fit=crop&w=1100&q=80',
-    alt: 'Studio workspace with design tools, sketches and laptop',
+    src: 'https://images.unsplash.com/photo-1558655146-d09347e92766?auto=format&fit=crop&w=1100&q=80',
+    alt: 'A design-system interface on a studio monitor',
   },
 } as const;
 

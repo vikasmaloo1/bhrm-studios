@@ -1,6 +1,7 @@
 import { Container } from '@/components/layout/Container';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { DriftText } from '@/lib/motion/DriftText';
+import { WordFillReveal } from '@/lib/motion/WordFillReveal';
 import { MaskReveal } from '@/lib/motion/primitives';
 import { Scrub } from '@/lib/motion/Scrub';
 import { editorial } from '@/content/home';
@@ -26,14 +27,15 @@ export function EditorialSection() {
       className="bhmr-noise relative overflow-hidden bg-paper-deep/40 py-section"
       data-testid="beliefs-section"
     >
-      {/* Giant outline word drifting horizontally with scroll — desktop only,
-          it collides with the eyebrow at small widths */}
+      {/* Giant outline word drifting horizontally with scroll — now on every
+          breakpoint (client: visuals must show on tablet/mobile too), scaled
+          down on small screens and clipped by the overflow-hidden section. */}
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute top-8 right-0 left-0 hidden overflow-hidden select-none md:block"
+        className="pointer-events-none absolute top-6 right-0 left-0 overflow-hidden select-none md:top-8"
       >
         <Scrub from={{ xPercent: 12 }} to={{ xPercent: -12 }} triggerParent>
-          <p className="bhmr-display bhmr-outline text-right text-[clamp(6rem,18vw,17rem)] leading-none whitespace-nowrap">
+          <p className="bhmr-display bhmr-outline text-right text-[clamp(3.5rem,17vw,17rem)] leading-none whitespace-nowrap">
             Beliefs
           </p>
         </Scrub>
@@ -54,7 +56,7 @@ export function EditorialSection() {
           </div>
 
           <ol className="flex flex-col">
-            {editorial.beliefs.map((belief, index) => (
+            {editorial.beliefs.map((belief) => (
               <li
                 key={belief.index}
                 className="bhmr-rule group relative py-10 first:border-t-0 first:pt-0 sm:py-14"
@@ -69,11 +71,10 @@ export function EditorialSection() {
                     </span>
                   </MaskReveal>
 
-                  <DriftText speed={0.3 + (index % 3) * 0.15} distance={50}>
-                    <p className="text-h3 text-balance text-ink transition-[color,transform] duration-500 ease-[var(--ease-out-expo)] group-hover:translate-x-2 group-hover:text-accent-ink">
-                      {belief.text}
-                    </p>
-                  </DriftText>
+                  <WordFillReveal
+                    text={belief.text}
+                    className="text-h3 text-ink transition-[color,transform] duration-500 ease-[var(--ease-out-expo)] group-hover:translate-x-2 group-hover:text-accent-ink"
+                  />
                 </div>
               </li>
             ))}

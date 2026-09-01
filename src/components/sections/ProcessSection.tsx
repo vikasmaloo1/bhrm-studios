@@ -42,7 +42,7 @@ export function ProcessSection() {
         </div>
       </Container>
 
-      <div className="relative mt-16 pb-section lg:mt-24 lg:pb-0">
+      <div className="relative mt-14 lg:mt-20">
         <ProcessTimeline stages={process.stages} />
       </div>
     </section>

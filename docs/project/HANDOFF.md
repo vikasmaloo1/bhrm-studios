@@ -19,7 +19,10 @@
 **2026-09-01, later:** Nikky reviewed the deployed POC live and called it
 "more gaming type, not professional," with a detailed brief on what to fix.
 Reworked in the local working tree — see PROMPT_LOG P-009 for the full
-list. **This rework is not committed or deployed yet** — the live
+list. A second refinement round (P-010) followed: smoother word-by-word
+mobile text motion, the seven-stage process rebuilt as a vertical
+top-to-bottom pinned progression, and the workspace/lamp photo removed.
+**This rework is not committed or deployed yet** — the live
 `bhmr-studios.vercel.app` still shows the pre-feedback version until the
 owner reviews the rework locally and pushes it.
 

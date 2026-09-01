@@ -1,0 +1,30 @@
+{
+  "summary": "Frontend-only Playwright verification of the BHMR POC at the preview URL for the 8 requested items across 1440x900, 768x1024 and 390x844. RESULT: all 8 pass. (1) No horizontal overflow: documentElement.scrollWidth == clientWidth exactly at all three widths (1440/1440, 768/768, 390/390), also re-sampled every 600px through a full top-to-bottom scroll at 768 (max scrollWidth stayed 768) and after scrolling to the very bottom at 1440. (2) Navigation: data-testid='site-header' visible at all widths; at 390 the desktop link (nav-link-address) is hidden and mobile-menu-toggle is visible, clicking it opens mobile-menu-panel (full-bleed panel covering content, screenshot confirms), 3 links present ('01 THE ADDRESS', '02 BELIEFS', '03 HOW WE WORK') plus a CTA; clicking the first link scrolls (scrollY 1597) and closes the panel. (3) Hero: data-testid='hero-section' visible and H1 renders the exact required sentence. (4) Address word-fill: 109 <span data-wf-word> nodes, full paragraph copy present in DOM, NO <img> inside address-section (0 images -> lamp/workspace photo removed). Fill is PROGRESSIVE, not all-at-once: at sectionTop-600 first/mid/last = 0.20/0.20/0.20; at -300 -> 1.00/0.20/0.20; at +300 -> 1.00/1.00/0.20; at +2000 -> 1.00/1.00/0.74; from +2500 onward every one of the 109 words is opacity 1.00 (min=max=1.00, 0 words below 0.99). Mobile 390 same shape: -400 first/last 0.20/0.20, +0 1.00/0.20, +900 1.00/0.20, +1600 onward all 1.00. (5) 7-stage process: exactly 7 [data-panel-card] stages; VERTICAL pinned progression (no horizontal track). Counter data-testid='process-progress-counter' sequences: 1440 -> 01,01,01,01,02,02,03,04,04,05,05,06,06,07,07 with titles advancing Discovery & Alignment -> Scope & Roadmap Lock -> Design -> Engineering & Build -> Testing & Hardening -> Launch & Handover -> Post-Launch Support; 768 -> 01,01,02,02,03,03,04,04,05,05,06,06,07,07; 390 -> 01,01,02,02,03,04,04,05,06,06,07,07,07,07 (both [data-active-counter] nodes stay in sync on mobile). Active card never overlaps the fixed header (card rect.top always > header rect.bottom at every sampled offset). (6) client-type-0/1/2 all present with 'Pre-launch founders', 'Growing SMBs', 'Funded startups'. (7) cta-button and footer visible after scrolling to bottom. Zero pageerror and zero console errors on all three viewport runs.",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "Process pinned scene (1440 and 768)",
+        "issues": [
+          "The pinned stage card is short relative to the reserved 74-82vh scene, so there is a large band of empty white above and below the card (visible at both 1440 and 768). Consider tightening the scene height or anchoring the card nearer the optical centre."
+        ]
+      }
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [],
+  "critical_code_review_comments": [
+    "data-testid='process-progress-counter' only exists on the desktop rail (hidden below md). Mobile counter uses a bare [data-active-counter] span. It still resolves via querySelector so tests work, but adding the testid to the mobile counter too would make mobile assertions target a visible node.",
+    "Stage titles use ampersands ('Discovery & Alignment', 'Engineering & Build') whereas the request text used 'and'. Content choice, not a defect — flagging only so copy expectations match.",
+    "WordFillReveal scroll budget is words.length * 34px (desktop). With 109 words the second paragraph needs ~2.4k px of extra scroll past the section top to finish; verified it does complete, but the budget is close to the point where the section has already scrolled well out of view."
+  ],
+  "updated_files": [],
+  "success_rate": { "backend": "N/A (no backend in scope)", "frontend": "100% (8/8 requested checks pass)" },
+  "seed_data_creation": "None — static content POC",
+  "should_call_test_agent_after_fix": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "No backend. Preview URL only (port 3000, Next.js dev). Verified testids: site-header, nav-link-address, mobile-menu-toggle, mobile-menu-panel, mobile-nav-link-*, hero-section, address-section (109 [data-wf-word], no img), process-section/process-timeline with 7 [data-panel-card] and process-progress-counter (desktop rail only; mobile uses [data-active-counter]), client-type-0..2, cta-button. Sample GSAP state via computed opacity + counter textContent after window.scrollTo with >=1.1s waits (scrub is 0.7-1s, so shorter waits read stale values). No horizontal overflow at 390/768/1440.",
+  "rca_of_the_issue": "N/A — no failures reproduced."
+}
