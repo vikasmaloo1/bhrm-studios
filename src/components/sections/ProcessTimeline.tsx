@@ -124,9 +124,16 @@ export function ProcessTimeline({ stages }: { stages: readonly Stage[] }) {
       <ol
         ref={trackRef}
         className={cn(
-          'flex flex-col',
+          // The vertical (mobile/tablet) layout has no ancestor Container —
+          // ProcessTimeline deliberately sits outside one so the desktop
+          // horizontal track can bleed to the viewport edge. Without its own
+          // gutter here, stage text runs flush against the screen edge below
+          // 1024px, since none of the group-data-[horizontal] padding below
+          // applies until that breakpoint.
+          'flex flex-col px-gutter',
           'group-data-[horizontal]/track:h-screen group-data-[horizontal]/track:flex-row',
           'group-data-[horizontal]/track:items-start group-data-[horizontal]/track:pt-[15vh]',
+          'group-data-[horizontal]/track:px-0',
           'group-data-[horizontal]/track:pr-[38vw] group-data-[horizontal]/track:pl-gutter'
         )}
       >
