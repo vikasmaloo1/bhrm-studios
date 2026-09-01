@@ -16,7 +16,11 @@ import { address } from '@/content/home';
  */
 export function AddressSection() {
   return (
-    <section id="address" className="relative py-section" data-testid="address-section">
+    <section
+      id="address"
+      className="bhmr-panel relative bg-paper py-section"
+      data-testid="address-section"
+    >
       <Container>
         <SectionWipe className="mb-12 lg:mb-16" />
         <div className="grid gap-12 lg:grid-cols-[minmax(0,22rem)_minmax(0,1fr)] lg:gap-20">

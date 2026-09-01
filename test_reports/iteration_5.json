@@ -1,0 +1,53 @@
+{
+  "summary": "Frontend-only verification (no backend) of the panel-overlap system, curvy SVG process spine, hero scroll-exit and SectionHeading parallax on the preview URL at 1440x900, 768x1024 and 390x844. RESULT: all critical checks PASS. (1) HORIZONTAL OVERFLOW: zero violations - documentElement.scrollWidth - clientWidth = 0 at every ~700px sample through the whole page at all three widths (desktop page height 15331, tablet 13680, mobile 13330; max delta 0 everywhere). The negative-margin/rounded-corner panels introduce no horizontal scrollbar. (2) PANEL OVERLAP: 6 .bhmr-panel sections found in order address/client-types/beliefs/statement/process/cta; computed margin-top -44px and border-top-radius 44px on address, client-types, beliefs, process, cta with explicit opaque backgrounds (#fff, #fff, #f4f4f2, #fbf0e8, #0a0a0a). EXCEPTION: statement-section computes margin-top: 0px because GSAP pin writes inline 'margin: 0px' on it (it is wrapped in a pin-spacer), so the overlap silently does not apply to that one panel. (3) NO CLIPPED CONTENT: scrolled each panel into view at 390 - every heading/eyebrow visible with opacity 1, elementFromPoint at the heading returns the heading itself (nothing overlaying), nav bottom = 74px and no heading was trapped under it. client-type-0/1/2 all visible (350px wide, opacity 1), 4 Beliefs items all 350px wide inside viewport, Statement text fully readable, all 7 process cards reach opacity 1 / visibility visible with correct titles, CTA heading + cta-button visible, clickable (click navigates to #start) and footer reachable. (4) CURVY SPINE: [data-testid='process-timeline'] once, one <svg> with exactly 2 <path>; progress path has a non-empty d (265 chars, cubic-beziers) and stroke-dasharray 4154.27px with stroke-dashoffset scrubbing 4007 -> 2807 -> 1623 -> 440 -> 0 monotonically as you scroll down; 7 [data-panel-card] each containing exactly 1 <svg> icon; desktop alternation L,R,L,R,L,R,L; 7 [data-node] dots activate strictly progressively (1000000 -> 1100000 -> 1111000 -> 1111110 -> 1111111). Mobile 390: spine/nodes at x=46, all 7 cards left=76 right=370 (entirely right of the spine, inside viewport); tablet 768: nodes x=57, cards 87..737. (5) HERO SCROLL-EXIT: works but starts later than the request assumed. Hero height is 2061px and the [data-hero-stage] tween uses start:'center top', so at y=650 stage opacity is still 1 / transform identity; it only begins around y~1030 (y=1100 -> opacity 0.945 scale 0.995; y=1400 -> opacity 0.707 scale 0.975; y=2061 -> opacity 0.181 scale 0.930). Headline/plate drift up correctly from the first pixel (y=650: headline -47.6px, plate -32.7px). (6) NAV at 390: mobile-menu-toggle opens (aria-expanded true, panel with The Address / Beliefs / How We Work + Start a Conversation + location) and closes (aria-expanded false); nav does not hide section content. (7) SectionHeading parallax confirmed: the Parallax wrapper transform moves +13.9px -> -0.9px -> -12.8px across three scroll positions. (8) ZERO pageerror and ZERO console errors during load and full scroll at all three viewports.",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "Statement section (all widths)",
+        "issues": [
+          "StatementSection carries .bhmr-panel but is GSAP-pinned; the pin writes inline 'margin: 0px' and wraps it in a pin-spacer, so its negative margin-top (-44px) is cancelled and this panel does NOT tuck over the Beliefs panel. Either drop bhmr-panel here or move the rounded/overlap treatment onto the pin-spacer/an inner wrapper."
+        ]
+      },
+      {
+        "screen": "Hero (1440)",
+        "issues": [
+          "Hero scale/dim exit starts only at ~50% of the hero height (~1030px of scroll) because scrollTrigger start is 'center top' on a 2061px-tall hero. At the 500-700px range the hero is still at full opacity/scale, so the 'recede as you scroll away' read is delayed. Consider start:'top top' with end:'bottom top' (or 'top -20%') if the dim should be perceptible earlier."
+        ]
+      },
+      {
+        "screen": "Panel seam hero -> address (1440)",
+        "issues": [
+          "Both hero background and the Address panel are near-white (#fff over paper), so the 44px rounded top + shadow seam is almost invisible at that first overlap; the effect only reads on the darker panels (beliefs/process/cta). Cosmetic."
+        ]
+      },
+      {
+        "screen": "CTA button",
+        "issues": [
+          "[data-testid='cta-button'] textContent is duplicated ('Start a ConversationStart a Conversation') - presumably the hover/marquee label clone. Harmless visually but it doubles the accessible name; consider aria-hidden on the duplicate span."
+        ]
+      }
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Optional: make the pinned StatementSection participate in the panel overlap (its inline margin:0 from GSAP pin cancels .bhmr-panel margin-top).",
+    "Optional: start the hero stage scale/dim earlier than 'center top' so the recede is visible within the first ~600px of scroll.",
+    "Optional: aria-hidden the duplicated CTA button label."
+  ],
+  "critical_code_review_comments": [
+    "ProcessTimeline: nodes are activated with gsap.to(node,{scrollTrigger:{...}}) with no animated properties - ScrollTrigger.create({trigger:node,...}) is the correct, cheaper expression of intent.",
+    "ProcessTimeline: data-stage is on both the <li> and the inner <article>, so [data-stage] matches 14 elements; rename one for unambiguous selectors.",
+    "ProcessTimeline: add data-testid='process-spine-track'/'process-spine-progress' to the two <path> elements - tests currently have to index svg > path[1].",
+    "globals.css .bhmr-panel relies on margin-top, which any GSAP pin will overwrite inline (see StatementSection). A translate/negative-top or an inner wrapper would be pin-safe."
+  ],
+  "updated_files": [],
+  "success_rate": { "backend": "N/A (frontend-only scope)", "frontend": "100% of critical checks pass (6/6 requested areas); 4 minor design notes" },
+  "seed_data_creation": "None - static content POC",
+  "should_call_test_agent_after_fix": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "No backend. Preview URL = https://bhmr-poc-refined.preview.emergentagent.com (Next.js dev, port 3000). Page heights: 15331 @1440, 13680 @768, 13330 @390. Hero height 2061 @1440 (hero-stage dim starts ~y1030). Process timeline top ~8738 h ~4178 @1440. Selectors verified: [data-testid=process-timeline] (svg > path[0]=track, path[1]=orange progress with strokeDasharray 4154 @1440), 7x [data-panel-card] (1 svg + h3 each), 7x [data-node] with data-active, .bhmr-panel (6 panels, data-testid address/client-types/beliefs/statement/process/cta-section), [data-hero-stage]/[data-hero-headline]/[data-hero-plate], [data-testid=mobile-menu-toggle], client-type-0..2, cta-button, footer. StatementSection IS pinned (inline styles from GSAP) - everything else scrolls normally; window.scrollTo + 1.2s waits suffice. Zero console/page errors.",
+  "rca_of_the_issue": "Only real deviation found: StatementSection's .bhmr-panel negative margin-top is overridden by GSAP's pin, which sets inline 'margin: 0px' on the pinned element and moves it into a pin-spacer. Repro: scroll to statement section and read getComputedStyle(section).marginTop -> 0px while all other panels report -44px."
+}

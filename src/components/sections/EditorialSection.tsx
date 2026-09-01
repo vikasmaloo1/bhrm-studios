@@ -25,7 +25,7 @@ export function EditorialSection() {
   return (
     <section
       id="beliefs"
-      className="bhmr-noise relative overflow-hidden bg-paper-deep/40 py-section"
+      className="bhmr-noise bhmr-panel relative overflow-hidden bg-paper-deep py-section"
       data-testid="beliefs-section"
     >
       {/* Giant outline word drifting horizontally with scroll — now on every

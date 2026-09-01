@@ -20,7 +20,7 @@ export function ClientTypesSection() {
   return (
     <section
       id="clients"
-      className="bhmr-noise relative py-section"
+      className="bhmr-noise bhmr-panel relative bg-paper py-section"
       data-testid="client-types-section"
     >
       <Container>

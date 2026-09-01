@@ -67,7 +67,7 @@ export function StatementSection() {
   return (
     <section
       ref={scope}
-      className="relative flex min-h-[70vh] items-center overflow-hidden bg-paper py-section md:min-h-screen md:py-0"
+      className="bhmr-panel relative flex min-h-[70vh] items-center overflow-hidden bg-paper py-section md:min-h-screen md:py-0"
       data-testid="statement-section"
     >
       {/* Giant outline wordmark drifting behind the statement — every

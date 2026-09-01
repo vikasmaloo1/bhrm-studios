@@ -59,19 +59,26 @@ export function Hero() {
           1.05
         );
 
-      // Scroll: headline and plate separate slightly, section recedes as the
-      // next one arrives. Restrained — no continuous idle motion.
+      // Scroll exit: the headline and plate separate and drift up while the
+      // whole hero recedes (scales back + dims) — so it reads as handing off
+      // to the next panel, which rises over it, rather than just scrolling
+      // away. Scrubbed to the scrollbar, no idle motion.
       const scene = { trigger: el, start: 'top top', end: 'bottom top', scrub: true } as const;
-      gsap.to('[data-hero-headline]', { yPercent: -14, ease: 'none', scrollTrigger: { ...scene } });
-      gsap.to('[data-hero-plate]', { yPercent: -8, ease: 'none', scrollTrigger: { ...scene } });
+      gsap.to('[data-hero-headline]', { yPercent: -26, ease: 'none', scrollTrigger: { ...scene } });
+      gsap.to('[data-hero-plate]', {
+        yPercent: -14,
+        ease: 'none',
+        scrollTrigger: { ...scene },
+      });
       gsap.to('[data-hero-cue]', {
         opacity: 0,
+        y: 20,
         ease: 'none',
-        scrollTrigger: { trigger: el, start: 'top top', end: '+=200', scrub: true },
+        scrollTrigger: { trigger: el, start: 'top top', end: '+=220', scrub: true },
       });
       gsap.to('[data-hero-stage]', {
-        scale: 0.97,
-        opacity: 0.4,
+        scale: 0.93,
+        opacity: 0.18,
         ease: 'none',
         scrollTrigger: { trigger: el, start: 'center top', end: 'bottom top', scrub: true },
       });
@@ -84,7 +91,7 @@ export function Hero() {
     <section
       ref={scope}
       id="top"
-      className="bhmr-noise relative overflow-hidden pt-32 sm:pt-36 lg:pt-40"
+      className="bhmr-noise relative overflow-hidden pt-32 pb-16 sm:pt-36 lg:pt-40 lg:pb-24"
       data-testid="hero-section"
     >
       <div

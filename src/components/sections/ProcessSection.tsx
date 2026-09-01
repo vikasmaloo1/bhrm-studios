@@ -16,7 +16,7 @@ export function ProcessSection() {
   return (
     <section
       id="process"
-      className="bhmr-noise relative z-10 bg-[#fbf0e8] py-section text-ink"
+      className="bhmr-noise bhmr-panel relative z-10 bg-[#fbf0e8] py-section text-ink"
       data-testid="process-section"
     >
       <Container className="relative">

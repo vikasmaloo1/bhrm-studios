@@ -20,7 +20,7 @@ export function CTASection() {
   return (
     <section
       id="start"
-      className="bhmr-noise bhmr-noise-invert relative overflow-hidden bg-ink"
+      className="bhmr-noise bhmr-noise-invert bhmr-panel relative overflow-hidden bg-ink"
       data-testid="cta-section"
     >
       <div aria-hidden="true" className="pointer-events-none absolute inset-0 opacity-80">

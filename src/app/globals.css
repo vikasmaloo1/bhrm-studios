@@ -225,4 +225,17 @@
     color: transparent;
     -webkit-text-stroke: 1.5px rgba(255, 90, 31, 0.45);
   }
+
+  /* Panel overlap — each major section tucks its rounded top over the
+     previous one, so the page reads as one continuous, connected scroll
+     rather than a stack of standalone blocks. The negative margin equals the
+     radius, so the corner clears cleanly; a soft shadow lifts the seam. */
+  .bhmr-panel {
+    position: relative;
+    isolation: isolate;
+    border-start-start-radius: clamp(1.25rem, 3.5vw, 2.75rem);
+    border-start-end-radius: clamp(1.25rem, 3.5vw, 2.75rem);
+    margin-top: calc(-1 * clamp(1.25rem, 3.5vw, 2.75rem));
+    box-shadow: 0 -34px 60px -48px rgba(10, 10, 10, 0.22);
+  }
 }

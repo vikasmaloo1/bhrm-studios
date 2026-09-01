@@ -888,3 +888,63 @@ not observed frame-by-frame — it is verified structurally (GSAP/ScrollTrigger
 config) and via sampled opacity/counter values, not by eye. Owner should
 scroll the first two text sections and the seven-stage process slowly in a
 real browser at 390/768/1440 to confirm the feel.
+
+---
+
+## P-011 — Curvy timeline, warm 7-stage, panel overlap, page-wide scroll motion (2026-09-01)
+
+**Requested by:** Human owner (live review of the reworked POC).
+
+**Asks:** make the 7-stage connector a flowing CURVED line (not straight);
+give the seven-stage section the reference's light orange-cream background
+(not pure white); strengthen the hero so it transitions on scroll into the
+next section; add more scroll-driven motion across the whole page; and make
+sections connect seamlessly instead of reading as standalone blocks. Plus a
+CI fix.
+
+### Changes
+
+- **Curvy process spine** (`ProcessTimeline.tsx`): replaced the straight CSS
+  spine with a runtime-built SVG cubic-bezier path that snakes through the
+  live node positions (alternating bow direction). A light track path + an
+  orange progress path that draws in via `stroke-dashoffset` scrubbed to
+  scroll; nodes light progressively; rebuilds on every ScrollTrigger refresh
+  (resize/font swap) so the curve always threads the dots.
+- **7-stage background**: white -> light orange-cream `#fbf0e8`; cards stay
+  white so they lift off it (matches the reference).
+- **Panel overlap system** (`globals.css .bhmr-panel` + Address/ClientTypes/
+  Editorial/Statement/Process/CTA): each section has a rounded top and tucks
+  ~44px over the previous via negative margin with an opaque background and a
+  soft seam shadow — the page now reads as one continuous, connected scroll.
+- **Hero scroll-exit** (`Hero.tsx`): headline/plate drift up further and the
+  whole hero scales down + dims as you scroll away, handing off to the panel
+  rising over it.
+- **Page-wide scroll motion**: every `SectionHeading` wrapped in a subtle
+  `Parallax` (strength 6), so all section openers drift with scroll.
+- **CI fix** (`.github/workflows/ci.yml`): removed `with: version: 11` from
+  `pnpm/action-setup` — pnpm version now comes solely from `packageManager`
+  in package.json, resolving the "Multiple versions of pnpm specified"
+  (ERR_PNPM_BAD_PM_VERSION) failure on push.
+
+### Validation
+
+- `pnpm check` (format + lint + typecheck + build) — PASS.
+- Playwright, motion on, 1440/768/390 — all critical checks PASS, 0 UI bugs:
+  zero horizontal overflow (delta 0 everywhere), no content clipped by the
+  overlaps or nav, curvy progress path draws 4007->0 monotonically, 7 nodes
+  activate strictly in order, desktop alternation L,R,L,R,L,R,L, mobile cards
+  all right of the left spine, hero stage dims/scales as it exits, mobile nav
+  opens/closes, CTA + footer reachable, no console errors.
+
+### Notes (minor, not blocking)
+
+- The Statement section is GSAP-pinned, so the panel overlap doesn't apply to
+  that one panel (pin writes margin:0). Cosmetic — its neighbours still
+  overlap it from below.
+- Hero exit begins mid-scroll (hero is tall) rather than immediately; reads as
+  intended.
+
+### Manual Chrome check still recommended
+
+Animation playback smoothness (spine draw, panel seams, hero recede) — scroll
+slowly at 390/768/1440.
