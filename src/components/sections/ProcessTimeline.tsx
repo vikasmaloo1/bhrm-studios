@@ -104,7 +104,10 @@ export function ProcessTimeline({ stages }: { stages: readonly Stage[] }) {
         aria-hidden="true"
         className="absolute inset-x-gutter bottom-12 z-20 hidden items-center gap-5 group-data-[horizontal]/track:flex"
       >
-        <span className="font-mono text-meta tracking-[0.16em] text-accent tabular-nums">
+        <span
+          className="font-mono text-meta tracking-[0.16em] text-accent tabular-nums"
+          data-testid="process-progress-counter"
+        >
           {String(active + 1).padStart(2, '0')}
         </span>
         <span className="relative h-px flex-1 bg-paper/15">
@@ -123,7 +126,7 @@ export function ProcessTimeline({ stages }: { stages: readonly Stage[] }) {
         className={cn(
           'flex flex-col',
           'group-data-[horizontal]/track:h-screen group-data-[horizontal]/track:flex-row',
-          'group-data-[horizontal]/track:items-center',
+          'group-data-[horizontal]/track:items-start group-data-[horizontal]/track:pt-[15vh]',
           'group-data-[horizontal]/track:pr-[38vw] group-data-[horizontal]/track:pl-gutter'
         )}
       >

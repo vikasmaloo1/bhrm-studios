@@ -1,0 +1,59 @@
+{
+  "summary": "Frontend-only Playwright testing of BHMR Studios one-page POC (Next.js dev server via preview URL). PRIMARY GOAL VERIFIED: no runtime error overlay and zero uncaught page errors / console errors on load and through full top-to-bottom scroll at 1920x800, 1920x1080 and 390x844; grep confirms no 'tertiary'/'secondary' references remain in src/. Verified hero scene (headline, orange disc, media plate, floating card, rotating badge), custom cursor (visibility, tracking, link scale 1.7x, media 'View' fill 2.4x + html.bhmr-cursor-on), scroll choreography (differential transforms on headline vs disc), Beliefs giant outline horizontal scrub, Address floating shapes, pinned Statement flip (white -> rgb(10,10,10), words -> rgb(246,245,242)), pinned horizontal Process timeline (track x 0 -> -1512px, counter 01 -> 07), CTA dark bg with light-streak image loaded (naturalWidth 1264) + CTA button + oversized footer wordmark, mobile 390 (scrollWidth exactly 390, statement mobile fallback white bg/ink words fully opaque, process vertical list with 7 stages, mobile sheet opens and navigates then closes), and prefers-reduced-motion (headline opacity 1, all sections visible, cursor disabled).",
+  "backend_issues": { "critical": [], "minor": [] },
+  "frontend_issues": {
+    "ui_bugs": [
+      {
+        "component": "TextReveal / .bhmr-line-mask",
+        "issue": "Serif-italic hero line 'worse product' is clipped by its line mask: mask clientHeight 144 vs scrollHeight 156 (12px cut), so italic descenders (p) get shaved. padding-bottom:0.12em in globals.css is not enough for the DM Serif italic line-height. All sans lines measured 0 clipping.",
+        "selector": "#top .bhmr-line-mask (7th line)",
+        "priority": "MEDIUM"
+      },
+      {
+        "component": "AddressSection / Parallax",
+        "issue": "Console warning: next/image with 'fill' has parent with invalid position 'static' (Parallax wrapper 'h-full w-full' lacks relative). Image renders but layout is not guaranteed.",
+        "selector": "[data-testid=\"address-section\"] img",
+        "priority": "LOW"
+      }
+    ],
+    "integration_issues": [],
+    "design_issues": [
+      {
+        "screen": "Statement + Beliefs on mobile 390x844",
+        "issues": [
+          "Decorative giant outline wordmark ('BHMR®' / 'BELIEFS') overlaps the accent rule and the eyebrow line ('02 — WHAT WE BELIEVE'), producing a text-on-text collision at small widths",
+          "An orange FloatingShape dot sits directly on top of the Beliefs eyebrow text"
+        ]
+      },
+      {
+        "screen": "Process horizontal track 1920x800",
+        "issues": [
+          "Stage cards are vertically centred with differing heights, so stage labels sit at four different vertical positions — reads as accidental misalignment rather than a rhythm; consider items-start"
+        ]
+      }
+    ]
+  },
+  "test_report_links": [],
+  "action_items": [
+    "Increase .bhmr-line-mask bottom padding (or per-face padding for .bhmr-serif-italic lines) so italic descenders are not clipped in the hero headline",
+    "Add 'relative' to the Parallax wrapper in AddressSection so next/image fill has a positioned parent (removes console warning)",
+    "Mobile: reduce/offset decorative outline wordmark + floating dot in Statement/Beliefs to avoid overlapping eyebrow text and accent rule",
+    "Optional: align Process horizontal stage cards to the top for a cleaner row"
+  ],
+  "critical_code_review_comments": [
+    "Reported runtime error (hero.media.tertiary.src) is confirmed gone — Hero.tsx only reads hero.media.primary/card, both defined in content/home.ts; nothing else in src/ references tertiary/secondary.",
+    "StatementSection computed initial background is rgb(255,255,255) (not #f6f5f2) — bg-paper token appears to resolve to white here; harmless but worth confirming the token is intended.",
+    "Navigation and Footer had no data-testid attributes; added minimal ones (see updated_files). Process progress counter also had no testid.",
+    "CTA h2 falls back to a single-unit fade because splitIntoLineMasks returns null for its markup (masks count 0) — motion inconsistency vs other headings, not an error."
+  ],
+  "updated_files": [
+    "/app/src/components/layout/Navigation.tsx (added data-testid: site-header, nav-link-*, mobile-menu-toggle, mobile-menu-panel, mobile-nav-link-*)",
+    "/app/src/components/sections/ProcessTimeline.tsx (added data-testid=process-progress-counter)"
+  ],
+  "success_rate": { "backend": "N/A (no backend in scope)", "frontend": "95%" },
+  "seed_data_creation": "None — static content POC",
+  "should_call_test_agent_after_fix": false,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "No backend. Test via preview URL only. Useful testids: hero-section, hero-orange-disc, hero-media-plate, hero-floating-card, hero-rotating-badge, hero-cta-primary/ghost, custom-cursor-dot/ring, address-section, beliefs-section, statement-section, process-section, process-progress-counter (added), cta-section, cta-button, site-header, nav-link-{address|beliefs|process}, mobile-menu-toggle, mobile-menu-panel. GSAP state must be asserted via computed styles/transforms, not visual playback. Note: headless Chromium reports pointer:fine even at 390px, so html.bhmr-cursor-on is present on mobile emulation — not a bug. Below-fold next/image entries can report naturalWidth 0 until scrolled into view; re-check after full scroll.",
+  "rca_of_the_issue": "The reported 'Cannot read properties of undefined (reading src)' was stale hot-reload output referencing the pre-rewrite hero.media.tertiary. Current Hero.tsx reads only hero.media.primary.src and hero.media.card.src, both present in src/content/home.ts, and a full grep for tertiary/secondary in src/ returns nothing. Three independent page loads (desktop, mobile, reduced-motion) with pageerror/console listeners produced zero errors, confirming the error no longer reproduces."
+}

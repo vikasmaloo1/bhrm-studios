@@ -546,3 +546,109 @@ is verified structurally only.
 ### Next Action
 
 Manual pass in Chrome, then **CLIENT REVIEW / POC FEEDBACK**.
+
+---
+
+## P-008 — Merge: Adopt Emergent's POC Design as Baseline
+
+**Date:** 2026-09-01
+**Agent:** CLAUDE CODE
+**Phase:** PHASE 2 — PROOF OF CONCEPT
+
+### Summary
+
+A second AI platform ("Emergent") was independently pointed at this same
+GitHub repository and produced its own POC implementation, pushed directly to
+`origin/main` as commit `b814c49` while this session was mid-turn. The human
+owner reviewed both directions and decided: **Emergent's visual/UI/animation
+work is adopted as the new baseline**, while this repo's governance and
+project-memory files remain authoritative.
+
+### What happened, in order
+
+1. An earlier commit in this session (`6ed726e`, generated-artifact media) was
+   reverted by an external process (`646db74`) with push access to this same
+   repo — not by this session.
+2. Emergent branched from `646db74` and pushed `b814c49` (34 files: full POC
+   rebuild — white/black theme, custom cursor, floating shapes, pinned
+   horizontal process track, Playwright test evidence).
+3. This session restored its own reverted work (`77a12c7`) before the owner's
+   decision was known, then received explicit direction to adopt Emergent's
+   design instead.
+4. Resolved via a real three-way merge (`git merge --no-commit --no-ff
+origin/main`), NOT a force-push or history reset — `origin/main` is a true
+   parent of the resulting commit.
+
+### Conflict resolution rule applied
+
+- **POC UI/component/content files** (Hero, Footer, CTA, Editorial, Process,
+  Statement, page.tsx, content/home.ts) → **theirs** (Emergent).
+- **Governance and project-memory files** (AGENTS.md, CLAUDE.md, `.agent/`,
+  `.claude/`, `docs/product/PRD.md`, `docs/architecture/`, `docs/project/
+{STATUS,DECISIONS,RISKS,HANDOFF,PROMPT_LOG}.md`, `docs/poc/POC_REVIEW.md`,
+  `.env.example`, `pnpm-workspace.yaml`) → **ours** (canonical). These were
+  untouched by Emergent's commit, so this required no manual resolution —
+  git's three-way merge preserved them automatically since only one side had
+  changed them.
+- **Platform-internal artifacts excluded entirely**: `.emergent/` (sandbox
+  cron scripts, job-id metadata) and `.gitconfig` (an Emergent-agent git
+  identity file). Neither belongs in a shared client codebase; removed from
+  the merge rather than silently carried forward.
+- **Kept as genuine evidence**: `.screenshots/*.png` and
+  `test_reports/iteration_1.json` — Emergent's own real Playwright
+  verification (console-error checks, computed-style assertions on GSAP
+  state, mobile 390 checks, `prefers-reduced-motion` checks). This is
+  stronger animation verification than this session could ever produce (see
+  R-011).
+- **Orphaned files from the reverted direction removed** (dead code the
+  adopted `page.tsx` no longer references): `MediaBand.tsx`, `MediaFrame.tsx`,
+  `FitText.tsx`, `Eyebrow.tsx`, `LayerStack.tsx`, and 7 of 8 generated
+  `art-*.webp` plates (`art-orbit.webp` is kept — `ProcessTimeline.tsx`'s
+  auto-merge still references it and it renders correctly).
+
+### Validation Performed
+
+- `pnpm install` — regenerated `pnpm-lock.yaml` (Emergent's commit had deleted
+  it; `packageManager: pnpm@11.25.0` in `package.json` was unchanged and
+  already correct on both sides)
+- `pnpm format` / `format:check` / `lint` / `typecheck` / `build` — all PASS
+  after resolution
+- No leftover conflict markers anywhere in the tree (grepped)
+- No `process.env` references in `src/` — this POC requires no environment
+  variables
+- Loaded in-browser: zero horizontal overflow, zero console errors, 14.2–14.3
+  viewports of scroll at both 1440 and 390
+
+### Known issues carried forward (not fixed — out of scope for this merge)
+
+From Emergent's own `test_reports/iteration_1.json`:
+
+1. Hero's italic "worse product" line is clipped by its own line-mask
+   (12px cut on descenders) — `.bhmr-line-mask` padding insufficient for the
+   DM Serif italic line-height.
+2. `AddressSection`'s `Parallax` wrapper lacks `position: relative`, so
+   `next/image fill` warns about an unpositioned parent.
+
+Found in this session's own verification:
+
+3. **New, not in their report** — at 390px, the hero's decorative orange
+   accent shape overlaps and obscures the final headline line ("AND A BETTER
+   SITE"). Same class of issue as their reported Beliefs/Statement mobile
+   overlap, different location. **Should be fixed before client review** —
+   readability is broken, not just imperfect.
+
+### Risks Identified
+
+- **R-011 (new):** Two AI platforms had concurrent, uncoordinated write
+  access to the same repository and pushed conflicting history without
+  either being aware of the other. This already caused one silent revert of
+  real work. Recommend: going forward, only one tool/session should hold
+  push access to `bhrm-studios/main` at a time.
+- R-008 (reviewer independence) stands, partially offset by Emergent's own
+  Playwright evidence — that is real automated verification this session
+  cannot produce, but it is not independent human or third-agent review.
+
+### Next Action
+
+Deploy to Vercel (this same task), then fix the three known mobile/motion
+issues above before the POC goes to the client.
