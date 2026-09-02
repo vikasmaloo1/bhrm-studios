@@ -948,3 +948,58 @@ CI fix.
 
 Animation playback smoothness (spine draw, panel seams, hero recede) — scroll
 slowly at 390/768/1440.
+
+---
+
+## P-012 - Sequential word-fill timing (2026-09-02)
+
+**Requested by:** Human owner after reviewing the Address section in Chrome.
+
+**Task:** Prevent a later text block from beginning its word-fill highlight
+before the preceding block has completely resolved.
+
+### Changes
+
+- Added `WordFillRevealSequence`, a shared GSAP scrub timeline for related
+  text blocks. Blocks animate in document order and the next block starts only
+  after the preceding block's last word reaches full opacity.
+- Mapped grouped reveals to their rendered content bounds so independent,
+  fixed-length ScrollTrigger ranges can no longer overlap.
+- Applied the sequence to both Address paragraphs and all Beliefs statements;
+  standalone `WordFillReveal` usage retains its existing behavior.
+- Reduced-motion and no-JavaScript fallbacks remain fully legible.
+
+### Files Changed
+
+- `src/lib/motion/WordFillReveal.tsx`
+- `src/components/sections/AddressSection.tsx`
+- `src/components/sections/EditorialSection.tsx`
+- `docs/project/PROMPT_LOG.md`
+
+### Validation Performed
+
+- `pnpm.cmd run format:check` - PASS.
+- `pnpm.cmd run lint` - PASS.
+- `pnpm.cmd run typecheck` - PASS.
+- `pnpm.cmd run build` - PASS; `/` and `/_not-found` generated as static
+  routes.
+
+### Evidence
+
+- The grouped timeline inserts each block at the end of the previous block's
+  tween (`>`), eliminating cross-block animation overlap by construction.
+
+### Decisions Made
+
+- Preserve the soft word-to-word overlap within a paragraph while enforcing
+  a strict completion boundary between paragraphs or belief statements.
+
+### Risks Identified
+
+- Final scroll feel still benefits from owner review in a real browser; no
+  browser automation was requested for this focused source fix.
+
+### Next Action
+
+- Owner to refresh the local page and confirm the transition pace at desktop
+  and mobile widths.

@@ -1,6 +1,6 @@
 'use client';
 
-import { useRef, type ElementType } from 'react';
+import { createContext, useContext, useRef, type ElementType, type ReactNode } from 'react';
 import { ensureGsap, useIsomorphicLayoutEffect, useShouldAnimate } from './gsap';
 
 type WordFillRevealProps = {
@@ -8,6 +8,80 @@ type WordFillRevealProps = {
   as?: ElementType;
   className?: string;
 };
+
+type WordFillRevealSequenceProps = {
+  children: ReactNode;
+  as?: ElementType;
+  className?: string;
+};
+
+const WordFillSequenceContext = createContext(false);
+
+/**
+ * Coordinates multiple WordFillReveal blocks on one scroll timeline.
+ *
+ * Each block begins only after the previous block's final word has reached
+ * full opacity. Mapping the sequence between the group's top and bottom also
+ * keeps the interaction tied to the actual content instead of allowing
+ * independent pixel budgets to overlap.
+ */
+export function WordFillRevealSequence({
+  children,
+  as: Tag = 'div',
+  className,
+}: WordFillRevealSequenceProps) {
+  const ref = useRef<HTMLElement>(null);
+  const shouldAnimate = useShouldAnimate();
+
+  useIsomorphicLayoutEffect(() => {
+    if (!shouldAnimate) return;
+    const el = ref.current;
+    if (!el) return;
+    const gsap = ensureGsap();
+
+    const ctx = gsap.context(() => {
+      const blocks = gsap.utils.toArray<HTMLElement>('[data-wf-block]', el);
+      const words = gsap.utils.toArray<HTMLElement>('[data-wf-word]', el);
+      if (blocks.length === 0 || words.length === 0) return;
+
+      gsap.set(words, { opacity: 0.2 });
+
+      const timeline = gsap.timeline({
+        scrollTrigger: {
+          trigger: el,
+          start: 'top 72%',
+          end: 'bottom 28%',
+          scrub: 1,
+        },
+      });
+
+      blocks.forEach((block, index) => {
+        const blockWords = gsap.utils.toArray<HTMLElement>('[data-wf-word]', block);
+
+        timeline.to(
+          blockWords,
+          {
+            opacity: 1,
+            ease: 'none',
+            duration: 1,
+            stagger: { each: 0.42 },
+          },
+          index === 0 ? 0 : '>'
+        );
+      });
+    }, el);
+
+    return () => ctx.revert();
+  }, [shouldAnimate]);
+
+  return (
+    <WordFillSequenceContext.Provider value>
+      <Tag ref={ref} className={className}>
+        {children}
+      </Tag>
+    </WordFillSequenceContext.Provider>
+  );
+}
 
 /**
  * Scroll-scrubbed word fill — the BHMR "honest address" text interaction.
@@ -30,9 +104,10 @@ type WordFillRevealProps = {
 export function WordFillReveal({ text, as: Tag = 'p', className }: WordFillRevealProps) {
   const ref = useRef<HTMLElement>(null);
   const shouldAnimate = useShouldAnimate();
+  const isSequenced = useContext(WordFillSequenceContext);
 
   useIsomorphicLayoutEffect(() => {
-    if (!shouldAnimate) return;
+    if (!shouldAnimate || isSequenced) return;
     const el = ref.current;
     if (!el) return;
     const gsap = ensureGsap();
@@ -67,12 +142,12 @@ export function WordFillReveal({ text, as: Tag = 'p', className }: WordFillRevea
     }, el);
 
     return () => ctx.revert();
-  }, [shouldAnimate]);
+  }, [isSequenced, shouldAnimate]);
 
   const words = text.split(' ');
 
   return (
-    <Tag ref={ref} className={className}>
+    <Tag ref={ref} className={className} data-wf-block>
       {words.map((word, index) => (
         <span key={`${word}-${index}`} data-wf-word className="inline-block">
           {word}

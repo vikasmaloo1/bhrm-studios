@@ -1,7 +1,7 @@
 import { Container } from '@/components/layout/Container';
 import { SectionHeading } from '@/components/ui/SectionHeading';
 import { DriftText } from '@/lib/motion/DriftText';
-import { WordFillReveal } from '@/lib/motion/WordFillReveal';
+import { WordFillReveal, WordFillRevealSequence } from '@/lib/motion/WordFillReveal';
 import { SectionWipe } from '@/lib/motion/SectionWipe';
 import { MaskReveal } from '@/lib/motion/primitives';
 import { Scrub } from '@/lib/motion/Scrub';
@@ -57,7 +57,7 @@ export function EditorialSection() {
             </DriftText>
           </div>
 
-          <ol className="flex flex-col">
+          <WordFillRevealSequence as="ol" className="flex flex-col">
             {editorial.beliefs.map((belief) => (
               <li
                 key={belief.index}
@@ -80,7 +80,7 @@ export function EditorialSection() {
                 </div>
               </li>
             ))}
-          </ol>
+          </WordFillRevealSequence>
         </div>
       </Container>
     </section>

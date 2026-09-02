@@ -1,6 +1,6 @@
 import { Container } from '@/components/layout/Container';
 import { SectionHeading } from '@/components/ui/SectionHeading';
-import { WordFillReveal } from '@/lib/motion/WordFillReveal';
+import { WordFillReveal, WordFillRevealSequence } from '@/lib/motion/WordFillReveal';
 import { SectionWipe } from '@/lib/motion/SectionWipe';
 import { MaskReveal } from '@/lib/motion/primitives';
 import { address } from '@/content/home';
@@ -36,13 +36,15 @@ export function AddressSection() {
           </div>
 
           <div className="flex flex-col gap-10 lg:gap-14">
-            {address.paragraphs.map((p, i) => (
-              <WordFillReveal
-                key={i}
-                text={p}
-                className="max-w-[44rem] text-[clamp(1.375rem,2.6vw,2.125rem)] leading-[1.42] font-medium tracking-[-0.012em] text-ink"
-              />
-            ))}
+            <WordFillRevealSequence className="flex flex-col gap-10 lg:gap-14">
+              {address.paragraphs.map((p, i) => (
+                <WordFillReveal
+                  key={i}
+                  text={p}
+                  className="max-w-[44rem] text-[clamp(1.375rem,2.6vw,2.125rem)] leading-[1.42] font-medium tracking-[-0.012em] text-ink"
+                />
+              ))}
+            </WordFillRevealSequence>
 
             <MaskReveal from="up" drift={false} className="mt-2">
               <p className="font-mono text-meta tracking-[0.16em] text-muted uppercase">
